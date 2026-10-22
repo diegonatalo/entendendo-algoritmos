@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# configuração local do servidor de desenvolvimento (Claude Code)
+.claude/launch.json
