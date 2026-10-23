@@ -24,7 +24,7 @@ export function BlocoCodigo({
   }
 
   return (
-    <details className="group mt-2 rounded-xl border border-zinc-800 bg-zinc-900/60">
+    <details className="group rounded-xl border border-zinc-800 bg-zinc-900/60">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-4 py-3 text-sm font-medium text-zinc-300 transition-colors hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-400 [&::-webkit-details-marker]:hidden">
         <span className="flex items-center gap-2">
           <span className="font-mono text-emerald-400">{"{ }"}</span>

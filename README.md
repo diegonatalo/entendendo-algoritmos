@@ -72,7 +72,7 @@ Um seletor **Simples** | **Técnica**. A simples usa uma analogia e a intuição
     <td width="50%" valign="top">
 
 ### 👩‍💻 Código de cada algoritmo
-Trechos enxutos em JavaScript, com botão de copiar, dentro da explicação técnica. Eles foram conferidos contra as funções que movem as animações.
+Trechos enxutos em JavaScript, com botão de copiar, em "Ver o código", logo abaixo da explicação. Eles foram conferidos contra as funções que movem as animações.
 
 ### 📱 Feito para o celular também
 Menu em gaveta, gráficos que rolam para o lado mantendo o texto legível e botões de tamanho confortável para toque. O menu e as explicações funcionam pelo teclado e usam atributos ARIA.

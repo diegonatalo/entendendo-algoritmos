@@ -64,47 +64,50 @@ export function Explicacao({
   const atual = NIVEIS.find((n) => n.id === nivel);
 
   return (
-    <section
-      aria-label="Explicação do algoritmo"
-      className="mt-2 flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-3 sm:p-4"
-    >
-      <div role="group" aria-label="Nível da explicação" className="flex gap-1 rounded-xl bg-zinc-900 p-1">
-        {NIVEIS.map((n) => {
-          const ativo = nivel === n.id;
-          return (
-            <button
-              key={n.id}
-              type="button"
-              aria-expanded={ativo}
-              aria-controls={idPainel}
-              onClick={() => setNivel(ativo ? null : n.id)}
-              className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-emerald-400 ${
-                ativo
-                  ? "border-emerald-500 bg-emerald-500 text-emerald-950"
-                  : "border-zinc-700 text-zinc-200 hover:border-zinc-500 hover:bg-zinc-800 hover:text-zinc-50"
-              }`}
-            >
-              <span>{n.rotulo}</span>
-              <span aria-hidden className={`text-xs transition-transform ${ativo ? "rotate-90" : ""}`}>
-                ▸
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
-      <p className="px-1 text-xs text-zinc-400">
-        {atual
-          ? `${atual.descricao} Toque em ${atual.rotulo} de novo para recolher.`
-          : "Explicação do algoritmo: escolha um nível para ler."}
-      </p>
-
-      {atual && (
-        <div id={idPainel} role="region" aria-label={`Explicação ${atual.rotulo.toLowerCase()}`} className="flex flex-col gap-4 pt-1">
-          <Blocos blocos={nivel === "simples" ? simples : tecnica} />
-          {nivel === "tecnica" && codigo && <BlocoCodigo codigo={codigo} titulo="Ver o código" />}
+    <div className="mt-2 flex flex-col gap-3">
+      <section
+        aria-label="Explicação do algoritmo"
+        className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-3 sm:p-4"
+      >
+        <div role="group" aria-label="Nível da explicação" className="flex gap-1 rounded-xl bg-zinc-900 p-1">
+          {NIVEIS.map((n) => {
+            const ativo = nivel === n.id;
+            return (
+              <button
+                key={n.id}
+                type="button"
+                aria-expanded={ativo}
+                aria-controls={idPainel}
+                onClick={() => setNivel(ativo ? null : n.id)}
+                className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-emerald-400 ${
+                  ativo
+                    ? "border-emerald-500 bg-emerald-500 text-emerald-950"
+                    : "border-zinc-700 text-zinc-200 hover:border-zinc-500 hover:bg-zinc-800 hover:text-zinc-50"
+                }`}
+              >
+                <span>{n.rotulo}</span>
+                <span aria-hidden className={`text-xs transition-transform ${ativo ? "rotate-90" : ""}`}>
+                  ▸
+                </span>
+              </button>
+            );
+          })}
         </div>
-      )}
-    </section>
+  
+        <p className="px-1 text-xs text-zinc-400">
+          {atual
+            ? `${atual.descricao} Toque em ${atual.rotulo} de novo para recolher.`
+            : "Explicação do algoritmo: escolha um nível para ler."}
+        </p>
+  
+        {atual && (
+          <div id={idPainel} role="region" aria-label={`Explicação ${atual.rotulo.toLowerCase()}`} className="flex flex-col gap-4 pt-1">
+            <Blocos blocos={nivel === "simples" ? simples : tecnica} />
+          </div>
+        )}
+      </section>
+      {/* logo abaixo da explicação, recolhido, qualquer que seja o nível aberto */}
+      {codigo && <BlocoCodigo codigo={codigo} titulo="Ver o código" />}
+    </div>
   );
 }
