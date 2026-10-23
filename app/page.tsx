@@ -3,7 +3,7 @@ import { capitulos } from "./capitulos";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-col gap-12 px-6 py-16">
+    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-12 px-6 py-16">
       <section className="fade-up flex flex-col gap-4">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
           Veja os algoritmos{" "}

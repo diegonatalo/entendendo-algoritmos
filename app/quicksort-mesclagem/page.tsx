@@ -92,7 +92,7 @@ export default function QuicksortMesclagem() {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-col gap-14 px-6 py-12">
+    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-14 px-6 py-12">
       <header className="fade-up flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">Quicksort × mesclagem</h1>
         <p className="text-zinc-400">

@@ -75,7 +75,7 @@ export default function CalendarioAulas() {
   const ordem = executado ? resultado.ordenadas : exemplo.aulas;
 
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
+    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
       <header className="fade-up flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">Calendário de aulas</h1>
         <p className="text-zinc-400">

@@ -14,7 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Entendendo Algoritmos",
+  title: {
+    default: "Entendendo Algoritmos",
+    template: "%s · Entendendo Algoritmos",
+  },
   description: "Visualize passo a passo como os algoritmos funcionam.",
 };
 
@@ -29,6 +32,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <a
+          href="#conteudo"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-emerald-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-zinc-950"
+        >
+          Pular para o conteúdo
+        </a>
         <Sidebar />
         <div className="flex flex-1 flex-col lg:pl-64">{children}</div>
       </body>
