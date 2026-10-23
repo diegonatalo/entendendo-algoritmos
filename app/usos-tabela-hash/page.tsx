@@ -10,10 +10,7 @@ import { useState } from "react";
 import { Explicacao } from "../components/explicacao";
 import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
-import { Stat, botaoPrimario } from "../components/ui";
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
+import { Stat, botaoPrimario, inputClass } from "../components/ui";
 
 const botaoSecundario =
   "cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100";

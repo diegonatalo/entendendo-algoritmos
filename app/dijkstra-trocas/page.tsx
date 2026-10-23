@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Explicacao } from "../components/explicacao";
 import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
-import { GraficoRolavel, Legenda, Stat, botaoNavegacao, botaoPrimario } from "../components/ui";
+import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "../components/ui";
 
 // cada aresta é uma troca: o peso é o dinheiro a pagar além do item entregue
 const TROCAS: GrafoPonderado = {
@@ -147,29 +147,7 @@ export default function DijkstraTrocas() {
           <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className={`text-sm font-medium ${corDoTipo[passo.tipo]}`}>{passo.descricao}</p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  className={botaoNavegacao}
-                  disabled={passoAtual === 0}
-                  onClick={() => setPassoAtual((p) => p - 1)}
-                >
-                  ← Anterior
-                </button>
-                <button
-                  className={botaoNavegacao}
-                  disabled={final}
-                  onClick={() => setPassoAtual((p) => p + 1)}
-                >
-                  Próximo →
-                </button>
-                <button
-                  className={botaoNavegacao}
-                  disabled={final}
-                  onClick={() => setPassoAtual(resultado.passos.length - 1)}
-                >
-                  Ir ao fim
-                </button>
-              </div>
+              <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} />
             </div>
 
             <GraficoRolavel minLargura={560}>

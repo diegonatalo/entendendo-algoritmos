@@ -1,14 +1,12 @@
 "use client";
 
+import { inputClass } from "../components/ui";
 import { buscaBinaria } from "@/functions/buscaBinaria";
 import { ArrayVisual } from "../components/array";
 import { useState } from "react";
 import { Explicacao } from "../components/explicacao";
 import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
 export default function BuscaBinaria() {
   const [resultado, setResultado] = useState<ReturnType<

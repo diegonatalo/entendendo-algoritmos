@@ -1,5 +1,6 @@
 "use client";
 
+import { inputClass } from "../components/ui";
 import {
   buscar,
   criarTabela,
@@ -15,9 +16,6 @@ import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
 
 const TAMANHO_INICIAL = 8;
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
 const botaoSecundario =
   "cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100";

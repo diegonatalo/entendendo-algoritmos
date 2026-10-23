@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Explicacao } from "../components/explicacao";
 import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
-import { GraficoRolavel, Legenda, Stat, botaoNavegacao, botaoPrimario } from "../components/ui";
+import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "../components/ui";
 
 // "a: [b]" significa que a precisa acontecer antes de b
 const ROTINA: GrafoDependencias = {
@@ -149,29 +149,7 @@ export default function OrdenacaoTopologica() {
               >
                 {passo.descricao}
               </p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  className={botaoNavegacao}
-                  disabled={passoAtual === 0}
-                  onClick={() => setPassoAtual((p) => p - 1)}
-                >
-                  ← Anterior
-                </button>
-                <button
-                  className={botaoNavegacao}
-                  disabled={final}
-                  onClick={() => setPassoAtual((p) => p + 1)}
-                >
-                  Próximo →
-                </button>
-                <button
-                  className={botaoNavegacao}
-                  disabled={final}
-                  onClick={() => setPassoAtual(resultado.passos.length - 1)}
-                >
-                  Ir ao fim
-                </button>
-              </div>
+              <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} />
             </div>
           )}
 

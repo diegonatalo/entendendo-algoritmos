@@ -1,5 +1,6 @@
 "use client";
 
+import { ControlesPassos } from "../components/ui";
 import { mochila, mochilaGulosa } from "@/functions/mochila";
 import { ItemMochila } from "@/@types/mochila";
 import { useState } from "react";
@@ -37,9 +38,6 @@ const EXEMPLOS: Exemplo[] = [
     ],
   },
 ];
-
-const botao =
-  "cursor-pointer whitespace-nowrap rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-zinc-700 disabled:hover:text-zinc-300";
 
 const dinheiro = (n: number) => `R$ ${n.toLocaleString("pt-BR")}`;
 
@@ -148,29 +146,7 @@ export default function ProgramacaoDinamica() {
               >
                 {passo.descricao}
               </p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  className={botao}
-                  disabled={passoAtual === 0}
-                  onClick={() => setPassoAtual((p) => p - 1)}
-                >
-                  ← Anterior
-                </button>
-                <button
-                  className={botao}
-                  disabled={final}
-                  onClick={() => setPassoAtual((p) => p + 1)}
-                >
-                  Próximo →
-                </button>
-                <button
-                  className={botao}
-                  disabled={final}
-                  onClick={() => setPassoAtual(total - 1)}
-                >
-                  Ir ao fim
-                </button>
-              </div>
+              <ControlesPassos passoAtual={passoAtual} total={total} onChange={setPassoAtual} />
             </div>
 
             <div className="overflow-x-auto">

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Explicacao } from "../components/explicacao";
 import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
-import { Stat, botaoNavegacao, botaoPrimario } from "../components/ui";
+import { ControlesPassos, Stat, botaoPrimario } from "../components/ui";
 
 // a tabela trabalha em meios dias, para que todos os tempos sejam números inteiros
 const ATRACOES: ItemMochila[] = [
@@ -150,17 +150,7 @@ export default function RoteiroLondres() {
               <p className={`text-sm font-medium ${passo.usouItem ? "text-amber-400" : "text-zinc-300"}`}>
                 {passo.descricao}
               </p>
-              <div className="flex flex-wrap gap-2">
-                <button className={botaoNavegacao} disabled={passoAtual === 0} onClick={() => setPassoAtual((p) => p - 1)}>
-                  ← Anterior
-                </button>
-                <button className={botaoNavegacao} disabled={final} onClick={() => setPassoAtual((p) => p + 1)}>
-                  Próximo →
-                </button>
-                <button className={botaoNavegacao} disabled={final} onClick={() => setPassoAtual(total - 1)}>
-                  Ir ao fim
-                </button>
-              </div>
+              <ControlesPassos passoAtual={passoAtual} total={total} onChange={setPassoAtual} />
             </div>
             <p className="text-xs text-zinc-500">
               Na descrição acima, o tempo aparece em meios-dias (1 = meio dia) e

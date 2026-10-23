@@ -1,16 +1,14 @@
 "use client";
 
+import { lerNumeros } from "../entrada";
 import { euclides, somaRecursiva } from "@/functions/euclides";
 import { useState } from "react";
 import { Explicacao } from "../components/explicacao";
 import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
-import { Stat, botaoNavegacao, botaoPrimario } from "../components/ui";
+import { ControlesPassos, Stat, botaoPrimario, inputClass } from "../components/ui";
 
 const MAX_MEDIDA = 2000;
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
 const PALETA = ["#34d399", "#38bdf8", "#a78bfa", "#fbbf24", "#fb7185", "#2dd4bf"];
 
@@ -25,7 +23,6 @@ export default function DividirConquistar() {
 
   const resultado = medidas ? euclides(medidas.largura, medidas.altura) : null;
   const passo = resultado?.passos[passoAtual];
-  const final = resultado ? passoAtual === resultado.passos.length - 1 : false;
   const chamadas = somaRecursiva(lista);
 
   function handleTerreno(e: React.FormEvent<HTMLFormElement>) {
@@ -46,7 +43,7 @@ export default function DividirConquistar() {
 
   function handleLista(e: React.FormEvent) {
     e.preventDefault();
-    const numeros = textoLista.split(/[\s,;]+/).filter(Boolean).map(Number);
+    const numeros = lerNumeros(textoLista);
     if (numeros.length > 8 || numeros.some((n) => !Number.isFinite(n))) {
       setErroLista("Digite até 8 números, separados por vírgula.");
       return;
@@ -141,29 +138,7 @@ export default function DividirConquistar() {
             <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-sm font-medium text-amber-400">{passo.descricao}</p>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    className={botaoNavegacao}
-                    disabled={passoAtual === 0}
-                    onClick={() => setPassoAtual((p) => p - 1)}
-                  >
-                    ← Anterior
-                  </button>
-                  <button
-                    className={botaoNavegacao}
-                    disabled={final}
-                    onClick={() => setPassoAtual((p) => p + 1)}
-                  >
-                    Próximo →
-                  </button>
-                  <button
-                    className={botaoNavegacao}
-                    disabled={final}
-                    onClick={() => setPassoAtual(resultado.passos.length - 1)}
-                  >
-                    Ir ao fim
-                  </button>
-                </div>
+                <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} />
               </div>
 
               <svg

@@ -159,8 +159,10 @@ app/
 ├── <rota>/page.tsx      # uma pasta por página (busca-binaria, quicksort, dijkstra…)
 ├── components/          # menu lateral, explicação Simples/Técnica, bloco de código, UI comum
 ├── capitulos.ts         # lista única de páginas: o menu e a home leem daqui
-├── codigos.ts           # trechos de código mostrados nas páginas
-└── explicacoes.ts       # textos Simples e Técnico de cada página
+├── codigos/             # trechos de código mostrados nas páginas, um arquivo por capítulo
+├── explicacoes/         # textos Simples e Técnico de cada página, um arquivo por capítulo
+├── metadata.ts          # título e descrição de cada rota, lidos de capitulos.ts
+└── entrada.ts           # leitura e geração das listas de números dos formulários
 functions/               # algoritmos puros em TypeScript (devolvem o resultado e cada passo)
 @types/                  # tipos dos resultados de cada algoritmo
 docs/img/                # banner e capturas de tela deste README
@@ -174,7 +176,7 @@ docs/img/                # banner e capturas de tela deste README
 1. **Função:** crie `functions/meuAlgoritmo.ts`, uma função pura que devolve o resultado e uma lista de passos, e os tipos em `@types/meuAlgoritmo.d.ts`.
 2. **Página:** crie `app/meu-algoritmo/page.tsx` (use uma página parecida como modelo) para desenhar os passos.
 3. **Menu e home:** registre a página em `app/capitulos.ts` com número do capítulo, título, rota e descrição. O menu lateral e os cartões da home são gerados dessa lista.
-4. **Conteúdo:** acrescente o texto Simples e o Técnico em `app/explicacoes.ts` e o trecho de código em `app/codigos.ts`, e use o componente `Explicacao` na página.
+4. **Conteúdo:** acrescente o texto Simples e o Técnico em `app/explicacoes/capNN.ts` e o trecho de código em `app/codigos/capNN.ts` (do capítulo da página), e use o componente `Explicacao` na página.
 5. **Confira:** rode `pnpm lint`, `npx tsc --noEmit` e `pnpm build`.
 
 </details>

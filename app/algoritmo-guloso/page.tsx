@@ -1,5 +1,6 @@
 "use client";
 
+import { ControlesPassos } from "../components/ui";
 import {
   coberturaGulosa,
   coberturaOtima,
@@ -43,9 +44,6 @@ const EXEMPLOS: Exemplo[] = [
     },
   },
 ];
-
-const botao =
-  "cursor-pointer whitespace-nowrap rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-zinc-700 disabled:hover:text-zinc-300";
 
 const corDoTipo = {
   inicio: "text-zinc-300",
@@ -162,22 +160,7 @@ export default function AlgoritmoGuloso() {
               <p className={`text-sm font-medium ${corDoTipo[passo.tipo]}`}>
                 {passo.descricao}
               </p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  className={botao}
-                  disabled={passoAtual === 0}
-                  onClick={() => setPassoAtual((p) => p - 1)}
-                >
-                  ← Anterior
-                </button>
-                <button
-                  className={botao}
-                  disabled={passoAtual === gulosa.passos.length - 1}
-                  onClick={() => setPassoAtual((p) => p + 1)}
-                >
-                  Próximo →
-                </button>
-              </div>
+              <ControlesPassos passoAtual={passoAtual} total={gulosa.passos.length} onChange={setPassoAtual} irAoFim={false} />
             </div>
 
             <div className="flex flex-col gap-2">

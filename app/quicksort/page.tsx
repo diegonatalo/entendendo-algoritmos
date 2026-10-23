@@ -1,5 +1,7 @@
 "use client";
 
+import { lerNumeros, numerosAleatorios } from "../entrada";
+import { inputClass } from "../components/ui";
 import { quicksort } from "@/functions/quicksort";
 import { EstrategiaPivo, NoQuicksort } from "@/@types/quicksort";
 import { useState } from "react";
@@ -7,17 +9,8 @@ import { Explicacao } from "../components/explicacao";
 import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
 
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
-
 const celula =
   "flex h-8 min-w-8 items-center justify-center rounded-md px-1.5 font-mono text-xs tabular-nums";
-
-function numerosAleatorios(): string {
-  return Array.from({ length: 12 }, () =>
-    Math.floor(Math.random() * 99 + 1),
-  ).join(", ");
-}
 
 export default function Quicksort() {
   const [texto, setTexto] = useState("");
@@ -29,10 +22,7 @@ export default function Quicksort() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const numeros = texto
-      .split(/[\s,;]+/)
-      .filter(Boolean)
-      .map(Number);
+    const numeros = lerNumeros(texto);
 
     if (numeros.length === 0 || numeros.some((n) => !Number.isFinite(n))) {
       setErro("Digite apenas números, separados por vírgula.");
@@ -95,7 +85,7 @@ export default function Quicksort() {
         <div className="flex gap-3">
           <button
             type="button"
-            onClick={() => setTexto(numerosAleatorios())}
+            onClick={() => setTexto(numerosAleatorios(12))}
             className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
           >
             Gerar aleatório

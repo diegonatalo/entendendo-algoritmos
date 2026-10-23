@@ -1,5 +1,6 @@
 "use client";
 
+import { ControlesPassos, inputMono } from "../components/ui";
 import { subcadeiaComum } from "@/functions/subcadeiaComum";
 import { ModoSubcadeia } from "@/@types/subcadeia";
 import { useState } from "react";
@@ -21,12 +22,6 @@ const MODOS: Record<ModoSubcadeia, { titulo: string; explicacao: string }> = {
       "Letras em comum na mesma ordem, mas podem estar separadas. Letras diferentes herdam o maior valor entre cima e esquerda.",
   },
 };
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 font-mono text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
-
-const botao =
-  "cursor-pointer whitespace-nowrap rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-zinc-700 disabled:hover:text-zinc-300";
 
 type Execucao = {
   a: string;
@@ -102,7 +97,7 @@ export default function SubcadeiaComum() {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Primeira palavra (linhas)
             <input
-              className={inputClass}
+              className={inputMono}
               name="palavraA"
               defaultValue="hish"
               maxLength={MAX_LETRAS}
@@ -111,7 +106,7 @@ export default function SubcadeiaComum() {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Segunda palavra (colunas)
             <input
-              className={inputClass}
+              className={inputMono}
               name="palavraB"
               defaultValue="fish"
               maxLength={MAX_LETRAS}
@@ -158,29 +153,7 @@ export default function SubcadeiaComum() {
               >
                 {passo.descricao}
               </p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  className={botao}
-                  disabled={passoAtual === 0}
-                  onClick={() => setPassoAtual((p) => p - 1)}
-                >
-                  ← Anterior
-                </button>
-                <button
-                  className={botao}
-                  disabled={final}
-                  onClick={() => setPassoAtual((p) => p + 1)}
-                >
-                  Próximo →
-                </button>
-                <button
-                  className={botao}
-                  disabled={final}
-                  onClick={() => setPassoAtual(total - 1)}
-                >
-                  Ir ao fim
-                </button>
-              </div>
+              <ControlesPassos passoAtual={passoAtual} total={total} onChange={setPassoAtual} />
             </div>
 
             <div className="overflow-x-auto">

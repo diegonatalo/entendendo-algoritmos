@@ -1,16 +1,11 @@
 "use client";
 
+import { ControlesPassos, inputClass } from "../components/ui";
 import { fatorial } from "@/functions/fatorial";
 import { useState } from "react";
 import { Explicacao } from "../components/explicacao";
 import { CODIGOS } from "../codigos";
 import { EXPLICACOES } from "../explicacoes";
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
-
-const botao =
-  "cursor-pointer whitespace-nowrap rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-zinc-700 disabled:hover:text-zinc-300";
 
 const corDoTipo = {
   empilha: "text-amber-400",
@@ -98,22 +93,7 @@ export default function Recursao() {
               <p className={`text-sm font-medium ${corDoTipo[passo.tipo]}`}>
                 {passo.descricao}
               </p>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  className={botao}
-                  disabled={passoAtual === 0}
-                  onClick={() => setPassoAtual((p) => p - 1)}
-                >
-                  ← Anterior
-                </button>
-                <button
-                  className={botao}
-                  disabled={passoAtual === resultado.passos.length - 1}
-                  onClick={() => setPassoAtual((p) => p + 1)}
-                >
-                  Próximo →
-                </button>
-              </div>
+              <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} irAoFim={false} />
             </div>
 
             <div className="flex min-h-24 flex-col-reverse gap-1.5">

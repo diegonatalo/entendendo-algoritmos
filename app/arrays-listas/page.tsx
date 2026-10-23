@@ -1,5 +1,6 @@
 "use client";
 
+import { inputClass } from "../components/ui";
 import { custoInserir, custoLer, custoRemover } from "@/functions/estruturas";
 import { Operacao, ResultadoOperacao } from "@/@types/estruturas";
 import { useState } from "react";
@@ -14,9 +15,6 @@ type Ultimo = {
   indice: number;
   resultado: ResultadoOperacao;
 };
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
 const botao =
   "cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-sm text-zinc-200 transition-colors hover:border-emerald-500/60 hover:text-emerald-300";

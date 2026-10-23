@@ -7,7 +7,7 @@ import {
   tempoLogaritmico,
 } from "@/functions/constantes";
 import { useState } from "react";
-import { GraficoRolavel, Stat } from "../components/ui";
+import { GraficoRolavel, Stat, inputMono } from "../components/ui";
 import { Explicacao } from "../components/explicacao";
 import { EXPLICACOES } from "../explicacoes";
 
@@ -16,9 +16,6 @@ const EXPOENTES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const LARGURA = 500;
 const ALTURA = 260;
 const M = { esq: 52, dir: 12, topo: 10, base: 28 };
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 font-mono text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
 const fmtN = (n: number) => n.toLocaleString("pt-BR");
 
@@ -71,7 +68,7 @@ export default function ConstantesBigO() {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Tempo por passo da busca simples, O(n) (ms)
             <input
-              className={inputClass}
+              className={inputMono}
               type="number"
               min={0.001}
               step="any"
@@ -82,7 +79,7 @@ export default function ConstantesBigO() {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Tempo por passo da busca binária, O(log n) (ms)
             <input
-              className={inputClass}
+              className={inputMono}
               type="number"
               min={0.001}
               step="any"

@@ -63,3 +63,49 @@ export const botaoNavegacao =
 
 export const botaoPrimario =
   "cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600";
+
+export function ControlesPassos({
+  passoAtual,
+  total,
+  onChange,
+  irAoFim = true,
+}: {
+  passoAtual: number;
+  total: number;
+  onChange: (passo: number) => void;
+  irAoFim?: boolean;
+}) {
+  const final = passoAtual >= total - 1;
+  return (
+    <div className="flex flex-wrap gap-2">
+      <button
+        className={botaoNavegacao}
+        disabled={passoAtual === 0}
+        onClick={() => onChange(passoAtual - 1)}
+      >
+        ← Anterior
+      </button>
+      <button
+        className={botaoNavegacao}
+        disabled={final}
+        onClick={() => onChange(passoAtual + 1)}
+      >
+        Próximo →
+      </button>
+      {irAoFim && (
+        <button
+          className={botaoNavegacao}
+          disabled={final}
+          onClick={() => onChange(total - 1)}
+        >
+          Ir ao fim
+        </button>
+      )}
+    </div>
+  );
+}
+
+export const inputClass =
+  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
+
+export const inputMono = inputClass.replace("text-zinc-100", "font-mono text-zinc-100");
