@@ -158,7 +158,7 @@ export default function DividirConquistar() {
                       height={q.lado}
                       fill={PALETA[q.passo % PALETA.length]}
                       fillOpacity={q.passo === passoAtual ? 0.95 : 0.45}
-                      stroke="#09090b"
+                      className="stroke-zinc-950"
                       strokeWidth={Math.max(medidas.largura, medidas.altura) / 300}
                     />
                   ))}

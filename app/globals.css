@@ -35,3 +35,73 @@ body {
     animation: none;
   }
 }
+
+/* ── tema claro ──────────────────────────────────────────────────────────────
+   As páginas foram escritas com a escala zinc do Tailwind pensando no escuro
+   (950 = fundo, 50 = texto forte). No tema claro a escala é espelhada aqui, então
+   as mesmas classes servem aos dois temas. O que não dá para espelhar (texto
+   colorido claro, que precisa escurecer, e preenchimentos escuros de nós e
+   legendas) é tratado nas regras abaixo, por propriedade. */
+html[data-theme="light"] {
+  color-scheme: light;
+  --color-zinc-50: #09090b;
+  --color-zinc-100: #18181b;
+  --color-zinc-200: #27272a;
+  --color-zinc-300: #3f3f46;
+  --color-zinc-400: #52525b;
+  --color-zinc-500: #63636b;
+  --color-zinc-600: #a1a1aa;
+  --color-zinc-700: #d4d4d8;
+  --color-zinc-800: #e4e4e7;
+  --color-zinc-900: #ffffff;
+  --color-zinc-950: #fafafa;
+}
+
+html[data-theme="light"] body {
+  background-color: #fafafa;
+  background-image:
+    radial-gradient(60rem 30rem at 50% -10rem, rgb(16 185 129 / 0.1), transparent),
+    radial-gradient(40rem 20rem at 100% 0, rgb(99 102 241 / 0.07), transparent);
+  color: #18181b;
+}
+
+/* texto colorido: tons claros viram tons escuros para ter contraste no fundo claro */
+html[data-theme="light"] .text-emerald-100 { color: #064e3b; }
+html[data-theme="light"] .text-emerald-200 { color: #065f46; }
+html[data-theme="light"] .text-emerald-300,
+html[data-theme="light"] .hover\:text-emerald-300:hover { color: #047857; }
+html[data-theme="light"] .text-emerald-400 { color: #047857; }
+html[data-theme="light"] .text-amber-200 { color: #92400e; }
+html[data-theme="light"] .text-amber-300 { color: #b45309; }
+html[data-theme="light"] .text-amber-400 { color: #b45309; }
+html[data-theme="light"] .text-red-200 { color: #991b1b; }
+html[data-theme="light"] .text-red-300 { color: #b91c1c; }
+html[data-theme="light"] .text-red-400 { color: #dc2626; }
+html[data-theme="light"] .text-rose-400 { color: #e11d48; }
+html[data-theme="light"] .text-sky-100 { color: #0c4a6e; }
+html[data-theme="light"] .text-sky-400 { color: #0369a1; }
+html[data-theme="light"] .text-violet-400 { color: #6d28d9; }
+
+/* texto dentro de SVG (fill) e setas */
+html[data-theme="light"] .fill-emerald-300,
+html[data-theme="light"] .fill-emerald-400 { fill: #047857; }
+html[data-theme="light"] .fill-amber-400 { fill: #b45309; }
+html[data-theme="light"] .fill-red-400 { fill: #dc2626; }
+html[data-theme="light"] .stroke-emerald-300,
+html[data-theme="light"] .stroke-emerald-400 { stroke: #059669; }
+html[data-theme="light"] .stroke-amber-300,
+html[data-theme="light"] .stroke-amber-400 { stroke: #d97706; }
+html[data-theme="light"] .stroke-rose-400 { stroke: #e11d48; }
+html[data-theme="light"] .stroke-violet-400 { stroke: #7c3aed; }
+
+/* preenchimentos escuros (nós visitados, na fila, presos) viram tons claros */
+html[data-theme="light"] .bg-sky-900 { background-color: #e0f2fe; }
+html[data-theme="light"] .fill-sky-900 { fill: #e0f2fe; }
+html[data-theme="light"] .bg-violet-950 { background-color: #ede9fe; }
+html[data-theme="light"] .fill-violet-950 { fill: #ede9fe; }
+html[data-theme="light"] .bg-red-950 { background-color: #fee2e2; }
+html[data-theme="light"] .fill-red-950 { fill: #fee2e2; }
+
+/* título da home: o gradiente claro some no fundo branco */
+html[data-theme="light"] .from-emerald-400 { --tw-gradient-from: #059669; }
+html[data-theme="light"] .to-sky-400 { --tw-gradient-to: #0284c7; }

@@ -77,6 +77,9 @@ Trechos enxutos em JavaScript, com botão de copiar, dentro da explicação téc
 ### 📱 Feito para o celular também
 Menu em gaveta, gráficos que rolam para o lado mantendo o texto legível e botões de tamanho confortável para toque. O menu e as explicações funcionam pelo teclado e usam atributos ARIA.
 
+### 🌗 Tema claro e escuro
+Segue a preferência do sistema na primeira visita e tem um botão para trocar, na barra lateral (ou no topo, no celular). A escolha fica salva no navegador.
+
     </td>
   </tr>
 </table>

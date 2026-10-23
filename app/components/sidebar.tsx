@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { Capitulo, capitulos } from "../capitulos";
+import { BotaoTema } from "./botao-tema";
 
 // agrupa as páginas por capítulo, mantendo a ordem de capitulos.ts
 const grupos: { numero: number; paginas: Capitulo[] }[] = capitulos.reduce(
@@ -190,22 +191,28 @@ export function Sidebar() {
           <Marca />
         </div>
         <Lista />
+        <div className="mt-auto px-1">
+          <BotaoTema />
+        </div>
       </aside>
 
       {/* celular e tablet: barra superior com menu em gaveta */}
       <header className="sticky top-0 z-20 flex items-center justify-between border-b border-zinc-800/80 bg-zinc-950/80 px-4 py-3 backdrop-blur lg:hidden">
         <Marca />
-        <button
-          ref={botaoAbrirRef}
-          type="button"
-          aria-label="Abrir menu de capítulos"
-          aria-haspopup="dialog"
-          aria-expanded={aberto}
-          onClick={() => setAbertoEm(pathname)}
-          className={`cursor-pointer rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-600 ${foco}`}
-        >
-          ☰ Capítulos
-        </button>
+        <div className="flex items-center gap-2">
+          <BotaoTema compacto />
+          <button
+            ref={botaoAbrirRef}
+            type="button"
+            aria-label="Abrir menu de capítulos"
+            aria-haspopup="dialog"
+            aria-expanded={aberto}
+            onClick={() => setAbertoEm(pathname)}
+            className={`cursor-pointer rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-600 ${foco}`}
+          >
+            ☰ Capítulos
+          </button>
+        </div>
       </header>
 
       {aberto && (

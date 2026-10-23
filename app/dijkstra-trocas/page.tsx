@@ -218,7 +218,7 @@ export default function DijkstraTrocas() {
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize={11}
-                    className={noCaminho(nome) || passo.atual === nome ? "fill-zinc-950" : "fill-zinc-100"}
+                    className={noCaminho(nome) || passo.atual === nome ? "fill-black" : "fill-zinc-100"}
                   >
                     {nome}
                   </text>
@@ -228,7 +228,7 @@ export default function DijkstraTrocas() {
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize={10}
-                    className={`font-mono font-semibold ${noCaminho(nome) || passo.atual === nome ? "fill-zinc-950" : "fill-amber-400"}`}
+                    className={`font-mono font-semibold ${noCaminho(nome) || passo.atual === nome ? "fill-black" : "fill-amber-400"}`}
                   >
                     {fmt(passo.custos[nome])}
                   </text>
