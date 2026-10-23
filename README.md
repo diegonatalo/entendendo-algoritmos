@@ -137,8 +137,8 @@ Segue a preferência do sistema na primeira visita e tem um botão para trocar, 
 **Requisitos:** [Node.js](https://nodejs.org) 20.9 ou superior e [pnpm](https://pnpm.io).
 
 ```bash
-git clone https://github.com/diegonatalo/algoritmos.git
-cd algoritmos
+git clone https://github.com/diegonatalo/entendendo-algoritmos.git
+cd entendendo-algoritmos
 pnpm install
 pnpm dev
 ```
