@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { Sidebar } from "./components/sidebar";
+import { openGraphBase } from "./metadata";
+import { DESCRICAO_DO_SITE, NOME_DO_SITE, SITE_URL } from "./site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,11 +20,15 @@ const geistMono = Geist_Mono({
 const TEMA_INICIAL = `try{var t=localStorage.getItem("tema");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.dataset.theme=t}catch(e){}`;
 
 export const metadata: Metadata = {
+  metadataBase: SITE_URL,
+  applicationName: NOME_DO_SITE,
   title: {
-    default: "Entendendo Algoritmos",
-    template: "%s · Entendendo Algoritmos",
+    default: NOME_DO_SITE,
+    template: `%s · ${NOME_DO_SITE}`,
   },
-  description: "Visualize passo a passo como os algoritmos funcionam.",
+  description: DESCRICAO_DO_SITE,
+  alternates: { canonical: "/" },
+  ...openGraphBase(NOME_DO_SITE, DESCRICAO_DO_SITE, "/", "/og/inicio"),
 };
 
 export default function RootLayout({

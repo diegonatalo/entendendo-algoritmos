@@ -155,6 +155,16 @@ Abra <http://localhost:3000>.
 
 <br />
 
+### Compartilhamento (Open Graph)
+
+Cada página tem título, descrição e uma imagem própria nas tags Open Graph e Twitter Card, então o link mostra um cartão ao ser colado em redes sociais e chats. Os endereços absolutos das imagens usam `https://entendendo-algoritmos.vercel.app` (definido em `app/site.ts`). Para publicar em outro domínio, defina a variável ao gerar o build:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://seu-dominio.com pnpm build
+```
+
+<br />
+
 ## Estrutura
 
 ```text
@@ -164,7 +174,9 @@ app/
 ├── capitulos.ts         # lista única de páginas: o menu e a home leem daqui
 ├── codigos/             # trechos de código mostrados nas páginas, um arquivo por capítulo
 ├── explicacoes/         # textos Simples e Técnico de cada página, um arquivo por capítulo
-├── metadata.ts          # título e descrição de cada rota, lidos de capitulos.ts
+├── metadata.ts          # título, descrição e tags Open Graph de cada rota, lidos de capitulos.ts
+├── og/[slug]/route.tsx  # imagem de compartilhamento (1200×630) de cada página, gerada no build
+├── site.ts              # endereço público e nome do site
 └── entrada.ts           # leitura e geração das listas de números dos formulários
 functions/               # algoritmos puros em TypeScript (devolvem o resultado e cada passo)
 @types/                  # tipos dos resultados de cada algoritmo
