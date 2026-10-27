@@ -1,16 +1,14 @@
 <div align="center">
 
-<img src="docs/img/banner.png" alt="Entendendo Algoritmos: veja os algoritmos acontecendo. Capturas do app com o gráfico do KNN, o grafo do Dijkstra e a versão para celular." width="100%" />
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/banner.svg"><img src="docs/assets/light/banner.svg" alt="Entendendo Algoritmos: Veja os algoritmos acontecendo." width="100%"></picture>
 
-# Entendendo Algoritmos
+<br />
 
-**Veja os algoritmos acontecendo.**<br />
-Visualizações interativas, passo a passo, com explicação simples ou técnica, código para copiar e tema claro ou escuro.
+<a href="https://entendendo-algoritmos.vercel.app"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-demo.svg"><img src="docs/assets/light/btn-demo.svg" alt="Demonstração" height="46"></picture></a>&nbsp;&nbsp;<a href="https://github.com/diegonatalo/entendendo-algoritmos"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-code.svg"><img src="docs/assets/light/btn-code.svg" alt="Código" height="46"></picture></a>
 
 <br />
 
 [![Abrir o app](https://img.shields.io/badge/abrir_o_app-entendendo--algoritmos.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://entendendo-algoritmos.vercel.app)
-
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript_5-3178c6?style=flat-square&logo=typescript&logoColor=white)
@@ -22,101 +20,19 @@ Visualizações interativas, passo a passo, com explicação simples ou técnica
 
 <br />
 
+<div align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-01-sobre.svg"><img src="docs/assets/light/h-01-sobre.svg" alt="01 · SOBRE: Sobre o projeto" width="100%"></picture>
+</div>
+
+**Veja os algoritmos acontecendo.**<br />
+Visualizações interativas, passo a passo, com explicação simples ou técnica, código para copiar e tema claro ou escuro.
+
 > [!NOTE]
 > Projeto independente, inspirado no livro *Entendendo Algoritmos* (*Grokking Algorithms*), de
 > Aditya Bhargava. Não tem vínculo com o livro nem com o autor e não reproduz o texto dele.
 > Os capítulos 1 a 11 servem só de roteiro: explicações, exemplos e dados foram escritos para o app.
 
-## ✨ O que dá para fazer
-
-| Recurso | Descrição |
-|---|---|
-| **Passo a passo** | Na maioria das páginas, avance e volte em cada decisão do algoritmo, com legenda de cores e uma mensagem explicando a conta daquele passo. |
-| **Seus próprios dados** | Digite listas, pesos, itens ou mensagens e veja o resultado mudar na hora. Alguns grafos são fixos. |
-| **Duas explicações por página** | **Simples** usa uma analogia. **Técnica** traz como funciona, por que está correto, o custo (Big O) e os limites. Vêm recolhidas. |
-| **Código de cada algoritmo** | Trecho enxuto em JavaScript, com botão de copiar, logo abaixo da explicação. |
-| **29 páginas em 11 capítulos** | Na ordem do livro, do Big O ao KNN, com um menu lateral que agrupa por capítulo. |
-| **Tema claro e escuro** | Segue o sistema na primeira visita e guarda a sua escolha. |
-| **Feito para o celular** | Menu em gaveta, gráficos que rolam para o lado e botões de tamanho confortável para toque. |
-| **Cartão de compartilhamento** | Cada página tem imagem própria nas tags Open Graph, então o link aparece bonito no chat. |
-
-<br />
-
-## 🖼️ Telas
-
-<table>
-  <tr>
-    <td width="50%" align="center">
-      <img src="docs/img/explicacao-tecnica.png" alt="Explicação técnica do quicksort aberta, com as seções Como funciona, Por que está correto, Custo e Detalhes e limites" />
-      <br /><sub><b>Explicação técnica</b>: como funciona, custo e limites.</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/img/quicksort.png" alt="Árvore de recursão do quicksort com o pivô destacado em cada lista" />
-      <br /><sub><b>Quicksort</b>: a árvore de recursão, com o pivô em cada nível.</sub>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <img src="docs/img/dijkstra.png" alt="Grafo do algoritmo de Dijkstra com o caminho mais barato em verde e a tabela de custos" />
-      <br /><sub><b>Dijkstra</b>: o caminho mais barato e a tabela de custos.</sub>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/img/programacao-dinamica.png" alt="Tabela da mochila da programação dinâmica totalmente preenchida" />
-      <br /><sub><b>Programação dinâmica</b>: a tabela da mochila, célula por célula.</sub>
-    </td>
-  </tr>
-</table>
-
-<div align="center">
-<img src="docs/img/mobile-busca-binaria.png" alt="Busca binária no celular, com os cartões de resultado empilhados" width="240" />
-&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="docs/img/mobile-menu.png" alt="Menu lateral em gaveta no celular, com os capítulos agrupados" width="240" />
-<br />
-<sub><b>No celular</b>: resultado empilhado e menu em gaveta.</sub>
-</div>
-
-<br />
-
-## 🔒 Privacidade
-
-Não há backend, banco de dados nem conta de usuário. O que você digita fica na página e some ao
-recarregar. A única coisa guardada no navegador é a escolha do tema (`localStorage`, chave `tema`).
-
-<br />
-
-## 🧠 Como funciona
-
-| Conceito | Regra |
-|---|---|
-| **Algoritmo** | Cada um é uma função pura em `functions/` que devolve o resultado e, quando faz sentido, a lista de passos. |
-| **Página** | Só desenha o que a função devolveu. Os botões de passo movem um índice nessa lista. |
-| **Registro de páginas** | `app/capitulos.ts` é a lista única: o menu, a home, os títulos, o sitemap e as imagens de compartilhamento leem dela. |
-| **Textos e código** | Ficam em `app/explicacoes/` e `app/codigos/`, um arquivo por capítulo. |
-
-<details>
-<summary><b>Ver as 29 páginas por capítulo</b></summary>
-
-<br />
-
-| Cap. | Tema | Páginas |
-| :-: | :-- | :-- |
-| **1** | Introdução | Busca binária · Notação Big O |
-| **2** | Ordenação por seleção | Arrays e listas encadeadas · Ordenação por seleção |
-| **3** | Recursão | Recursão (fatorial e pilha de chamadas) · Caixas dentro de caixas |
-| **4** | Quicksort | Dividir para conquistar · Quicksort · Quicksort × mesclagem · Constantes escondidas |
-| **5** | Tabelas hash | Tabelas hash · Usos da tabela hash (duplicatas e cache) |
-| **6** | Busca em largura | Busca em largura · Ordenação topológica |
-| **7** | Algoritmo de Dijkstra | Dijkstra · Bellman-Ford · Dijkstra: livro por piano |
-| **8** | Algoritmos gulosos | Calendário de aulas · Algoritmo guloso (cobertura de conjuntos) · Caixeiro-viajante |
-| **9** | Programação dinâmica | Programação dinâmica (mochila) · Roteiro em Londres · Subcadeia comum |
-| **10** | K-vizinhos mais próximos | KNN · KNN: regressão · Recomendação de filmes · OCR com KNN · Filtro de spam (Naive Bayes) |
-| **11** | Próximos passos | Resumo dos assuntos para estudar depois (só texto) |
-
-</details>
-
-<br />
-
-## 📚 Sobre o conteúdo
+### 📚 Sobre o conteúdo
 
 - **Os dados dos exemplos são inventados.** As frutas, os pães da padaria, as notas dos filmes, as
   mensagens do filtro de spam e as cidades do caixeiro-viajante foram criados para ilustrar.
@@ -132,7 +48,77 @@ recarregar. A única coisa guardada no navegador é a escolha do tema (`localSto
 
 <br />
 
-## 🚀 Rodando localmente
+<div align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-02-demo.svg"><img src="docs/assets/light/h-02-demo.svg" alt="02 · DEMO: Telas" width="100%"></picture>
+</div>
+
+<div align="center">
+
+<img src="docs/assets/shot-1.svg" alt="Explicação técnica do quicksort aberta, com as seções Como funciona, Por que está correto, Custo e Detalhes e limites" width="100%">
+<br /><sub><b>Explicação técnica</b>: como funciona, custo e limites.</sub>
+
+<br />
+
+<img src="docs/assets/shot-2.svg" alt="Árvore de recursão do quicksort com o pivô destacado em cada lista" width="100%">
+<br /><sub><b>Quicksort</b>: a árvore de recursão, com o pivô em cada nível.</sub>
+
+<br />
+
+<img src="docs/assets/shot-3.svg" alt="Grafo do algoritmo de Dijkstra com o caminho mais barato em verde e a tabela de custos" width="100%">
+<br /><sub><b>Dijkstra</b>: o caminho mais barato e a tabela de custos.</sub>
+
+<br />
+
+<img src="docs/assets/shot-4.svg" alt="Tabela da mochila da programação dinâmica totalmente preenchida" width="100%">
+<br /><sub><b>Programação dinâmica</b>: a tabela da mochila, célula por célula.</sub>
+
+<br />
+
+<img src="docs/assets/shot-mobile.svg" alt="Busca binária no celular, com os cartões de resultado empilhados Menu lateral em gaveta no celular, com os capítulos agrupados" width="100%">
+<br /><sub><b>No celular</b>: resultado empilhado e menu em gaveta.</sub>
+
+</div>
+
+<br />
+
+<div align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-03-funcionalidades.svg"><img src="docs/assets/light/h-03-funcionalidades.svg" alt="03 · FUNCIONALIDADES: O que dá para fazer" width="100%"></picture>
+</div>
+
+<div align="center">
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-01.svg"><img src="docs/assets/light/f-01.svg" alt="Passo a passo: Na maioria das páginas, avance e volte em cada decisão do algoritmo, com legenda de cores e uma mensagem explicando a conta daquele passo." width="49%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-02.svg"><img src="docs/assets/light/f-02.svg" alt="Seus próprios dados: Digite listas, pesos, itens ou mensagens e veja o resultado mudar na hora. Alguns grafos são fixos." width="49%"></picture>
+<br />
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-03.svg"><img src="docs/assets/light/f-03.svg" alt="Duas explicações por página: Simples usa uma analogia. Técnica traz como funciona, por que está correto, o custo (Big O) e os limites. Vêm recolhidas." width="49%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-04.svg"><img src="docs/assets/light/f-04.svg" alt="Código de cada algoritmo: Trecho enxuto em JavaScript, com botão de copiar, logo abaixo da explicação." width="49%"></picture>
+<br />
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-05.svg"><img src="docs/assets/light/f-05.svg" alt="29 páginas em 11 capítulos: Na ordem do livro, do Big O ao KNN, com um menu lateral que agrupa por capítulo." width="49%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-06.svg"><img src="docs/assets/light/f-06.svg" alt="Tema claro e escuro: Segue o sistema na primeira visita e guarda a sua escolha." width="49%"></picture>
+<br />
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-07.svg"><img src="docs/assets/light/f-07.svg" alt="Feito para o celular: Menu em gaveta, gráficos que rolam para o lado e botões de tamanho confortável para toque." width="49%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-08.svg"><img src="docs/assets/light/f-08.svg" alt="Cartão de compartilhamento: Cada página tem imagem própria nas tags Open Graph, então o link aparece bonito no chat." width="49%"></picture>
+<br />
+
+</div>
+
+<br />
+
+<div align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-04-stack.svg"><img src="docs/assets/light/h-04-stack.svg" alt="04 · STACK: Stack" width="100%"></picture>
+</div>
+
+<div align="center">
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/stack.svg"><img src="docs/assets/light/stack.svg" alt="Stack: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, ESLint 9, pnpm 11" width="100%"></picture>
+
+</div>
+
+<br />
+
+<div align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-05-como-rodar.svg"><img src="docs/assets/light/h-05-como-rodar.svg" alt="05 · COMO RODAR: Rodando localmente" width="100%"></picture>
+</div>
 
 Requer [Node.js](https://nodejs.org) 20.9 ou superior e [pnpm](https://pnpm.io).
 
@@ -151,9 +137,7 @@ pnpm dev        # http://localhost:3000
 | `pnpm lint` | Roda o ESLint |
 | `npx tsc --noEmit` | Confere os tipos do TypeScript |
 
-<br />
-
-## 🔑 Variáveis de ambiente
+### 🔑 Variáveis de ambiente
 
 Nenhuma é obrigatória.
 
@@ -167,7 +151,9 @@ NEXT_PUBLIC_SITE_URL=https://seu-dominio.com
 
 <br />
 
-## 🗂️ Estrutura
+<div align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-06-estrutura.svg"><img src="docs/assets/light/h-06-estrutura.svg" alt="06 · ESTRUTURA: Estrutura" width="100%"></picture>
+</div>
 
 ```text
 app/
@@ -205,7 +191,50 @@ docs/img/                banner e capturas de tela deste README
 
 <br />
 
-## 🌐 Deploy
+<div align="center">
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-07-mais.svg"><img src="docs/assets/light/h-07-mais.svg" alt="07 · MAIS: Mais informações" width="100%"></picture>
+</div>
+
+### 🔒 Privacidade
+
+Não há backend, banco de dados nem conta de usuário. O que você digita fica na página e some ao
+recarregar. A única coisa guardada no navegador é a escolha do tema (`localStorage`, chave `tema`).
+
+<br />
+
+### 🧠 Como funciona
+
+| Conceito | Regra |
+|---|---|
+| **Algoritmo** | Cada um é uma função pura em `functions/` que devolve o resultado e, quando faz sentido, a lista de passos. |
+| **Página** | Só desenha o que a função devolveu. Os botões de passo movem um índice nessa lista. |
+| **Registro de páginas** | `app/capitulos.ts` é a lista única: o menu, a home, os títulos, o sitemap e as imagens de compartilhamento leem dela. |
+| **Textos e código** | Ficam em `app/explicacoes/` e `app/codigos/`, um arquivo por capítulo. |
+
+<details>
+<summary><b>Ver as 29 páginas por capítulo</b></summary>
+
+<br />
+
+| Cap. | Tema | Páginas |
+| :-: | :-- | :-- |
+| **1** | Introdução | Busca binária · Notação Big O |
+| **2** | Ordenação por seleção | Arrays e listas encadeadas · Ordenação por seleção |
+| **3** | Recursão | Recursão (fatorial e pilha de chamadas) · Caixas dentro de caixas |
+| **4** | Quicksort | Dividir para conquistar · Quicksort · Quicksort × mesclagem · Constantes escondidas |
+| **5** | Tabelas hash | Tabelas hash · Usos da tabela hash (duplicatas e cache) |
+| **6** | Busca em largura | Busca em largura · Ordenação topológica |
+| **7** | Algoritmo de Dijkstra | Dijkstra · Bellman-Ford · Dijkstra: livro por piano |
+| **8** | Algoritmos gulosos | Calendário de aulas · Algoritmo guloso (cobertura de conjuntos) · Caixeiro-viajante |
+| **9** | Programação dinâmica | Programação dinâmica (mochila) · Roteiro em Londres · Subcadeia comum |
+| **10** | K-vizinhos mais próximos | KNN · KNN: regressão · Recomendação de filmes · OCR com KNN · Filtro de spam (Naive Bayes) |
+| **11** | Próximos passos | Resumo dos assuntos para estudar depois (só texto) |
+
+</details>
+
+<br />
+
+### 🌐 Deploy
 
 O app é publicado na Vercel, em <https://entendendo-algoritmos.vercel.app>. Como é um projeto
 Next.js sem backend, não precisa de `vercel.json`: todas as páginas saem estáticas no build.
@@ -216,7 +245,7 @@ Next.js sem backend, não precisa de `vercel.json`: todas as páginas saem está
 
 <br />
 
-## 🧭 Próximos passos
+### 🧭 Próximos passos
 
 - [ ] Páginas interativas para os assuntos do capítulo 11 (árvore binária de busca, índice invertido, filtro de Bloom).
 - [ ] Testes automatizados para as funções de `functions/` e para os trechos de `app/codigos/`.
@@ -226,7 +255,7 @@ Next.js sem backend, não precisa de `vercel.json`: todas as páginas saem está
 
 <br />
 
-## 📜 Créditos e Licença
+### 📜 Créditos e Licença
 
 - Inspirado no livro *Entendendo Algoritmos* (*Grokking Algorithms*), de Aditya Bhargava.
 - Tipografia [Geist](https://vercel.com/font), da Vercel, carregada com `next/font`.
@@ -235,5 +264,21 @@ Next.js sem backend, não precisa de `vercel.json`: todas as páginas saem está
 <br />
 
 <div align="center">
-  <sub>Feito com 💚 para quem aprende melhor vendo as coisas acontecerem.</sub>
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-08-autor.svg"><img src="docs/assets/light/h-08-autor.svg" alt="08 · AUTOR: Autor" width="100%"></picture>
+</div>
+
+<div align="center">
+
+<a href="https://diegonatalo.dev"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-portfolio.svg"><img src="docs/assets/light/btn-portfolio.svg" alt="Portfólio" height="46"></picture></a>&nbsp;&nbsp;<a href="https://www.linkedin.com/in/diegonatalo/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-linkedin.svg"><img src="docs/assets/light/btn-linkedin.svg" alt="LinkedIn" height="46"></picture></a>&nbsp;&nbsp;<a href="https://github.com/diegonatalo"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-github.svg"><img src="docs/assets/light/btn-github.svg" alt="GitHub" height="46"></picture></a>
+
+</div>
+
+<br />
+
+<div align="center">
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/footer.svg"><img src="docs/assets/light/footer.svg" alt="© 2026 Diego Natalo. Distribuído sob a licença MIT. Veja o arquivo LICENSE." width="100%"></picture>
+
+<sub>Feito com 💚 para quem aprende melhor vendo as coisas acontecerem.</sub>
+
 </div>
