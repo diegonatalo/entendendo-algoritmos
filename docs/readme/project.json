@@ -1,0 +1,127 @@
+{
+  "name": "Entendendo Algoritmos",
+  "repo": "entendendo-algoritmos",
+  "tagline": "Veja os algoritmos acontecendo.",
+  "urls": {
+    "demo": "https://entendendo-algoritmos.vercel.app"
+  },
+  "stack": [
+    {
+      "pkg": "next"
+    },
+    {
+      "pkg": "react"
+    },
+    {
+      "pkg": "typescript"
+    },
+    {
+      "pkg": "tailwindcss"
+    },
+    {
+      "pkg": "eslint"
+    },
+    "pnpm 11"
+  ],
+  "badges_extra": [
+    {
+      "alt": "Abrir o app",
+      "label": "abrir o app",
+      "message": "entendendo-algoritmos.vercel.app",
+      "color": "10b981",
+      "logo": "vercel",
+      "logoColor": "white"
+    },
+    {
+      "alt": "Sem backend",
+      "label": "",
+      "message": "roda no navegador",
+      "color": "10b981"
+    }
+  ],
+  "features": [
+    {
+      "title": "Passo a passo",
+      "desc": "Na maioria das páginas, avance e volte em cada decisão do algoritmo, com legenda de cores e uma mensagem explicando a conta daquele passo."
+    },
+    {
+      "title": "Seus próprios dados",
+      "desc": "Digite listas, pesos, itens ou mensagens e veja o resultado mudar na hora. Alguns grafos são fixos."
+    },
+    {
+      "title": "Duas explicações por página",
+      "desc": "**Simples** usa uma analogia. **Técnica** traz como funciona, por que está correto, o custo (Big O) e os limites. Vêm recolhidas."
+    },
+    {
+      "title": "Código de cada algoritmo",
+      "desc": "Trecho enxuto em JavaScript, com botão de copiar, logo abaixo da explicação."
+    },
+    {
+      "title": "29 páginas em 11 capítulos",
+      "desc": "Na ordem do livro, do Big O ao KNN, com um menu lateral que agrupa por capítulo."
+    },
+    {
+      "title": "Tema claro e escuro",
+      "desc": "Segue o sistema na primeira visita e guarda a sua escolha."
+    },
+    {
+      "title": "Feito para o celular",
+      "desc": "Menu em gaveta, gráficos que rolam para o lado e botões de tamanho confortável para toque."
+    },
+    {
+      "title": "Cartão de compartilhamento",
+      "desc": "Cada página tem imagem própria nas tags Open Graph, então o link aparece bonito no chat."
+    }
+  ],
+  "banner": {
+    "shot": {
+      "file": "docs/img/busca-binaria.png"
+    },
+    "chips": 4
+  },
+  "demo": {
+    "note": "",
+    "layout": "stack",
+    "shots": [
+      {
+        "file": "docs/img/explicacao-tecnica.png",
+        "title": "Explicação técnica",
+        "alt": "Explicação técnica do quicksort aberta, com as seções Como funciona, Por que está correto, Custo e Detalhes e limites",
+        "caption": "<b>Explicação técnica</b>: como funciona, custo e limites."
+      },
+      {
+        "file": "docs/img/quicksort.png",
+        "title": "Quicksort",
+        "alt": "Árvore de recursão do quicksort com o pivô destacado em cada lista",
+        "caption": "<b>Quicksort</b>: a árvore de recursão, com o pivô em cada nível."
+      },
+      {
+        "file": "docs/img/dijkstra.png",
+        "title": "Dijkstra",
+        "alt": "Grafo do algoritmo de Dijkstra com o caminho mais barato em verde e a tabela de custos",
+        "caption": "<b>Dijkstra</b>: o caminho mais barato e a tabela de custos."
+      },
+      {
+        "file": "docs/img/programacao-dinamica.png",
+        "title": "Programação dinâmica",
+        "alt": "Tabela da mochila da programação dinâmica totalmente preenchida",
+        "caption": "<b>Programação dinâmica</b>: a tabela da mochila, célula por célula."
+      },
+      {
+        "files": [
+          "docs/img/mobile-busca-binaria.png",
+          "docs/img/mobile-menu.png"
+        ],
+        "title": "No celular",
+        "alt": "Busca binária no celular, com os cartões de resultado empilhados Menu lateral em gaveta no celular, com os capítulos agrupados",
+        "caption": "<b>No celular</b>: resultado empilhado e menu em gaveta."
+      }
+    ]
+  },
+  "footer": "Feito com 💚 para quem aprende melhor vendo as coisas acontecerem.",
+  "credits": [
+    "Inspirado no livro *Entendendo Algoritmos* (*Grokking Algorithms*), de Aditya Bhargava.",
+    "Tipografia [Geist](https://vercel.com/font), da Vercel, carregada com `next/font`.",
+    "Distribuído sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE)."
+  ]
+}

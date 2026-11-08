@@ -1,27 +1,31 @@
+<!-- Arquivo gerado pelo readme-kit. Não edite aqui: altere docs/readme/ e rode "readme-kit build". -->
 <div align="center">
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/banner.svg"><img src="docs/assets/light/banner.svg" alt="Entendendo Algoritmos: Veja os algoritmos acontecendo." width="100%"></picture>
+<img src="docs/assets/banner.svg" alt="Entendendo Algoritmos: Veja os algoritmos acontecendo. github.com/diegonatalo/entendendo-algoritmos. Stack: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4" width="100%" />
 
 <br />
 
-<a href="https://entendendo-algoritmos.vercel.app"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-demo.svg"><img src="docs/assets/light/btn-demo.svg" alt="Demonstração" height="46"></picture></a>&nbsp;&nbsp;<a href="https://github.com/diegonatalo/entendendo-algoritmos"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-code.svg"><img src="docs/assets/light/btn-code.svg" alt="Código" height="46"></picture></a>
+<a href="https://entendendo-algoritmos.vercel.app"><img src="docs/assets/btn-demo.svg" alt="Abrir o app ↗" height="46" /></a>
+<a href="https://github.com/diegonatalo/entendendo-algoritmos"><img src="docs/assets/btn-code.svg" alt="Código ↗" height="46" /></a>
 
 <br />
 
-[![Abrir o app](https://img.shields.io/badge/abrir_o_app-entendendo--algoritmos.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://entendendo-algoritmos.vercel.app)
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
 ![TypeScript](https://img.shields.io/badge/TypeScript_5-3178c6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Abrir o app](https://img.shields.io/badge/abrir_o_app-entendendo--algoritmos.vercel.app-10b981?style=flat-square&logo=vercel&logoColor=white)
 ![Sem backend](https://img.shields.io/badge/roda_no_navegador-10b981?style=flat-square)
-[![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-10b981?style=flat-square)](LICENSE)
+![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-16a34a?style=flat-square)
 
 </div>
 
 <br />
 
 <div align="center">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-01-sobre.svg"><img src="docs/assets/light/h-01-sobre.svg" alt="01 · SOBRE: Sobre o projeto" width="100%"></picture>
+
+<img src="docs/assets/h-sobre.svg" alt="01 · SOBRE: Sobre o projeto" width="100%" />
+
 </div>
 
 **Veja os algoritmos acontecendo.**<br />
@@ -49,75 +53,87 @@ Visualizações interativas, passo a passo, com explicação simples ou técnica
 <br />
 
 <div align="center">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-02-demo.svg"><img src="docs/assets/light/h-02-demo.svg" alt="02 · DEMO: Telas" width="100%"></picture>
+
+<img src="docs/assets/h-demo.svg" alt="02 · DEMO: Demonstração" width="100%" />
+
 </div>
 
 <div align="center">
 
-<img src="docs/assets/shot-1.svg" alt="Explicação técnica do quicksort aberta, com as seções Como funciona, Por que está correto, Custo e Detalhes e limites" width="100%">
-<br /><sub><b>Explicação técnica</b>: como funciona, custo e limites.</sub>
+<img src="docs/assets/shot-01.svg" alt="Explicação técnica do quicksort aberta, com as seções Como funciona, Por que está correto, Custo e Detalhes e limites" width="100%" />
+<br />
+<sub><b>Explicação técnica</b>: como funciona, custo e limites.</sub>
 
 <br />
 
-<img src="docs/assets/shot-2.svg" alt="Árvore de recursão do quicksort com o pivô destacado em cada lista" width="100%">
-<br /><sub><b>Quicksort</b>: a árvore de recursão, com o pivô em cada nível.</sub>
+<img src="docs/assets/shot-02.svg" alt="Árvore de recursão do quicksort com o pivô destacado em cada lista" width="100%" />
+<br />
+<sub><b>Quicksort</b>: a árvore de recursão, com o pivô em cada nível.</sub>
 
 <br />
 
-<img src="docs/assets/shot-3.svg" alt="Grafo do algoritmo de Dijkstra com o caminho mais barato em verde e a tabela de custos" width="100%">
-<br /><sub><b>Dijkstra</b>: o caminho mais barato e a tabela de custos.</sub>
+<img src="docs/assets/shot-03.svg" alt="Grafo do algoritmo de Dijkstra com o caminho mais barato em verde e a tabela de custos" width="100%" />
+<br />
+<sub><b>Dijkstra</b>: o caminho mais barato e a tabela de custos.</sub>
 
 <br />
 
-<img src="docs/assets/shot-4.svg" alt="Tabela da mochila da programação dinâmica totalmente preenchida" width="100%">
-<br /><sub><b>Programação dinâmica</b>: a tabela da mochila, célula por célula.</sub>
+<img src="docs/assets/shot-04.svg" alt="Tabela da mochila da programação dinâmica totalmente preenchida" width="100%" />
+<br />
+<sub><b>Programação dinâmica</b>: a tabela da mochila, célula por célula.</sub>
 
 <br />
 
-<img src="docs/assets/shot-mobile.svg" alt="Busca binária no celular, com os cartões de resultado empilhados Menu lateral em gaveta no celular, com os capítulos agrupados" width="100%">
-<br /><sub><b>No celular</b>: resultado empilhado e menu em gaveta.</sub>
-
-</div>
-
+<img src="docs/assets/shot-05.svg" alt="Busca binária no celular, com os cartões de resultado empilhados Menu lateral em gaveta no celular, com os capítulos agrupados" width="100%" />
 <br />
-
-<div align="center">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-03-funcionalidades.svg"><img src="docs/assets/light/h-03-funcionalidades.svg" alt="03 · FUNCIONALIDADES: O que dá para fazer" width="100%"></picture>
-</div>
-
-<div align="center">
-
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-01.svg"><img src="docs/assets/light/f-01.svg" alt="Passo a passo: Na maioria das páginas, avance e volte em cada decisão do algoritmo, com legenda de cores e uma mensagem explicando a conta daquele passo." width="49%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-02.svg"><img src="docs/assets/light/f-02.svg" alt="Seus próprios dados: Digite listas, pesos, itens ou mensagens e veja o resultado mudar na hora. Alguns grafos são fixos." width="49%"></picture>
-<br />
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-03.svg"><img src="docs/assets/light/f-03.svg" alt="Duas explicações por página: Simples usa uma analogia. Técnica traz como funciona, por que está correto, o custo (Big O) e os limites. Vêm recolhidas." width="49%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-04.svg"><img src="docs/assets/light/f-04.svg" alt="Código de cada algoritmo: Trecho enxuto em JavaScript, com botão de copiar, logo abaixo da explicação." width="49%"></picture>
-<br />
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-05.svg"><img src="docs/assets/light/f-05.svg" alt="29 páginas em 11 capítulos: Na ordem do livro, do Big O ao KNN, com um menu lateral que agrupa por capítulo." width="49%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-06.svg"><img src="docs/assets/light/f-06.svg" alt="Tema claro e escuro: Segue o sistema na primeira visita e guarda a sua escolha." width="49%"></picture>
-<br />
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-07.svg"><img src="docs/assets/light/f-07.svg" alt="Feito para o celular: Menu em gaveta, gráficos que rolam para o lado e botões de tamanho confortável para toque." width="49%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/f-08.svg"><img src="docs/assets/light/f-08.svg" alt="Cartão de compartilhamento: Cada página tem imagem própria nas tags Open Graph, então o link aparece bonito no chat." width="49%"></picture>
-<br />
+<sub><b>No celular</b>: resultado empilhado e menu em gaveta.</sub>
 
 </div>
 
 <br />
 
 <div align="center">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-04-stack.svg"><img src="docs/assets/light/h-04-stack.svg" alt="04 · STACK: Stack" width="100%"></picture>
+
+<img src="docs/assets/h-func.svg" alt="03 · FUNCIONALIDADES: O que dá para fazer" width="100%" />
+
 </div>
 
 <div align="center">
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/stack.svg"><img src="docs/assets/light/stack.svg" alt="Stack: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, ESLint 9, pnpm 11" width="100%"></picture>
+<img src="docs/assets/f-01.svg" alt="Passo a passo: Na maioria das páginas, avance e volte em cada decisão do algoritmo, com legenda de cores e uma mensagem explicando a conta daquele passo." width="49%" />
+<img src="docs/assets/f-02.svg" alt="Seus próprios dados: Digite listas, pesos, itens ou mensagens e veja o resultado mudar na hora. Alguns grafos são fixos." width="49%" />
+<br />
+<img src="docs/assets/f-03.svg" alt="Duas explicações por página: Simples usa uma analogia. Técnica traz como funciona, por que está correto, o custo (Big O) e os limites. Vêm recolhidas." width="49%" />
+<img src="docs/assets/f-04.svg" alt="Código de cada algoritmo: Trecho enxuto em JavaScript, com botão de copiar, logo abaixo da explicação." width="49%" />
+<br />
+<img src="docs/assets/f-05.svg" alt="29 páginas em 11 capítulos: Na ordem do livro, do Big O ao KNN, com um menu lateral que agrupa por capítulo." width="49%" />
+<img src="docs/assets/f-06.svg" alt="Tema claro e escuro: Segue o sistema na primeira visita e guarda a sua escolha." width="49%" />
+<br />
+<img src="docs/assets/f-07.svg" alt="Feito para o celular: Menu em gaveta, gráficos que rolam para o lado e botões de tamanho confortável para toque." width="49%" />
+<img src="docs/assets/f-08.svg" alt="Cartão de compartilhamento: Cada página tem imagem própria nas tags Open Graph, então o link aparece bonito no chat." width="49%" />
 
 </div>
 
 <br />
 
 <div align="center">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-05-como-rodar.svg"><img src="docs/assets/light/h-05-como-rodar.svg" alt="05 · COMO RODAR: Rodando localmente" width="100%"></picture>
+
+<img src="docs/assets/h-stack.svg" alt="04 · STACK: Stack" width="100%" />
+
+</div>
+
+<div align="center">
+
+<img src="docs/assets/stack.svg" alt="Stack: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, ESLint 9, pnpm 11" width="100%" />
+
+</div>
+
+<br />
+
+<div align="center">
+
+<img src="docs/assets/h-run.svg" alt="05 · COMO RODAR: Rodando localmente" width="100%" />
+
 </div>
 
 Requer [Node.js](https://nodejs.org) 20.9 ou superior e [pnpm](https://pnpm.io).
@@ -152,7 +168,9 @@ NEXT_PUBLIC_SITE_URL=https://seu-dominio.com
 <br />
 
 <div align="center">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-06-estrutura.svg"><img src="docs/assets/light/h-06-estrutura.svg" alt="06 · ESTRUTURA: Estrutura" width="100%"></picture>
+
+<img src="docs/assets/h-estrutura.svg" alt="06 · ESTRUTURA: Estrutura" width="100%" />
+
 </div>
 
 ```text
@@ -175,10 +193,15 @@ functions/               algoritmos puros em TypeScript (devolvem o resultado e 
 docs/img/                banner e capturas de tela deste README
 ```
 
-<details>
-<summary><b>Adicionando um algoritmo novo</b></summary>
-
 <br />
+
+<div align="center">
+
+<img src="docs/assets/h-mais.svg" alt="07 · MAIS: Mais informações" width="100%" />
+
+</div>
+
+### 🧩 Adicionando um algoritmo novo
 
 1. **Função:** crie `functions/meuAlgoritmo.ts`, uma função pura que devolve o resultado e uma lista de passos, e os tipos em `@types/meuAlgoritmo.d.ts`.
 2. **Página:** crie `app/meu-algoritmo/page.tsx` (use uma página parecida como modelo) para desenhar os passos.
@@ -186,14 +209,6 @@ docs/img/                banner e capturas de tela deste README
 4. **Título da aba:** crie `app/meu-algoritmo/layout.tsx` copiando o de uma página existente (ele lê o título de `capitulos.ts`).
 5. **Conteúdo:** acrescente os textos Simples e Técnico em `app/explicacoes/capNN.ts` e o trecho de código em `app/codigos/capNN.ts` (do capítulo da página), e use o componente `Explicacao` na página.
 6. **Confira:** rode `pnpm lint`, `npx tsc --noEmit` e `pnpm build`.
-
-</details>
-
-<br />
-
-<div align="center">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-07-mais.svg"><img src="docs/assets/light/h-07-mais.svg" alt="07 · MAIS: Mais informações" width="100%"></picture>
-</div>
 
 ### 🔒 Privacidade
 
@@ -255,21 +270,26 @@ Next.js sem backend, não precisa de `vercel.json`: todas as páginas saem está
 
 <br />
 
-### 📜 Créditos e Licença
+### 📄 Créditos e licença
 
 - Inspirado no livro *Entendendo Algoritmos* (*Grokking Algorithms*), de Aditya Bhargava.
 - Tipografia [Geist](https://vercel.com/font), da Vercel, carregada com `next/font`.
+- Distribuído sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE).
 - Distribuído sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE).
 
 <br />
 
 <div align="center">
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/h-08-autor.svg"><img src="docs/assets/light/h-08-autor.svg" alt="08 · AUTOR: Autor" width="100%"></picture>
+
+<img src="docs/assets/h-autor.svg" alt="08 · AUTOR: Autor" width="100%" />
+
 </div>
 
 <div align="center">
 
-<a href="https://diegonatalo.dev"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-portfolio.svg"><img src="docs/assets/light/btn-portfolio.svg" alt="Portfólio" height="46"></picture></a>&nbsp;&nbsp;<a href="https://www.linkedin.com/in/diegonatalo/"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-linkedin.svg"><img src="docs/assets/light/btn-linkedin.svg" alt="LinkedIn" height="46"></picture></a>&nbsp;&nbsp;<a href="https://github.com/diegonatalo"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/btn-github.svg"><img src="docs/assets/light/btn-github.svg" alt="GitHub" height="46"></picture></a>
+<a href="https://diegonatalo.dev"><img src="docs/assets/btn-portfolio.svg" alt="Portfólio ↗" height="46" /></a>
+<a href="https://www.linkedin.com/in/diegonatalo/"><img src="docs/assets/btn-linkedin.svg" alt="LinkedIn ↗" height="46" /></a>
+<a href="https://github.com/diegonatalo"><img src="docs/assets/btn-github.svg" alt="GitHub ↗" height="46" /></a>
 
 </div>
 
@@ -277,8 +297,6 @@ Next.js sem backend, não precisa de `vercel.json`: todas as páginas saem está
 
 <div align="center">
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/dark/footer.svg"><img src="docs/assets/light/footer.svg" alt="© 2026 Diego Natalo. Distribuído sob a licença MIT. Veja o arquivo LICENSE." width="100%"></picture>
-
-<sub>Feito com 💚 para quem aprende melhor vendo as coisas acontecerem.</sub>
+<img src="docs/assets/footer.svg" alt="© 2026 Diego Natalo. Feito com 💚 para quem aprende melhor vendo as coisas acontecerem." width="100%" />
 
 </div>
