@@ -210,7 +210,7 @@ docs/img/                banner e capturas de tela deste README
 5. **Conteúdo:** acrescente os textos Simples e Técnico em `app/explicacoes/capNN.ts` e o trecho de código em `app/codigos/capNN.ts` (do capítulo da página), e use o componente `Explicacao` na página.
 6. **Confira:** rode `pnpm lint`, `npx tsc --noEmit` e `pnpm build`.
 
-### 🔒 Privacidade
+### 🔒 Seus dados
 
 Não há backend, banco de dados nem conta de usuário. O que você digita fica na página e some ao
 recarregar. A única coisa guardada no navegador é a escolha do tema (`localStorage`, chave `tema`).
