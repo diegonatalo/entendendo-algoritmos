@@ -1,7 +1,7 @@
 <!-- Arquivo gerado pelo readme-kit. Não edite aqui: altere docs/readme/ e rode "readme-kit build". -->
 <div align="center">
 
-<img src="docs/assets/banner.svg" alt="Entendendo Algoritmos: Veja os algoritmos acontecendo. github.com/diegonatalo/entendendo-algoritmos. Stack: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4" width="100%" />
+<img src="docs/assets/banner.svg" alt="Entendendo Algoritmos: Veja os algoritmos acontecendo. github.com/diegonatalo/entendendo-algoritmos. Stack: Next.js 16, React 19, TypeScript 6, Tailwind CSS 4" width="100%" />
 
 <br />
 
@@ -12,7 +12,7 @@
 
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
-![TypeScript](https://img.shields.io/badge/TypeScript_5-3178c6?style=flat-square&logo=typescript&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript_6-3178c6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Abrir o app](https://img.shields.io/badge/abrir_o_app-entendendo--algoritmos.vercel.app-10b981?style=flat-square&logo=vercel&logoColor=white)
 ![Sem backend](https://img.shields.io/badge/roda_no_navegador-10b981?style=flat-square)
@@ -124,7 +124,7 @@ Visualizações interativas, passo a passo, com explicação simples ou técnica
 
 <div align="center">
 
-<img src="docs/assets/stack.svg" alt="Stack: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, ESLint 9, pnpm 11" width="100%" />
+<img src="docs/assets/stack.svg" alt="Stack: Next.js 16, React 19, TypeScript 6, Tailwind CSS 4, ESLint 9, pnpm 11" width="100%" />
 
 </div>
 
