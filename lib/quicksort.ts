@@ -1,46 +1,46 @@
 import {
-  EstrategiaPivo,
-  NoQuicksort,
-  ResultadoQuicksort,
+  PivotStrategy,
+  QuicksortNode,
+  QuicksortResult,
 } from "@/types/quicksort";
 
 export function quicksort(
-  entrada: number[],
-  estrategia: EstrategiaPivo = "meio",
-): ResultadoQuicksort {
-  let comparacoes = 0;
+  input: number[],
+  strategy: PivotStrategy = "middle",
+): QuicksortResult {
+  let comparisons = 0;
 
-  function ordenar(lista: number[], nivel: number): [NoQuicksort, number] {
+  function sort(list: number[], level: number): [QuicksortNode, number] {
     // caso base: listas vazias ou com um elemento já estão ordenadas
-    if (lista.length < 2) {
-      return [{ lista, ordenada: lista }, nivel];
+    if (list.length < 2) {
+      return [{ list, sorted: list }, level];
     }
 
-    const indicePivo =
-      estrategia === "meio" ? Math.floor(lista.length / 2) : 0;
-    const pivo = lista[indicePivo];
-    const resto = lista.filter((_, i) => i !== indicePivo);
-    comparacoes += resto.length;
+    const pivotIndex =
+      strategy === "middle" ? Math.floor(list.length / 2) : 0;
+    const pivot = list[pivotIndex];
+    const remainder = list.filter((_, i) => i !== pivotIndex);
+    comparisons += remainder.length;
 
-    const menoresLista = resto.filter((n) => n <= pivo);
-    const maioresLista = resto.filter((n) => n > pivo);
+    const smallerList = remainder.filter((n) => n <= pivot);
+    const largerList = remainder.filter((n) => n > pivot);
 
-    const [menores, profMenores] = ordenar(menoresLista, nivel + 1);
-    const [maiores, profMaiores] = ordenar(maioresLista, nivel + 1);
+    const [smallerOnes, smallerDepth] = sort(smallerList, level + 1);
+    const [largerOnes, largerDepth] = sort(largerList, level + 1);
 
     return [
       {
-        lista,
-        pivo,
-        indicePivo,
-        menores,
-        maiores,
-        ordenada: [...menores.ordenada, pivo, ...maiores.ordenada],
+        list,
+        pivot,
+        pivotIndex,
+        smallerOnes,
+        largerOnes,
+        sorted: [...smallerOnes.sorted, pivot, ...largerOnes.sorted],
       },
-      Math.max(profMenores, profMaiores),
+      Math.max(smallerDepth, largerDepth),
     ];
   }
 
-  const [raiz, profundidade] = ordenar(entrada, 1);
-  return { raiz, ordenado: raiz.ordenada, comparacoes, profundidade };
+  const [root, depth] = sort(input, 1);
+  return { root, isSorted: root.sorted, comparisons, depth };
 }

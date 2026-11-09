@@ -1,6 +1,6 @@
-import { metadataDaPagina } from "@/lib/metadata";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata = metadataDaPagina("/caixas-recursao");
+export const metadata = pageMetadata("/caixas-recursao");
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

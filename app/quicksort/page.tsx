@@ -1,41 +1,41 @@
 "use client";
 
-import { lerNumeros, numerosAleatorios } from "@/lib/entrada";
+import { readNumbers, randomNumbers } from "@/lib/input";
 import { inputClass } from "@/components/ui";
 import { quicksort } from "@/lib/quicksort";
-import { EstrategiaPivo, NoQuicksort } from "@/types/quicksort";
+import { PivotStrategy, QuicksortNode } from "@/types/quicksort";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
-const celula =
+const cell =
   "flex h-8 min-w-8 items-center justify-center rounded-md px-1.5 font-mono text-xs tabular-nums";
 
 export default function Quicksort() {
-  const [texto, setTexto] = useState("");
-  const [estrategia, setEstrategia] = useState<EstrategiaPivo>("meio");
-  const [resultado, setResultado] = useState<ReturnType<
+  const [text, setText] = useState("");
+  const [strategy, setStrategy] = useState<PivotStrategy>("middle");
+  const [result, setResult] = useState<ReturnType<
     typeof quicksort
   > | null>(null);
-  const [erro, setErro] = useState("");
+  const [error, setError] = useState("");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const numeros = lerNumeros(texto);
+    const numbers = readNumbers(text);
 
-    if (numeros.length === 0 || numeros.some((n) => !Number.isFinite(n))) {
-      setErro("Digite apenas números, separados por vírgula.");
-      setResultado(null);
+    if (numbers.length === 0 || numbers.some((n) => !Number.isFinite(n))) {
+      setError("Digite apenas números, separados por vírgula.");
+      setResult(null);
       return;
     }
-    if (numeros.length > 20) {
-      setErro("Use no máximo 20 números.");
-      setResultado(null);
+    if (numbers.length > 20) {
+      setError("Use no máximo 20 números.");
+      setResult(null);
       return;
     }
-    setErro("");
-    setResultado(quicksort(numeros, estrategia));
+    setError("");
+    setResult(quicksort(numbers, strategy));
   }
 
   return (
@@ -47,10 +47,10 @@ export default function Quicksort() {
           maiores e ordena cada lado recursivamente. Caso médio O(n log n);
           pior caso O(n²).
         </p>
-        <Explicacao
-          simples={EXPLICACOES.quicksort.simples}
-          tecnica={EXPLICACOES.quicksort.tecnica}
-          codigo={CODIGOS.quicksort}
+        <Explanation
+          simple={EXPLANATIONS.quicksort.simple}
+          technique={EXPLANATIONS.quicksort.technique}
+          code={CODES.quicksort}
         />
       </header>
 
@@ -62,8 +62,8 @@ export default function Quicksort() {
           Números a ordenar
           <input
             className={inputClass}
-            value={texto}
-            onChange={(e) => setTexto(e.target.value)}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
             placeholder="Ex.: 10, 5, 2, 3"
             required
           />
@@ -72,20 +72,20 @@ export default function Quicksort() {
           Escolha do pivô
           <select
             className={inputClass}
-            value={estrategia}
-            onChange={(e) => setEstrategia(e.target.value as EstrategiaPivo)}
+            value={strategy}
+            onChange={(e) => setStrategy(e.target.value as PivotStrategy)}
           >
-            <option value="meio">Elemento do meio (recomendado)</option>
-            <option value="primeiro">
+            <option value="middle">Elemento do meio (recomendado)</option>
+            <option value="first">
               Primeiro elemento (pior caso em listas ordenadas)
             </option>
           </select>
         </label>
-        {erro && <p className="text-sm text-red-400">{erro}</p>}
+        {error && <p className="text-sm text-red-400">{error}</p>}
         <div className="flex gap-3">
           <button
             type="button"
-            onClick={() => setTexto(numerosAleatorios(12))}
+            onClick={() => setText(randomNumbers(12))}
             className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
           >
             Gerar aleatório
@@ -99,46 +99,46 @@ export default function Quicksort() {
         </div>
       </form>
 
-      {resultado && (
+      {result && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Comparações"
-              value={String(resultado.comparacoes)}
+              value={String(result.comparisons)}
               tone="text-amber-400"
             />
             <Stat
               label="Profundidade"
-              value={String(resultado.profundidade)}
+              value={String(result.depth)}
               tone="text-zinc-100"
             />
             <Stat
               label="Itens"
-              value={String(resultado.ordenado.length)}
+              value={String(result.isSorted.length)}
               tone="text-zinc-100"
             />
           </div>
 
           <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
-            <Legenda cor="bg-amber-500" texto="Pivô" />
-            <Legenda cor="bg-sky-500/30" texto="Menores ou iguais (esquerda)" />
-            <Legenda cor="bg-violet-500/30" texto="Maiores (direita)" />
-            <Legenda cor="bg-zinc-800" texto="Caso base" />
+            <Legend color="bg-amber-500" text="Pivô" />
+            <Legend color="bg-sky-500/30" text="Menores ou iguais (esquerda)" />
+            <Legend color="bg-violet-500/30" text="Maiores (direita)" />
+            <Legend color="bg-zinc-800" text="Caso base" />
           </div>
 
           <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex w-max min-w-full justify-center">
-              <Arvore no={resultado.raiz} />
+              <Tree node={result.root} />
             </div>
           </div>
 
           <div className="flex flex-col gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4">
             <div className="text-sm text-zinc-300">Resultado final</div>
             <div className="flex flex-wrap gap-1.5">
-              {resultado.ordenado.map((n, i) => (
+              {result.isSorted.map((n, i) => (
                 <div
                   key={i}
-                  className={`${celula} bg-emerald-500 font-semibold text-emerald-950`}
+                  className={`${cell} bg-emerald-500 font-semibold text-emerald-950`}
                 >
                   {n}
                 </div>
@@ -151,36 +151,36 @@ export default function Quicksort() {
   );
 }
 
-function Arvore({
-  no,
-  lado,
+function Tree({
+  node,
+  side,
 }: {
-  no: NoQuicksort;
-  lado?: "menores" | "maiores";
+  node: QuicksortNode;
+  side?: "smaller" | "larger";
 }) {
-  if (no.lista.length === 0) {
+  if (node.list.length === 0) {
     return <div className="px-2 py-1 text-xs text-zinc-600">∅</div>;
   }
 
-  const folha = no.pivo === undefined;
-  const corLado =
-    lado === "menores"
+  const leaf = node.pivot === undefined;
+  const sideColor =
+    side === "smaller"
       ? "border-sky-500/40 bg-sky-500/10"
-      : lado === "maiores"
+      : side === "larger"
         ? "border-violet-500/40 bg-violet-500/10"
         : "border-zinc-700 bg-zinc-900";
 
   return (
     <div className="flex flex-col items-center gap-3 px-1.5">
       <div
-        className={`flex flex-wrap justify-center gap-1 rounded-lg border p-1.5 ${folha ? "border-zinc-800 bg-zinc-900" : corLado}`}
+        className={`flex flex-wrap justify-center gap-1 rounded-lg border p-1.5 ${leaf ? "border-zinc-800 bg-zinc-900" : sideColor}`}
       >
-        {no.lista.map((n, i) => {
+        {node.list.map((n, i) => {
           return (
             <div
               key={i}
-              className={`${celula} ${
-                i === no.indicePivo
+              className={`${cell} ${
+                i === node.pivotIndex
                   ? "bg-amber-500 font-semibold text-amber-950"
                   : "bg-zinc-800 text-zinc-300"
               }`}
@@ -190,10 +190,10 @@ function Arvore({
           );
         })}
       </div>
-      {!folha && (
+      {!leaf && (
         <div className="flex items-start">
-          {no.menores && <Arvore no={no.menores} lado="menores" />}
-          {no.maiores && <Arvore no={no.maiores} lado="maiores" />}
+          {node.smallerOnes && <Tree node={node.smallerOnes} side="smaller" />}
+          {node.largerOnes && <Tree node={node.largerOnes} side="larger" />}
         </div>
       )}
     </div>
@@ -219,11 +219,11 @@ function Stat({
   );
 }
 
-function Legenda({ cor, texto }: { cor: string; texto: string }) {
+function Legend({ color, text }: { color: string; text: string }) {
   return (
     <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${cor}`} />
-      {texto}
+      <span className={`h-3 w-3 rounded ${color}`} />
+      {text}
     </span>
   );
 }

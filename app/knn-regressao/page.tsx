@@ -1,15 +1,15 @@
 "use client";
 
-import { regressaoKnn } from "@/lib/knn";
-import { PontoRegressao } from "@/types/knn";
+import { knnRegression } from "@/lib/knn";
+import { RegressionPoint } from "@/types/knn";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { GraficoRolavel } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { ScrollableChart } from "@/components/ui";
 
 // x = movimento na rua, y = temperatura (0 a 100); valor = pães vendidos no dia
-const PONTOS: PontoRegressao[] = (
+const POINTS: RegressionPoint[] = (
   [
     [10, 20], [15, 60], [22, 35], [30, 80], [35, 15], [40, 50], [45, 75],
     [50, 30], [55, 60], [60, 90], [65, 20], [70, 45], [75, 70], [80, 35],
@@ -18,11 +18,11 @@ const PONTOS: PontoRegressao[] = (
 ).map(([x, y], i) => ({
   x,
   y,
-  valor: Math.round(40 + 1.2 * x + 0.6 * y + ((i * 7) % 9) * 3 - 12),
+  value: Math.round(40 + 1.2 * x + 0.6 * y + ((i * 7) % 9) * 3 - 12),
 }));
 
-const VALOR_MIN = Math.min(...PONTOS.map((p) => p.valor));
-const VALOR_MAX = Math.max(...PONTOS.map((p) => p.valor));
+const MIN_VALUE = Math.min(...POINTS.map((p) => p.value));
+const MAX_VALUE = Math.max(...POINTS.map((p) => p.value));
 
 const OFFSET_X = 15;
 const BASE_Y = 105;
@@ -30,27 +30,27 @@ const px = (x: number) => OFFSET_X + x;
 const py = (y: number) => BASE_Y - y;
 
 // quanto maior o valor, mais intensa a cor do ponto
-const opacidade = (valor: number) =>
-  0.35 + 0.65 * ((valor - VALOR_MIN) / (VALOR_MAX - VALOR_MIN));
+const opacity = (value: number) =>
+  0.35 + 0.65 * ((value - MIN_VALUE) / (MAX_VALUE - MIN_VALUE));
 
-export default function KnnRegressao() {
-  const [novo, setNovo] = useState<{ x: number; y: number } | null>(null);
+export default function KnnRegressionPage() {
+  const [created, setCreated] = useState<{ x: number; y: number } | null>(null);
   const [k, setK] = useState(3);
 
-  const resultado = novo ? regressaoKnn(PONTOS, novo, k) : null;
-  const raio = resultado
-    ? resultado.vizinhos[resultado.vizinhos.length - 1].distancia
+  const result = created ? knnRegression(POINTS, created, k) : null;
+  const radius = result
+    ? result.neighbors[result.neighbors.length - 1].distance
     : 0;
 
   function handleClick(e: React.MouseEvent<SVGSVGElement>) {
     const svg = e.currentTarget;
-    const ponto = svg.createSVGPoint();
-    ponto.x = e.clientX;
-    ponto.y = e.clientY;
-    const local = ponto.matrixTransform(svg.getScreenCTM()!.inverse());
-    const x = Math.min(100, Math.max(0, local.x - OFFSET_X));
-    const y = Math.min(100, Math.max(0, BASE_Y - local.y));
-    setNovo({ x: Math.round(x), y: Math.round(y) });
+    const point = svg.createSVGPoint();
+    point.x = e.clientX;
+    point.y = e.clientY;
+    const location = point.matrixTransform(svg.getScreenCTM()!.inverse());
+    const x = Math.min(100, Math.max(0, location.x - OFFSET_X));
+    const y = Math.min(100, Math.max(0, BASE_Y - location.y));
+    setCreated({ x: Math.round(x), y: Math.round(y) });
   }
 
   return (
@@ -65,10 +65,10 @@ export default function KnnRegressao() {
           de pães vendidos. Clique em um dia novo: a previsão é a média dos
           pães dos k dias mais parecidos.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.knnRegressao.simples}
-          tecnica={EXPLICACOES.knnRegressao.tecnica}
-          codigo={CODIGOS.regressaoKnn}
+        <Explanation
+          simple={EXPLANATIONS.knnRegressionPage.simple}
+          technique={EXPLANATIONS.knnRegressionPage.technique}
+          code={CODES.knnRegression}
         />
       </header>
 
@@ -92,7 +92,7 @@ export default function KnnRegressao() {
             <button
               className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
               onClick={() =>
-                setNovo({
+                setCreated({
                   x: Math.round(Math.random() * 100),
                   y: Math.round(Math.random() * 100),
                 })
@@ -102,8 +102,8 @@ export default function KnnRegressao() {
             </button>
             <button
               className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
-              disabled={!novo}
-              onClick={() => setNovo(null)}
+              disabled={!created}
+              onClick={() => setCreated(null)}
             >
               Limpar
             </button>
@@ -116,7 +116,7 @@ export default function KnnRegressao() {
         </p>
 
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <GraficoRolavel minLargura={420}>
+          <ScrollableChart minWidthValue={420}>
           <svg
             viewBox="0 0 120 115"
             className="mx-auto w-full max-w-xl cursor-crosshair"
@@ -173,23 +173,23 @@ export default function KnnRegressao() {
               temperatura →
             </text>
 
-            {novo && resultado && (
+            {created && result && (
               <>
                 <circle
-                  cx={px(novo.x)}
-                  cy={py(novo.y)}
-                  r={raio}
+                  cx={px(created.x)}
+                  cy={py(created.y)}
+                  r={radius}
                   className="fill-zinc-100/5 stroke-zinc-500"
                   strokeWidth={0.4}
                   strokeDasharray="2 2"
                 />
-                {resultado.vizinhos.map(({ ponto }, i) => (
+                {result.neighbors.map(({ point }, i) => (
                   <line
                     key={i}
-                    x1={px(novo.x)}
-                    y1={py(novo.y)}
-                    x2={px(ponto.x)}
-                    y2={py(ponto.y)}
+                    x1={px(created.x)}
+                    y1={py(created.y)}
+                    x2={px(point.x)}
+                    y2={py(point.y)}
                     className="stroke-zinc-400"
                     strokeWidth={0.5}
                   />
@@ -197,19 +197,19 @@ export default function KnnRegressao() {
               </>
             )}
 
-            {PONTOS.map((p, i) => {
-              const vizinho = resultado?.vizinhos.some((v) => v.ponto === p);
+            {POINTS.map((p, i) => {
+              const neighbor = result?.neighbors.some((v) => v.point === p);
               return (
                 <g
                   key={i}
-                  opacity={resultado && !vizinho ? 0.4 : 1}
+                  opacity={result && !neighbor ? 0.4 : 1}
                 >
                   <circle
                     cx={px(p.x)}
                     cy={py(p.y)}
                     r={4.2}
-                    className={`fill-amber-500 ${vizinho ? "stroke-zinc-100" : "stroke-transparent"}`}
-                    fillOpacity={opacidade(p.valor)}
+                    className={`fill-amber-500 ${neighbor ? "stroke-zinc-100" : "stroke-transparent"}`}
+                    fillOpacity={opacity(p.value)}
                     strokeWidth={0.8}
                   />
                   <text
@@ -221,55 +221,55 @@ export default function KnnRegressao() {
                     className="fill-zinc-50 font-mono"
                     pointerEvents="none"
                   >
-                    {p.valor}
+                    {p.value}
                   </text>
                 </g>
               );
             })}
 
-            {novo && resultado && (
+            {created && result && (
               <g pointerEvents="none">
                 <circle
-                  cx={px(novo.x)}
-                  cy={py(novo.y)}
+                  cx={px(created.x)}
+                  cy={py(created.y)}
                   r={5}
                   className="fill-emerald-500 stroke-zinc-100"
                   strokeWidth={1}
                 />
                 <text
-                  x={px(novo.x)}
-                  y={py(novo.y)}
+                  x={px(created.x)}
+                  y={py(created.y)}
                   textAnchor="middle"
                   dominantBaseline="central"
                   fontSize={3.6}
                   className="fill-emerald-950 font-mono font-semibold"
                 >
-                  {Math.round(resultado.media)}
+                  {Math.round(result.average)}
                 </text>
               </g>
             )}
           </svg>
-          </GraficoRolavel>
+          </ScrollableChart>
         </div>
 
-        {resultado && novo ? (
+        {result && created ? (
           <div className="flex flex-col gap-5 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5">
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="text-sm text-zinc-400">
-                Previsão para o dia (movimento {novo.x}, temperatura {novo.y}):
+                Previsão para o dia (movimento {created.x}, temperatura {created.y}):
               </span>
               <span className="text-xl font-semibold text-emerald-400">
-                {Math.round(resultado.media)} pães
+                {Math.round(result.average)} pães
               </span>
             </div>
 
             <p className="font-mono text-sm text-zinc-400">
-              média = ({resultado.vizinhos.map((v) => v.ponto.valor).join(" + ")}
-              ) ÷ {k} = {resultado.media.toFixed(1).replace(".", ",")}
+              média = ({result.neighbors.map((v) => v.point.value).join(" + ")}
+              ) ÷ {k} = {result.average.toFixed(1).replace(".", ",")}
             </p>
 
             <ol className="flex flex-col gap-1 text-sm">
-              {resultado.vizinhos.map(({ ponto, distancia: d }, i) => (
+              {result.neighbors.map(({ point, distance: d }, i) => (
                 <li
                   key={i}
                   className="flex items-center gap-3 rounded-lg bg-zinc-900 px-3 py-1.5"
@@ -278,10 +278,10 @@ export default function KnnRegressao() {
                     {i + 1}.
                   </span>
                   <span className="w-20 text-amber-400">
-                    {ponto.valor} pães
+                    {point.value} pães
                   </span>
                   <span className="font-mono text-xs text-zinc-500">
-                    ({ponto.x}, {ponto.y})
+                    ({point.x}, {point.y})
                   </span>
                   <span className="ml-auto font-mono text-xs text-zinc-300">
                     distância {d.toFixed(1).replace(".", ",")}

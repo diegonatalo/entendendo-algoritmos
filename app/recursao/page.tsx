@@ -1,26 +1,26 @@
 "use client";
 
-import { ControlesPassos, inputClass } from "@/components/ui";
-import { fatorial } from "@/lib/fatorial";
+import { StepControls, inputClass } from "@/components/ui";
+import { factorial } from "@/lib/factorial";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
-const corDoTipo = {
-  empilha: "text-amber-400",
+const colorOfType = {
+  push: "text-amber-400",
   base: "text-sky-400",
-  retorna: "text-emerald-400",
+  returns: "text-emerald-400",
 };
 
-export default function Recursao() {
-  const [resultado, setResultado] = useState<ReturnType<
-    typeof fatorial
+export default function Recursion() {
+  const [result, setResult] = useState<ReturnType<
+    typeof factorial
   > | null>(null);
   const [n, setN] = useState(0);
-  const [passoAtual, setPassoAtual] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const passo = resultado?.passos[passoAtual];
+  const step = result?.steps[currentStep];
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
@@ -31,10 +31,10 @@ export default function Recursao() {
           chegar ao caso base; depois as chamadas retornam, da última para a
           primeira. Exemplo: o fatorial.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.recursao.simples}
-          tecnica={EXPLICACOES.recursao.tecnica}
-          codigo={CODIGOS.fatorial}
+        <Explanation
+          simple={EXPLANATIONS.recursion.simple}
+          technique={EXPLANATIONS.recursion.technique}
+          code={CODES.factorial}
         />
       </header>
 
@@ -42,10 +42,10 @@ export default function Recursao() {
         className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
         onSubmit={(e) => {
           e.preventDefault();
-          const valor = Number(e.currentTarget.n.value);
-          setN(valor);
-          setResultado(fatorial(valor));
-          setPassoAtual(0);
+          const value = Number(e.currentTarget.n.value);
+          setN(value);
+          setResult(factorial(value));
+          setCurrentStep(0);
         }}
       >
         <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
@@ -68,12 +68,12 @@ export default function Recursao() {
         </button>
       </form>
 
-      {resultado && passo && (
+      {result && step && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Resultado"
-              value={resultado.resultado.toLocaleString("pt-BR")}
+              value={result.result.toLocaleString("pt-BR")}
               tone="text-emerald-400"
             />
             <Stat
@@ -83,35 +83,35 @@ export default function Recursao() {
             />
             <Stat
               label="Passo"
-              value={`${passoAtual + 1} / ${resultado.passos.length}`}
+              value={`${currentStep + 1} / ${result.steps.length}`}
               tone="text-zinc-100"
             />
           </div>
 
           <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className={`text-sm font-medium ${corDoTipo[passo.tipo]}`}>
-                {passo.descricao}
+              <p className={`text-sm font-medium ${colorOfType[step.type]}`}>
+                {step.description}
               </p>
-              <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} irAoFim={false} />
+              <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} goToEnd={false} />
             </div>
 
             <div className="flex min-h-24 flex-col-reverse gap-1.5">
-              {passo.pilha.map((quadro, i) => {
-                const topo = i === passo.pilha.length - 1;
+              {step.stack.map((frame, i) => {
+                const top = i === step.stack.length - 1;
                 return (
                   <div
                     key={i}
                     className={`flex items-center justify-between rounded-lg px-4 py-2 font-mono text-sm ${
-                      topo
+                      top
                         ? "bg-amber-500 font-semibold text-amber-950 ring-2 ring-amber-300"
                         : "bg-zinc-800 text-zinc-300"
                     }`}
                   >
-                    <span>fatorial({quadro.n})</span>
+                    <span>fatorial({frame.n})</span>
                     <span>
-                      {quadro.retorno !== undefined
-                        ? `→ ${quadro.retorno.toLocaleString("pt-BR")}`
+                      {frame.returnValue !== undefined
+                        ? `→ ${frame.returnValue.toLocaleString("pt-BR")}`
                         : "aguardando…"}
                     </span>
                   </div>
@@ -124,18 +124,18 @@ export default function Recursao() {
           </div>
 
           <ol className="flex flex-col gap-1 text-sm">
-            {resultado.passos.map((p, i) => (
+            {result.steps.map((p, i) => (
               <li key={i}>
                 <button
-                  onClick={() => setPassoAtual(i)}
+                  onClick={() => setCurrentStep(i)}
                   className={`w-full cursor-pointer rounded-lg px-3 py-1.5 text-left transition-colors hover:bg-zinc-800/60 ${
-                    i === passoAtual
+                    i === currentStep
                       ? "bg-zinc-800 text-zinc-100"
                       : "text-zinc-500"
                   }`}
                 >
                   <span className="mr-2 font-mono text-xs">{i + 1}.</span>
-                  {p.descricao}
+                  {p.description}
                 </button>
               </li>
             ))}

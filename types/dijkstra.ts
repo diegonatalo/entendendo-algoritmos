@@ -1,16 +1,16 @@
-export type GrafoPonderado = Record<string, Record<string, number>>;
+export type WeightedGraph = Record<string, Record<string, number>>;
 
-export type PassoDijkstra = {
-  tipo: "inicio" | "processa" | "fim";
-  atual: string | null;
-  custos: Record<string, number>;
-  pais: Record<string, string | null>;
-  processados: string[];
-  descricao: string;
+export type DijkstraStep = {
+  type: "start" | "process" | "end";
+  current: string | null;
+  costs: Record<string, number>;
+  parents: Record<string, string | null>;
+  processed: string[];
+  description: string;
 };
 
-export type ResultadoDijkstra = {
-  passos: PassoDijkstra[];
-  caminho: string[] | null;
-  custoTotal: number | null;
+export type DijkstraResult = {
+  steps: DijkstraStep[];
+  path: string[] | null;
+  totalCost: number | null;
 };

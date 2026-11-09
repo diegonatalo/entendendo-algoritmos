@@ -1,24 +1,24 @@
 "use client";
 
 import {
-  ALTURA,
-  LARGURA,
-  modeloDoDigito,
-  reconhecerDigito,
+  HEIGHT,
+  WIDTH,
+  digitModel,
+  recognizeDigit,
 } from "@/lib/ocr";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 import { Stat } from "@/components/ui";
 
-const VAZIO = Array(LARGURA * ALTURA).fill(0);
+const EMPTY = Array(WIDTH * HEIGHT).fill(0);
 
-function MiniGrade({ pixels }: { pixels: number[] }) {
+function MiniGrid({ pixels }: { pixels: number[] }) {
   return (
     <div
       className="grid gap-px"
-      style={{ gridTemplateColumns: `repeat(${LARGURA}, 0.5rem)` }}
+      style={{ gridTemplateColumns: `repeat(${WIDTH}, 0.5rem)` }}
       aria-hidden
     >
       {pixels.map((p, i) => (
@@ -32,12 +32,12 @@ function MiniGrade({ pixels }: { pixels: number[] }) {
 }
 
 export default function OcrKnn() {
-  const [pixels, setPixels] = useState<number[]>(modeloDoDigito(3));
+  const [pixels, setPixels] = useState<number[]>(digitModel(3));
   const [k, setK] = useState(5);
 
-  const vazio = pixels.every((p) => p === 0);
-  const resultado = vazio ? null : reconhecerDigito(pixels, k);
-  const maxVotos = resultado ? Math.max(...resultado.votos) : 1;
+  const empty = pixels.every((p) => p === 0);
+  const result = empty ? null : recognizeDigit(pixels, k);
+  const maxVotes = result ? Math.max(...result.votes) : 1;
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
@@ -50,10 +50,10 @@ export default function OcrKnn() {
           imagens de treino mais parecidas. Desenhe um número e veja quem são
           os vizinhos.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.ocrKnn.simples}
-          tecnica={EXPLICACOES.ocrKnn.tecnica}
-          codigo={CODIGOS.ocr}
+        <Explanation
+          simple={EXPLANATIONS.ocrKnn.simple}
+          technique={EXPLANATIONS.ocrKnn.technique}
+          code={CODES.ocr}
         />
       </header>
 
@@ -62,7 +62,7 @@ export default function OcrKnn() {
           <div className="text-sm text-zinc-300">Clique nos quadrados para desenhar</div>
           <div
             className="mx-auto grid gap-1"
-            style={{ gridTemplateColumns: `repeat(${LARGURA}, 2.5rem)` }}
+            style={{ gridTemplateColumns: `repeat(${WIDTH}, 2.5rem)` }}
           >
             {pixels.map((p, i) => (
               <button
@@ -88,14 +88,14 @@ export default function OcrKnn() {
               {Array.from({ length: 10 }, (_, d) => (
                 <button
                   key={d}
-                  onClick={() => setPixels(modeloDoDigito(d))}
+                  onClick={() => setPixels(digitModel(d))}
                   className="h-8 w-8 cursor-pointer rounded-lg border border-zinc-700 font-mono text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
                 >
                   {d}
                 </button>
               ))}
               <button
-                onClick={() => setPixels(VAZIO)}
+                onClick={() => setPixels(EMPTY)}
                 className="cursor-pointer rounded-lg px-3 text-sm text-zinc-500 hover:text-zinc-300"
               >
                 Limpar
@@ -120,17 +120,17 @@ export default function OcrKnn() {
         </div>
 
         <div className="flex flex-col gap-4">
-          {resultado ? (
+          {result ? (
             <>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Stat
                   label="Dígito reconhecido"
-                  value={String(resultado.digito)}
+                  value={String(result.digit)}
                   tone="text-emerald-400"
                 />
                 <Stat
                   label="Pixels diferentes do vizinho mais próximo"
-                  value={String(resultado.vizinhos[0].distancia)}
+                  value={String(result.neighbors[0].distance)}
                   tone="text-amber-400"
                 />
               </div>
@@ -139,14 +139,14 @@ export default function OcrKnn() {
                 <div className="text-xs uppercase tracking-wider text-zinc-500">
                   Votação entre os {k} vizinhos
                 </div>
-                {resultado.votos.map((v, d) =>
+                {result.votes.map((v, d) =>
                   v > 0 ? (
                     <div key={d} className="flex items-center gap-3 text-sm">
                       <span className="w-4 font-mono text-zinc-300">{d}</span>
                       <div className="h-3 flex-1 overflow-hidden rounded-full bg-zinc-800">
                         <div
-                          className={`h-full transition-all ${d === resultado.digito ? "bg-emerald-500" : "bg-zinc-500"}`}
-                          style={{ width: `${(v / maxVotos) * 100}%` }}
+                          className={`h-full transition-all ${d === result.digit ? "bg-emerald-500" : "bg-zinc-500"}`}
+                          style={{ width: `${(v / maxVotes) * 100}%` }}
                         />
                       </div>
                       <span className="w-6 text-right font-mono text-zinc-400">{v}</span>
@@ -160,17 +160,17 @@ export default function OcrKnn() {
                   Vizinhos mais próximos
                 </div>
                 <ol className="flex flex-wrap gap-3">
-                  {resultado.vizinhos.map((v, i) => (
+                  {result.neighbors.map((v, i) => (
                     <li
                       key={i}
                       className="flex flex-col items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 p-2"
                     >
-                      <MiniGrade pixels={v.exemplo.pixels} />
+                      <MiniGrid pixels={v.example.pixels} />
                       <span className="font-mono text-xs text-zinc-300">
-                        {v.exemplo.digito}
+                        {v.example.digit}
                       </span>
                       <span className="font-mono text-[10px] text-zinc-600">
-                        dist. {v.distancia}
+                        dist. {v.distance}
                       </span>
                     </li>
                   ))}

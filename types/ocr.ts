@@ -1,15 +1,15 @@
-export type ExemploDigito = {
-  digito: number;
+export type DigitExample = {
+  digit: number;
   pixels: number[];
 };
 
-export type VizinhoDigito = {
-  exemplo: ExemploDigito;
-  distancia: number;
+export type DigitNeighbor = {
+  example: DigitExample;
+  distance: number;
 };
 
-export type ResultadoOcr = {
-  vizinhos: VizinhoDigito[];
-  votos: number[];
-  digito: number;
+export type OcrResult = {
+  neighbors: DigitNeighbor[];
+  votes: number[];
+  digit: number;
 };

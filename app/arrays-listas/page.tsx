@@ -1,99 +1,99 @@
 "use client";
 
 import { inputClass } from "@/components/ui";
-import { custoInserir, custoLer, custoRemover } from "@/lib/estruturas";
-import { Operacao, ResultadoOperacao } from "@/types/estruturas";
+import { insertCost, readCost, removeCost } from "@/lib/structures";
+import { Operation, OperationResult } from "@/types/structures";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
 const MAX = 12;
 
-type Ultimo = {
-  operacao: Operacao;
-  indice: number;
-  resultado: ResultadoOperacao;
+type Last = {
+  operation: Operation;
+  index: number;
+  result: OperationResult;
 };
 
-const botao =
+const button =
   "cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-sm text-zinc-200 transition-colors hover:border-emerald-500/60 hover:text-emerald-300";
 
-export default function ArraysListas() {
-  const [valores, setValores] = useState<number[]>([10, 20, 30, 40, 50]);
-  const [ultimo, setUltimo] = useState<Ultimo | null>(null);
-  const [erro, setErro] = useState("");
+export default function ArraysLists() {
+  const [values, setValues] = useState<number[]>([10, 20, 30, 40, 50]);
+  const [last, setLast] = useState<Last | null>(null);
+  const [error, setError] = useState("");
 
-  const n = valores.length;
+  const n = values.length;
 
-  function executar(operacao: Operacao, form: HTMLFormElement) {
-    const indice = Number(form.posicao.value);
-    const valor = Number(form.valor.value);
-    const limite = operacao === "inserir" ? n : n - 1;
+  function run(operation: Operation, form: HTMLFormElement) {
+    const index = Number(form.position.value);
+    const value = Number(form.value.value);
+    const limit = operation === "insert" ? n : n - 1;
 
-    if (!Number.isInteger(indice) || indice < 0 || indice > limite) {
-      setErro(
-        n === 0 && operacao !== "inserir"
+    if (!Number.isInteger(index) || index < 0 || index > limit) {
+      setError(
+        n === 0 && operation !== "insert"
           ? "A estrutura está vazia."
-          : `Escolha uma posição de 0 a ${limite}.`,
+          : `Escolha uma posição de 0 a ${limit}.`,
       );
       return;
     }
-    if (operacao === "inserir") {
+    if (operation === "insert") {
       if (n >= MAX) {
-        setErro(`No máximo ${MAX} itens.`);
+        setError(`No máximo ${MAX} itens.`);
         return;
       }
-      if (form.valor.value === "" || !Number.isFinite(valor)) {
-        setErro("Digite o valor a inserir.");
+      if (form.value.value === "" || !Number.isFinite(value)) {
+        setError("Digite o valor a inserir.");
         return;
       }
     }
-    setErro("");
+    setError("");
 
-    if (operacao === "ler") {
-      setUltimo({ operacao, indice, resultado: custoLer(n, indice) });
-    } else if (operacao === "inserir") {
-      setUltimo({ operacao, indice, resultado: custoInserir(n, indice) });
-      setValores([...valores.slice(0, indice), valor, ...valores.slice(indice)]);
+    if (operation === "read") {
+      setLast({ operation, index, result: readCost(n, index) });
+    } else if (operation === "insert") {
+      setLast({ operation, index, result: insertCost(n, index) });
+      setValues([...values.slice(0, index), value, ...values.slice(index)]);
     } else {
-      setUltimo({ operacao, indice, resultado: custoRemover(n, indice) });
-      setValores(valores.filter((_, i) => i !== indice));
+      setLast({ operation, index, result: removeCost(n, index) });
+      setValues(values.filter((_, i) => i !== index));
     }
   }
 
   // posições a destacar na estrutura já atualizada
-  function marcas(tipo: "array" | "lista") {
-    if (!ultimo) return { percorridos: new Set<number>(), alterados: new Set<number>() };
-    const { operacao, indice, resultado } = ultimo;
-    const tocados = resultado[tipo].tocados;
+  function marks(type: "array" | "list") {
+    if (!last) return { traversed: new Set<number>(), changed: new Set<number>() };
+    const { operation, index, result } = last;
+    const touched = result[type].touched;
 
-    if (operacao === "ler") {
-      return { percorridos: new Set(tocados), alterados: new Set([indice]) };
+    if (operation === "read") {
+      return { traversed: new Set(touched), changed: new Set([index]) };
     }
-    if (tipo === "array") {
-      return operacao === "inserir"
-        ? { percorridos: new Set(tocados.map((t) => t + 1)), alterados: new Set([indice]) }
-        : { percorridos: new Set(tocados.map((t) => t - 1)), alterados: new Set<number>() };
+    if (type === "array") {
+      return operation === "insert"
+        ? { traversed: new Set(touched.map((t) => t + 1)), changed: new Set([index]) }
+        : { traversed: new Set(touched.map((t) => t - 1)), changed: new Set<number>() };
     }
-    return operacao === "inserir"
-      ? { percorridos: new Set(tocados), alterados: new Set([indice]) }
+    return operation === "insert"
+      ? { traversed: new Set(touched), changed: new Set([index]) }
       : {
-          percorridos: new Set(tocados),
-          alterados: new Set(indice > 0 ? [indice - 1] : []),
+          traversed: new Set(touched),
+          changed: new Set(index > 0 ? [index - 1] : []),
         };
   }
 
-  const marcasArray = marcas("array");
-  const marcasLista = marcas("lista");
+  const marksArray = marks("array");
+  const marksList = marks("list");
 
-  const classeCelula = (
+  const cellClass = (
     i: number,
-    m: { percorridos: Set<number>; alterados: Set<number> },
+    m: { traversed: Set<number>; changed: Set<number> },
   ) =>
-    m.alterados.has(i)
+    m.changed.has(i)
       ? "bg-amber-500 font-semibold text-amber-950"
-      : m.percorridos.has(i)
+      : m.traversed.has(i)
         ? "bg-sky-900 text-sky-100 ring-1 ring-sky-500"
         : "bg-zinc-800 text-zinc-200";
 
@@ -109,10 +109,10 @@ export default function ArraysListas() {
           lugar. Cada estrutura é boa em uma coisa: experimente ler, inserir e
           remover e compare os passos.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.arraysListas.simples}
-          tecnica={EXPLICACOES.arraysListas.tecnica}
-          codigo={CODIGOS.arraysListas}
+        <Explanation
+          simple={EXPLANATIONS.arraysLists.simple}
+          technique={EXPLANATIONS.arraysLists.technique}
+          code={CODES.arraysLists}
         />
       </header>
 
@@ -125,7 +125,7 @@ export default function ArraysListas() {
             Posição (índice)
             <input
               className={inputClass}
-              name="posicao"
+              name="position"
               type="number"
               min={0}
               defaultValue={0}
@@ -135,32 +135,32 @@ export default function ArraysListas() {
             Valor (para inserir)
             <input
               className={inputClass}
-              name="valor"
+              name="value"
               type="number"
               defaultValue={99}
             />
           </label>
         </div>
-        {erro && <p className="text-sm text-red-400">{erro}</p>}
+        {error && <p className="text-sm text-red-400">{error}</p>}
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
-            className={botao}
-            onClick={(e) => executar("ler", e.currentTarget.form!)}
+            className={button}
+            onClick={(e) => run("read", e.currentTarget.form!)}
           >
             Ler posição
           </button>
           <button
             type="button"
-            className={botao}
-            onClick={(e) => executar("inserir", e.currentTarget.form!)}
+            className={button}
+            onClick={(e) => run("insert", e.currentTarget.form!)}
           >
             Inserir na posição
           </button>
           <button
             type="button"
-            className={botao}
-            onClick={(e) => executar("remover", e.currentTarget.form!)}
+            className={button}
+            onClick={(e) => run("remove", e.currentTarget.form!)}
           >
             Remover da posição
           </button>
@@ -168,9 +168,9 @@ export default function ArraysListas() {
             type="button"
             className="cursor-pointer rounded-xl px-4 py-2.5 text-sm text-zinc-500 hover:text-zinc-300"
             onClick={() => {
-              setValores([10, 20, 30, 40, 50]);
-              setUltimo(null);
-              setErro("");
+              setValues([10, 20, 30, 40, 50]);
+              setLast(null);
+              setError("");
             }}
           >
             Reiniciar
@@ -193,21 +193,21 @@ export default function ArraysListas() {
         <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
           <div className="flex items-baseline justify-between">
             <h2 className="font-semibold">Array</h2>
-            {ultimo && (
+            {last && (
               <span className="font-mono text-lg text-amber-400">
-                {ultimo.resultado.array.passos}{" "}
-                {ultimo.resultado.array.passos === 1 ? "passo" : "passos"}
+                {last.result.array.steps}{" "}
+                {last.result.array.steps === 1 ? "passo" : "passos"}
               </span>
             )}
           </div>
           <div className="flex flex-wrap">
-            {valores.length === 0 && (
+            {values.length === 0 && (
               <span className="text-sm text-zinc-600">vazio</span>
             )}
-            {valores.map((v, i) => (
+            {values.map((v, i) => (
               <div key={i} className="flex flex-col items-center">
                 <div
-                  className={`flex h-11 w-12 items-center justify-center border border-zinc-700 font-mono text-sm transition-colors ${classeCelula(i, marcasArray)}`}
+                  className={`flex h-11 w-12 items-center justify-center border border-zinc-700 font-mono text-sm transition-colors ${cellClass(i, marksArray)}`}
                 >
                   {v}
                 </div>
@@ -217,9 +217,9 @@ export default function ArraysListas() {
               </div>
             ))}
           </div>
-          {ultimo && (
+          {last && (
             <p className="text-sm text-zinc-400">
-              {ultimo.resultado.array.descricao}
+              {last.result.array.description}
             </p>
           )}
         </div>
@@ -227,18 +227,18 @@ export default function ArraysListas() {
         <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
           <div className="flex items-baseline justify-between">
             <h2 className="font-semibold">Lista encadeada</h2>
-            {ultimo && (
+            {last && (
               <span className="font-mono text-lg text-sky-400">
-                {ultimo.resultado.lista.passos}{" "}
-                {ultimo.resultado.lista.passos === 1 ? "passo" : "passos"}
+                {last.result.list.steps}{" "}
+                {last.result.list.steps === 1 ? "passo" : "passos"}
               </span>
             )}
           </div>
           <div className="flex flex-wrap items-center gap-y-3">
-            {valores.map((v, i) => (
+            {values.map((v, i) => (
               <div key={i} className="flex items-center">
                 <div
-                  className={`flex h-11 min-w-12 items-center justify-center rounded-lg px-3 font-mono text-sm transition-colors ${classeCelula(i, marcasLista)}`}
+                  className={`flex h-11 min-w-12 items-center justify-center rounded-lg px-3 font-mono text-sm transition-colors ${cellClass(i, marksList)}`}
                 >
                   {v}
                 </div>
@@ -247,9 +247,9 @@ export default function ArraysListas() {
             ))}
             <span className="font-mono text-xs text-zinc-600">null</span>
           </div>
-          {ultimo && (
+          {last && (
             <p className="text-sm text-zinc-400">
-              {ultimo.resultado.lista.descricao}
+              {last.result.list.description}
             </p>
           )}
         </div>

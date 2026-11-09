@@ -1,34 +1,34 @@
-export type Classe = "laranja" | "toranja";
+export type Category = "laranja" | "toranja";
 
-export type PontoKnn = {
+export type KnnPoint = {
   x: number;
   y: number;
-  classe: Classe;
+  category: Category;
 };
 
-export type Vizinho = {
-  ponto: PontoKnn;
-  distancia: number;
+export type Neighbor = {
+  point: KnnPoint;
+  distance: number;
 };
 
-export type PontoRegressao = {
+export type RegressionPoint = {
   x: number;
   y: number;
-  valor: number;
+  value: number;
 };
 
-export type VizinhoRegressao = {
-  ponto: PontoRegressao;
-  distancia: number;
+export type RegressionNeighbor = {
+  point: RegressionPoint;
+  distance: number;
 };
 
-export type ResultadoRegressao = {
-  vizinhos: VizinhoRegressao[];
-  media: number;
+export type RegressionResult = {
+  neighbors: RegressionNeighbor[];
+  average: number;
 };
 
-export type ResultadoKnn = {
-  vizinhos: Vizinho[];
-  votos: Record<Classe, number>;
-  classe: Classe;
+export type KnnResult = {
+  neighbors: Neighbor[];
+  votes: Record<Category, number>;
+  category: Category;
 };

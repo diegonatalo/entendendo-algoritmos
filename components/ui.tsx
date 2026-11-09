@@ -2,12 +2,12 @@ export function Stat({
   label,
   value,
   tone,
-  pequeno,
+  small: small,
 }: {
   label: string;
   value: string;
   tone: string;
-  pequeno?: boolean;
+  small?: boolean;
 }) {
   return (
     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
@@ -15,7 +15,7 @@ export function Stat({
         {label}
       </div>
       <div
-        className={`mt-1 font-semibold ${pequeno ? "text-base leading-8" : "text-2xl"} ${tone}`}
+        className={`mt-1 font-semibold ${small ? "text-base leading-8" : "text-2xl"} ${tone}`}
       >
         {value}
       </div>
@@ -23,22 +23,22 @@ export function Stat({
   );
 }
 
-export function Legenda({ cor, texto }: { cor: string; texto: string }) {
+export function Legend({ color, text }: { color: string; text: string }) {
   return (
     <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${cor}`} />
-      {texto}
+      <span className={`h-3 w-3 rounded ${color}`} />
+      {text}
     </span>
   );
 }
 
 // Gráficos em SVG encolhem junto com a tela e o texto dentro deles ficaria ilegível no
 // celular. Aqui o gráfico mantém uma largura mínima (a da escala natural) e rola para os lados.
-export function GraficoRolavel({
-  minLargura,
+export function ScrollableChart({
+  minWidthValue,
   children,
 }: {
-  minLargura: number;
+  minWidthValue: number;
   children: React.ReactNode;
 }) {
   return (
@@ -49,7 +49,7 @@ export function GraficoRolavel({
         aria-label="Gráfico, use as setas para rolar"
         className="overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-emerald-400"
       >
-        <div style={{ minWidth: minLargura }}>{children}</div>
+        <div style={{ minWidth: minWidthValue }}>{children}</div>
       </div>
       <p className="text-center text-xs text-zinc-400 sm:hidden">
         Arraste para os lados para ver o gráfico inteiro.
@@ -58,43 +58,43 @@ export function GraficoRolavel({
   );
 }
 
-export const botaoNavegacao =
+export const navigationButton =
   "cursor-pointer whitespace-nowrap rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-zinc-700 disabled:hover:text-zinc-300";
 
-export const botaoPrimario =
+export const primaryButton =
   "cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600";
 
-export function ControlesPassos({
-  passoAtual,
+export function StepControls({
+  currentStep,
   total,
   onChange,
-  irAoFim = true,
+  goToEnd = true,
 }: {
-  passoAtual: number;
+  currentStep: number;
   total: number;
-  onChange: (passo: number) => void;
-  irAoFim?: boolean;
+  onChange: (step: number) => void;
+  goToEnd?: boolean;
 }) {
-  const final = passoAtual >= total - 1;
+  const final = currentStep >= total - 1;
   return (
     <div className="flex flex-wrap gap-2">
       <button
-        className={botaoNavegacao}
-        disabled={passoAtual === 0}
-        onClick={() => onChange(passoAtual - 1)}
+        className={navigationButton}
+        disabled={currentStep === 0}
+        onClick={() => onChange(currentStep - 1)}
       >
         ← Anterior
       </button>
       <button
-        className={botaoNavegacao}
+        className={navigationButton}
         disabled={final}
-        onClick={() => onChange(passoAtual + 1)}
+        onClick={() => onChange(currentStep + 1)}
       >
         Próximo →
       </button>
-      {irAoFim && (
+      {goToEnd && (
         <button
-          className={botaoNavegacao}
+          className={navigationButton}
           disabled={final}
           onClick={() => onChange(total - 1)}
         >

@@ -2,28 +2,28 @@
 
 import { inputClass } from "@/components/ui";
 import {
-  buscar,
-  criarTabela,
-  fatorDeCarga,
-  funcaoHash,
-  inserir,
-  redimensionar,
-} from "@/lib/tabela-hash";
-import { TabelaHash } from "@/types/hash";
+  search,
+  createTable,
+  loadFactor,
+  hashFunction,
+  insert,
+  resize,
+} from "@/lib/hash-table";
+import { HashTable } from "@/types/hash";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
-const TAMANHO_INICIAL = 8;
+const INITIAL_SIZE = 8;
 
-const botaoSecundario =
+const secondaryButton =
   "cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100";
 
-const botaoPrimario =
+const primaryButton =
   "cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600";
 
-const EXEMPLO: [string, string][] = [
+const EXAMPLE: [string, string][] = [
   ["maca", "R$ 0,67"],
   ["leite", "R$ 1,49"],
   ["pao", "R$ 0,25"],
@@ -34,44 +34,44 @@ const EXEMPLO: [string, string][] = [
   ["oleo", "R$ 2,10"],
 ];
 
-type Destaque = {
-  indice: number;
-  tom: "ok" | "colisao" | "falha";
-  chave: string;
-  mensagem: string;
+type Highlight = {
+  index: number;
+  tone: "ok" | "collision" | "failure";
+  key: string;
+  message: string;
 };
 
-export default function TabelaHashPage() {
-  const [tabela, setTabela] = useState<TabelaHash>(() =>
-    criarTabela(TAMANHO_INICIAL),
+export default function HashTablePage() {
+  const [table, setTable] = useState<HashTable>(() =>
+    createTable(INITIAL_SIZE),
   );
-  const [destaque, setDestaque] = useState<Destaque | null>(null);
+  const [highlight, setHighlight] = useState<Highlight | null>(null);
 
-  const total = tabela.flat().length;
-  const carga = fatorDeCarga(tabela);
+  const total = table.flat().length;
+  const load = loadFactor(table);
 
-  function explicarHash(chave: string) {
-    const { soma, indice } = funcaoHash(chave, tabela.length);
-    return `hash("${chave}") = ${soma} % ${tabela.length} = ${indice}`;
+  function explainHash(key: string) {
+    const { sum, index } = hashFunction(key, table.length);
+    return `hash("${key}") = ${sum} % ${table.length} = ${index}`;
   }
 
-  function handleInserir(e: React.FormEvent<HTMLFormElement>) {
+  function handleInsert(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const chave = form.chave.value.trim();
-    const valor = form.valor.value.trim();
-    if (!chave) return;
+    const key = form.key.value.trim();
+    const value = form.value.value.trim();
+    if (!key) return;
 
-    const r = inserir(tabela, chave, valor);
-    setTabela(r.tabela);
-    setDestaque({
-      indice: r.indice,
-      tom: r.colisao ? "colisao" : "ok",
-      chave,
-      mensagem: `${explicarHash(chave)}. ${
-        r.atualizou
+    const r = insert(table, key, value);
+    setTable(r.table);
+    setHighlight({
+      index: r.index,
+      tone: r.collision ? "collision" : "ok",
+      key,
+      message: `${explainHash(key)}. ${
+        r.updated
           ? "A chave já existia: valor atualizado."
-          : r.colisao
+          : r.collision
             ? "Colisão! O balde já tinha itens, então a chave entra na lista."
             : "Balde vazio: chave guardada."
       }`,
@@ -79,34 +79,34 @@ export default function TabelaHashPage() {
     form.reset();
   }
 
-  function handleBuscar(e: React.FormEvent<HTMLFormElement>) {
+  function handleLookup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const chave = e.currentTarget.busca.value.trim();
-    if (!chave) return;
+    const key = e.currentTarget.busca.value.trim();
+    if (!key) return;
 
-    const r = buscar(tabela, chave);
-    const achou = r.valor !== undefined;
-    setDestaque({
-      indice: r.indice,
-      tom: achou ? "ok" : "falha",
-      chave,
-      mensagem: `${explicarHash(chave)}. ${
-        achou
-          ? `Encontrado após ${r.comparacoes} ${r.comparacoes === 1 ? "comparação" : "comparações"}: ${r.valor}.`
-          : r.comparacoes === 0
+    const r = search(table, key);
+    const didFind = r.value !== undefined;
+    setHighlight({
+      index: r.index,
+      tone: didFind ? "ok" : "failure",
+      key,
+      message: `${explainHash(key)}. ${
+        didFind
+          ? `Encontrado após ${r.comparisons} ${r.comparisons === 1 ? "comparação" : "comparações"}: ${r.value}.`
+          : r.comparisons === 0
             ? "Balde vazio: a chave não está na tabela."
-            : `Percorreu ${r.comparacoes} ${r.comparacoes === 1 ? "item" : "itens"} do balde e não achou a chave.`
+            : `Percorreu ${r.comparisons} ${r.comparisons === 1 ? "item" : "itens"} do balde e não achou a chave.`
       }`,
     });
   }
 
-  function carregarExemplo() {
-    let nova = criarTabela(TAMANHO_INICIAL);
-    for (const [chave, valor] of EXEMPLO) {
-      nova = inserir(nova, chave, valor).tabela;
+  function loadExample() {
+    let next = createTable(INITIAL_SIZE);
+    for (const [key, value] of EXAMPLE) {
+      next = insert(next, key, value).table;
     }
-    setTabela(nova);
-    setDestaque(null);
+    setTable(next);
+    setHighlight(null);
   }
 
   return (
@@ -122,40 +122,40 @@ export default function TabelaHashPage() {
         <p className="font-mono text-sm text-zinc-500">
           hash(chave) = soma dos códigos dos caracteres % tamanho da tabela
         </p>
-        <Explicacao
-          simples={EXPLICACOES.tabelaHash.simples}
-          tecnica={EXPLICACOES.tabelaHash.tecnica}
-          codigo={CODIGOS.tabelaHash}
+        <Explanation
+          simple={EXPLANATIONS.hashTable.simple}
+          technique={EXPLANATIONS.hashTable.technique}
+          code={CODES.hashTable}
         />
       </header>
 
       <div className="fade-up grid gap-4 md:grid-cols-2">
         <form
           className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
-          onSubmit={handleInserir}
+          onSubmit={handleInsert}
         >
           <h2 className="text-sm font-medium text-zinc-300">Inserir</h2>
           <div className="grid grid-cols-2 gap-3">
             <input
               className={inputClass}
-              name="chave"
+              name="key"
               placeholder="Chave (ex.: maca)"
               required
             />
             <input
               className={inputClass}
-              name="valor"
+              name="value"
               placeholder="Valor (ex.: R$ 0,67)"
             />
           </div>
-          <button className={botaoPrimario} type="submit">
+          <button className={primaryButton} type="submit">
             Inserir
           </button>
         </form>
 
         <form
           className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
-          onSubmit={handleBuscar}
+          onSubmit={handleLookup}
         >
           <h2 className="text-sm font-medium text-zinc-300">Buscar</h2>
           <input
@@ -164,31 +164,31 @@ export default function TabelaHashPage() {
             placeholder="Chave a buscar"
             required
           />
-          <button className={botaoPrimario} type="submit">
+          <button className={primaryButton} type="submit">
             Buscar
           </button>
         </form>
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <button className={botaoSecundario} onClick={carregarExemplo}>
+        <button className={secondaryButton} onClick={loadExample}>
           Carregar exemplo
         </button>
         <button
-          className={botaoSecundario}
+          className={secondaryButton}
           onClick={() => {
-            setTabela(redimensionar(tabela, tabela.length * 2));
-            setDestaque(null);
+            setTable(resize(table, table.length * 2));
+            setHighlight(null);
           }}
-          disabled={tabela.length >= 64}
+          disabled={table.length >= 64}
         >
           Dobrar tamanho da tabela
         </button>
         <button
-          className={botaoSecundario}
+          className={secondaryButton}
           onClick={() => {
-            setTabela(criarTabela(TAMANHO_INICIAL));
-            setDestaque(null);
+            setTable(createTable(INITIAL_SIZE));
+            setHighlight(null);
           }}
         >
           Limpar
@@ -200,44 +200,44 @@ export default function TabelaHashPage() {
           <Stat label="Itens" value={String(total)} tone="text-zinc-100" />
           <Stat
             label="Baldes"
-            value={String(tabela.length)}
+            value={String(table.length)}
             tone="text-zinc-100"
           />
           <Stat
             label="Fator de carga"
-            value={carga.toFixed(2)}
-            tone={carga > 0.75 ? "text-red-400" : "text-emerald-400"}
+            value={load.toFixed(2)}
+            tone={load > 0.75 ? "text-red-400" : "text-emerald-400"}
           />
         </div>
-        {carga > 0.75 && (
+        {load > 0.75 && (
           <p className="text-sm text-red-400">
             Fator de carga alto: aumentam as colisões. Experimente dobrar o
             tamanho da tabela.
           </p>
         )}
 
-        {destaque && (
+        {highlight && (
           <p
             className={`rounded-xl border px-4 py-3 text-sm ${
-              destaque.tom === "ok"
+              highlight.tone === "ok"
                 ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
-                : destaque.tom === "colisao"
+                : highlight.tone === "collision"
                   ? "border-amber-500/40 bg-amber-500/10 text-amber-200"
                   : "border-red-500/40 bg-red-500/10 text-red-200"
             }`}
           >
-            {destaque.mensagem}
+            {highlight.message}
           </p>
         )}
 
         <ol className="flex flex-col gap-2">
-          {tabela.map((balde, i) => {
-            const ativo = destaque?.indice === i;
+          {table.map((bucket, i) => {
+            const active = highlight?.index === i;
             return (
               <li
                 key={i}
                 className={`flex items-center gap-3 rounded-xl border p-2 transition-colors ${
-                  ativo
+                  active
                     ? "border-amber-500/60 bg-amber-500/5"
                     : "border-zinc-800 bg-zinc-900/40"
                 }`}
@@ -246,23 +246,23 @@ export default function TabelaHashPage() {
                   {i}
                 </span>
                 <div className="flex flex-wrap items-center gap-2">
-                  {balde.length === 0 ? (
+                  {bucket.length === 0 ? (
                     <span className="text-xs text-zinc-600">vazio</span>
                   ) : (
-                    balde.map((entrada, j) => (
-                      <div key={entrada.chave} className="flex items-center gap-2">
+                    bucket.map((input, j) => (
+                      <div key={input.key} className="flex items-center gap-2">
                         {j > 0 && <span className="text-zinc-600">→</span>}
                         <span
                           className={`rounded-lg px-3 py-1.5 font-mono text-xs ${
-                            ativo && entrada.chave === destaque?.chave
+                            active && input.key === highlight?.key
                               ? "bg-amber-500 font-semibold text-amber-950"
                               : "bg-zinc-800 text-zinc-300"
                           }`}
                         >
-                          {entrada.chave}
-                          {entrada.valor && (
+                          {input.key}
+                          {input.value && (
                             <span className="ml-2 opacity-70">
-                              {entrada.valor}
+                              {input.value}
                             </span>
                           )}
                         </span>

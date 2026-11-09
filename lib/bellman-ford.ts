@@ -1,139 +1,139 @@
 import {
-  Aresta,
-  PassoBellmanFord,
-  ResultadoBellmanFord,
-  ResultadoDijkstraSimples,
+  Edge,
+  BellmanFordStep,
+  BellmanFordResult,
+  SimpleDijkstraResult,
 } from "@/types/bellman-ford";
 
-const fmt = (custo: number) => (custo === Infinity ? "∞" : String(custo));
+const fmt = (cost: number) => (cost === Infinity ? "∞" : String(cost));
 
-function montarCaminho(
-  pais: Record<string, string | null>,
-  fim: string,
-  custos: Record<string, number>,
+function buildPath(
+  parents: Record<string, string | null>,
+  end: string,
+  costs: Record<string, number>,
 ): string[] | null {
-  if (custos[fim] === Infinity) return null;
-  const caminho: string[] = [];
-  for (let no: string | null = fim; no !== null; no = pais[no]) {
-    caminho.unshift(no);
+  if (costs[end] === Infinity) return null;
+  const path: string[] = [];
+  for (let node: string | null = end; node !== null; node = parents[node]) {
+    path.unshift(node);
   }
-  return caminho;
+  return path;
 }
 
-function iniciar(nos: string[], inicio: string) {
-  const custos: Record<string, number> = {};
-  const pais: Record<string, string | null> = {};
-  for (const no of nos) {
-    custos[no] = no === inicio ? 0 : Infinity;
-    pais[no] = null;
+function initialize(nodes: string[], start: string) {
+  const costs: Record<string, number> = {};
+  const parents: Record<string, string | null> = {};
+  for (const node of nodes) {
+    costs[node] = node === start ? 0 : Infinity;
+    parents[node] = null;
   }
-  return { custos, pais };
+  return { costs, parents };
 }
 
 // Dijkstra como no capítulo 7: uma vez processado, o custo de um nó é considerado final.
 // Com pesos negativos essa suposição falha.
-export function dijkstraSimples(
-  nos: string[],
-  arestas: Aresta[],
-  inicio: string,
-  fim: string,
-): ResultadoDijkstraSimples {
-  const { custos, pais } = iniciar(nos, inicio);
-  const processados = new Set<string>();
+export function simpleDijkstra(
+  nodes: string[],
+  edges: Edge[],
+  start: string,
+  end: string,
+): SimpleDijkstraResult {
+  const { costs, parents } = initialize(nodes, start);
+  const processed = new Set<string>();
 
   for (;;) {
-    let atual: string | null = null;
-    for (const no of nos) {
-      if (processados.has(no) || custos[no] === Infinity) continue;
-      if (atual === null || custos[no] < custos[atual]) atual = no;
+    let current: string | null = null;
+    for (const node of nodes) {
+      if (processed.has(node) || costs[node] === Infinity) continue;
+      if (current === null || costs[node] < costs[current]) current = node;
     }
-    if (atual === null) break;
+    if (current === null) break;
 
-    processados.add(atual);
-    for (const { de, para, peso } of arestas) {
-      if (de === atual && !processados.has(para) && custos[atual] + peso < custos[para]) {
-        custos[para] = custos[atual] + peso;
-        pais[para] = atual;
+    processed.add(current);
+    for (const { from, to, weight } of edges) {
+      if (from === current && !processed.has(to) && costs[current] + weight < costs[to]) {
+        costs[to] = costs[current] + weight;
+        parents[to] = current;
       }
     }
   }
 
-  const caminho = montarCaminho(pais, fim, custos);
-  return { custos, caminho, custoTotal: caminho ? custos[fim] : null };
+  const path = buildPath(parents, end, costs);
+  return { costs, path, totalCost: path ? costs[end] : null };
 }
 
 // Bellman-Ford: relaxa todas as arestas (V - 1) vezes. Aceita pesos negativos e
 // detecta ciclos negativos com uma rodada extra.
 export function bellmanFord(
-  nos: string[],
-  arestas: Aresta[],
-  inicio: string,
-  fim: string,
-): ResultadoBellmanFord {
-  const { custos, pais } = iniciar(nos, inicio);
-  const passos: PassoBellmanFord[] = [];
+  nodes: string[],
+  edges: Edge[],
+  start: string,
+  end: string,
+): BellmanFordResult {
+  const { costs, parents } = initialize(nodes, start);
+  const steps: BellmanFordStep[] = [];
 
-  function registrar(
-    rodada: number,
-    aresta: Aresta | null,
-    melhorou: boolean,
-    descricao: string,
+  function register(
+    round: number,
+    edge: Edge | null,
+    improved: boolean,
+    description: string,
   ) {
-    passos.push({
-      rodada,
-      aresta,
-      melhorou,
-      custos: { ...custos },
-      pais: { ...pais },
-      descricao,
+    steps.push({
+      round,
+      edge,
+      improved,
+      costs: { ...costs },
+      parents: { ...parents },
+      description,
     });
   }
 
-  registrar(0, null, false, `Custo de ${inicio} = 0; os demais começam em ∞`);
+  register(0, null, false, `Custo de ${start} = 0; os demais começam em ∞`);
 
-  for (let rodada = 1; rodada <= nos.length - 1; rodada++) {
-    for (const aresta of arestas) {
-      const { de, para, peso } = aresta;
-      const novo = custos[de] === Infinity ? Infinity : custos[de] + peso;
-      if (novo < custos[para]) {
-        const antes = custos[para];
-        custos[para] = novo;
-        pais[para] = de;
-        registrar(
-          rodada,
-          aresta,
+  for (let round = 1; round <= nodes.length - 1; round++) {
+    for (const edge of edges) {
+      const { from, to, weight } = edge;
+      const created = costs[from] === Infinity ? Infinity : costs[from] + weight;
+      if (created < costs[to]) {
+        const before = costs[to];
+        costs[to] = created;
+        parents[to] = from;
+        register(
+          round,
+          edge,
           true,
-          `Rodada ${rodada}: ${de} → ${para} (${peso}) melhora ${para}: ${fmt(antes)} → ${novo}`,
+          `Rodada ${round}: ${from} → ${to} (${weight}) melhora ${to}: ${fmt(before)} → ${created}`,
         );
       } else {
-        registrar(
-          rodada,
-          aresta,
+        register(
+          round,
+          edge,
           false,
-          `Rodada ${rodada}: ${de} → ${para} (${peso}) não melhora ${para} (${fmt(custos[para])})`,
+          `Rodada ${round}: ${from} → ${to} (${weight}) não melhora ${to} (${fmt(costs[to])})`,
         );
       }
     }
   }
 
   // uma rodada extra: se algo ainda melhora, existe um ciclo de peso negativo
-  const cicloNegativo = arestas.some(
-    ({ de, para, peso }) => custos[de] !== Infinity && custos[de] + peso < custos[para],
+  const negativeCycle = edges.some(
+    ({ from, to, weight }) => costs[from] !== Infinity && costs[from] + weight < costs[to],
   );
 
-  registrar(
-    nos.length,
+  register(
+    nodes.length,
     null,
     false,
-    cicloNegativo
+    negativeCycle
       ? "Rodada extra: ainda dá para melhorar custos, então há um ciclo negativo e não existe menor caminho"
       : "Rodada extra: nada melhora, os custos são finais",
   );
 
   return {
-    passos,
-    custos: { ...custos },
-    caminho: cicloNegativo ? null : montarCaminho(pais, fim, custos),
-    cicloNegativo,
+    steps,
+    costs: { ...costs },
+    path: negativeCycle ? null : buildPath(parents, end, costs),
+    negativeCycle,
   };
 }

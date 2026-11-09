@@ -1,55 +1,55 @@
 "use client";
 
-import { lerNumeros } from "@/lib/entrada";
-import { euclides, somaRecursiva } from "@/lib/euclides";
+import { readNumbers } from "@/lib/input";
+import { euclid, recursiveSum } from "@/lib/euclid";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { ControlesPassos, Stat, botaoPrimario, inputClass } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { StepControls, Stat, primaryButton, inputClass } from "@/components/ui";
 
-const MAX_MEDIDA = 2000;
+const MAX_MEASURE = 2000;
 
-const PALETA = ["#34d399", "#38bdf8", "#a78bfa", "#fbbf24", "#fb7185", "#2dd4bf"];
+const PALETTE = ["#34d399", "#38bdf8", "#a78bfa", "#fbbf24", "#fb7185", "#2dd4bf"];
 
-export default function DividirConquistar() {
-  const [medidas, setMedidas] = useState<{ largura: number; altura: number } | null>(null);
-  const [passoAtual, setPassoAtual] = useState(0);
-  const [erro, setErro] = useState("");
+export default function DivideAndConquer() {
+  const [measures, setMeasures] = useState<{ width: number; height: number } | null>(null);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [error, setError] = useState("");
 
-  const [textoLista, setTextoLista] = useState("2, 4, 6");
-  const [lista, setLista] = useState([2, 4, 6]);
-  const [erroLista, setErroLista] = useState("");
+  const [listText, setListText] = useState("2, 4, 6");
+  const [list, setList] = useState([2, 4, 6]);
+  const [listError, setListError] = useState("");
 
-  const resultado = medidas ? euclides(medidas.largura, medidas.altura) : null;
-  const passo = resultado?.passos[passoAtual];
-  const chamadas = somaRecursiva(lista);
+  const result = measures ? euclid(measures.width, measures.height) : null;
+  const step = result?.steps[currentStep];
+  const calls = recursiveSum(list);
 
-  function handleTerreno(e: React.FormEvent<HTMLFormElement>) {
+  function handleTerrain(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const largura = Number(e.currentTarget.largura.value);
-    const altura = Number(e.currentTarget.altura.value);
+    const width = Number(e.currentTarget.width.value);
+    const height = Number(e.currentTarget.height.value);
     if (
-      !Number.isInteger(largura) || !Number.isInteger(altura) ||
-      largura < 1 || altura < 1 || largura > MAX_MEDIDA || altura > MAX_MEDIDA
+      !Number.isInteger(width) || !Number.isInteger(height) ||
+      width < 1 || height < 1 || width > MAX_MEASURE || height > MAX_MEASURE
     ) {
-      setErro(`Use números inteiros de 1 a ${MAX_MEDIDA}.`);
+      setError(`Use números inteiros de 1 a ${MAX_MEASURE}.`);
       return;
     }
-    setErro("");
-    setMedidas({ largura, altura });
-    setPassoAtual(0);
+    setError("");
+    setMeasures({ width, height });
+    setCurrentStep(0);
   }
 
-  function handleLista(e: React.FormEvent) {
+  function handleList(e: React.FormEvent) {
     e.preventDefault();
-    const numeros = lerNumeros(textoLista);
-    if (numeros.length > 8 || numeros.some((n) => !Number.isFinite(n))) {
-      setErroLista("Digite até 8 números, separados por vírgula.");
+    const numbers = readNumbers(listText);
+    if (numbers.length > 8 || numbers.some((n) => !Number.isFinite(n))) {
+      setListError("Digite até 8 números, separados por vírgula.");
       return;
     }
-    setErroLista("");
-    setLista(numeros);
+    setListError("");
+    setList(numbers);
   }
 
   return (
@@ -62,10 +62,10 @@ export default function DividirConquistar() {
           O quicksort usa essa técnica. Aqui estão os dois exemplos que o livro
           usa para introduzi-la.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.divisaoConquista.simples}
-          tecnica={EXPLICACOES.divisaoConquista.tecnica}
-          codigo={CODIGOS.divisaoConquista}
+        <Explanation
+          simple={EXPLANATIONS.divideAndConquer.simple}
+          technique={EXPLANATIONS.divideAndConquer.technique}
+          code={CODES.divideAndConquer}
         />
       </header>
 
@@ -83,17 +83,17 @@ export default function DividirConquistar() {
 
         <form
           className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
-          onSubmit={handleTerreno}
+          onSubmit={handleTerrain}
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
               Largura
               <input
                 className={inputClass}
-                name="largura"
+                name="width"
                 type="number"
                 min={1}
-                max={MAX_MEDIDA}
+                max={MAX_MEASURE}
                 defaultValue={1680}
               />
             </label>
@@ -101,65 +101,65 @@ export default function DividirConquistar() {
               Altura
               <input
                 className={inputClass}
-                name="altura"
+                name="height"
                 type="number"
                 min={1}
-                max={MAX_MEDIDA}
+                max={MAX_MEASURE}
                 defaultValue={640}
               />
             </label>
           </div>
-          {erro && <p className="text-sm text-red-400">{erro}</p>}
-          <button className={botaoPrimario} type="submit">
+          {error && <p className="text-sm text-red-400">{error}</p>}
+          <button className={primaryButton} type="submit">
             Dividir o terreno
           </button>
         </form>
 
-        {resultado && medidas && passo && (
+        {result && measures && step && (
           <div className="flex flex-col gap-6">
             <div className="grid gap-4 sm:grid-cols-3">
               <Stat
                 label="MDC"
-                value={String(resultado.mdc)}
+                value={String(result.gcd)}
                 tone="text-emerald-400"
               />
               <Stat
                 label="Quadrados no fim"
-                value={String(resultado.quadrados.length)}
+                value={String(result.squares.length)}
                 tone="text-amber-400"
               />
               <Stat
                 label="Passo"
-                value={`${passoAtual + 1} / ${resultado.passos.length}`}
+                value={`${currentStep + 1} / ${result.steps.length}`}
                 tone="text-zinc-100"
               />
             </div>
 
             <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="text-sm font-medium text-amber-400">{passo.descricao}</p>
-                <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} />
+                <p className="text-sm font-medium text-amber-400">{step.description}</p>
+                <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} />
               </div>
 
               <svg
-                viewBox={`0 0 ${medidas.largura} ${medidas.altura}`}
+                viewBox={`0 0 ${measures.width} ${measures.height}`}
                 className="mx-auto max-h-96 w-full max-w-xl rounded-lg bg-zinc-950"
                 role="img"
                 aria-label="Terreno dividido em quadrados"
               >
-                {resultado.quadrados
-                  .filter((q) => q.passo <= passoAtual)
+                {result.squares
+                  .filter((q) => q.step <= currentStep)
                   .map((q, i) => (
                     <rect
                       key={i}
                       x={q.x}
                       y={q.y}
-                      width={q.lado}
-                      height={q.lado}
-                      fill={PALETA[q.passo % PALETA.length]}
-                      fillOpacity={q.passo === passoAtual ? 0.95 : 0.45}
+                      width={q.side}
+                      height={q.side}
+                      fill={PALETTE[q.step % PALETTE.length]}
+                      fillOpacity={q.step === currentStep ? 0.95 : 0.45}
                       className="stroke-zinc-950"
-                      strokeWidth={Math.max(medidas.largura, medidas.altura) / 300}
+                      strokeWidth={Math.max(measures.width, measures.height) / 300}
                     />
                   ))}
               </svg>
@@ -184,40 +184,40 @@ export default function DividirConquistar() {
 
         <form
           className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
-          onSubmit={handleLista}
+          onSubmit={handleList}
         >
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Números a somar
             <input
               className={inputClass}
-              value={textoLista}
-              onChange={(e) => setTextoLista(e.target.value)}
+              value={listText}
+              onChange={(e) => setListText(e.target.value)}
               placeholder="Ex.: 2, 4, 6"
             />
           </label>
-          {erroLista && <p className="text-sm text-red-400">{erroLista}</p>}
-          <button className={botaoPrimario} type="submit">
+          {listError && <p className="text-sm text-red-400">{listError}</p>}
+          <button className={primaryButton} type="submit">
             Somar recursivamente
           </button>
         </form>
 
         <ol className="flex flex-col gap-1.5 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 font-mono text-sm">
-          {chamadas.map((c) => {
-            const [primeiro, ...resto] = c.lista;
-            const base = c.lista.length === 0;
+          {calls.map((c) => {
+            const [first, ...remainder] = c.list;
+            const base = c.list.length === 0;
             return (
               <li
-                key={c.profundidade}
-                style={{ paddingLeft: `${c.profundidade * 1.25}rem` }}
+                key={c.depth}
+                style={{ paddingLeft: `${c.depth * 1.25}rem` }}
                 className={base ? "text-sky-400" : "text-zinc-300"}
               >
-                soma([{c.lista.join(", ")}]) ={" "}
+                soma([{c.list.join(", ")}]) ={" "}
                 {base ? (
                   <span>0 <span className="text-zinc-500">(caso base)</span></span>
                 ) : (
                   <span>
-                    {primeiro} + soma([{resto.join(", ")}]) ={" "}
-                    <span className="text-emerald-400">{c.resultado}</span>
+                    {first} + soma([{remainder.join(", ")}]) ={" "}
+                    <span className="text-emerald-400">{c.result}</span>
                   </span>
                 )}
               </li>

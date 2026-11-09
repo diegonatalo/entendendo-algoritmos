@@ -1,60 +1,60 @@
 "use client";
 
-import { ControlesPassos } from "@/components/ui";
-import { mochila, mochilaGulosa } from "@/lib/mochila";
-import { ItemMochila } from "@/types/mochila";
+import { StepControls } from "@/components/ui";
+import { knapsack, greedyKnapsack } from "@/lib/knapsack";
+import { KnapsackItem } from "@/types/knapsack";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
-type Exemplo = {
-  titulo: string;
-  descricao: string;
-  capacidade: number;
-  itens: ItemMochila[];
+type Example = {
+  title: string;
+  description: string;
+  capacity: number;
+  items: KnapsackItem[];
 };
 
-const EXEMPLOS: Exemplo[] = [
+const EXAMPLES: Example[] = [
   {
-    titulo: "Mochila do livro",
-    descricao: "Capacidade de 4 kg. Qual combinação vale mais?",
-    capacidade: 4,
-    itens: [
-      { nome: "Violão", peso: 1, valor: 1500 },
-      { nome: "Som", peso: 4, valor: 3000 },
-      { nome: "Notebook", peso: 3, valor: 2000 },
+    title: "Mochila do livro",
+    description: "Capacidade de 4 kg. Qual combinação vale mais?",
+    capacity: 4,
+    items: [
+      { name: "Violão", weight: 1, value: 1500 },
+      { name: "Som", weight: 4, value: 3000 },
+      { name: "Notebook", weight: 3, value: 2000 },
     ],
   },
   {
-    titulo: "Guloso erra aqui",
-    descricao:
+    title: "Guloso erra aqui",
+    description:
       "Capacidade de 6 kg. O item mais valioso ocupa quase tudo e impede combinações melhores.",
-    capacidade: 6,
-    itens: [
-      { nome: "Monitor", peso: 5, valor: 1000 },
-      { nome: "Tablet", peso: 3, valor: 700 },
-      { nome: "Câmera", peso: 3, valor: 700 },
+    capacity: 6,
+    items: [
+      { name: "Monitor", weight: 5, value: 1000 },
+      { name: "Tablet", weight: 3, value: 700 },
+      { name: "Câmera", weight: 3, value: 700 },
     ],
   },
 ];
 
-const dinheiro = (n: number) => `R$ ${n.toLocaleString("pt-BR")}`;
+const money = (n: number) => `R$ ${n.toLocaleString("pt-BR")}`;
 
-export default function ProgramacaoDinamica() {
-  const [indice, setIndice] = useState(0);
-  const [executado, setExecutado] = useState(false);
-  const [passoAtual, setPassoAtual] = useState(0);
+export default function DynamicProgramming() {
+  const [index, setIndex] = useState(0);
+  const [executed, setExecuted] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const exemplo = EXEMPLOS[indice];
-  const dp = mochila(exemplo.itens, exemplo.capacidade);
-  const gulosa = mochilaGulosa(exemplo.itens, exemplo.capacidade);
+  const example = EXAMPLES[index];
+  const dp = knapsack(example.items, example.capacity);
+  const greedyResult = greedyKnapsack(example.items, example.capacity);
 
-  const total = dp.passos.length;
-  const passo = dp.passos[passoAtual];
-  const final = passoAtual === total - 1;
+  const total = dp.steps.length;
+  const step = dp.steps[currentStep];
+  const final = currentStep === total - 1;
 
-  const colunas = Array.from({ length: exemplo.capacidade }, (_, i) => i + 1);
+  const columns = Array.from({ length: example.capacity }, (_, i) => i + 1);
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
@@ -67,43 +67,43 @@ export default function ProgramacaoDinamica() {
           menores, guardadas em uma tabela. Exemplo: o problema da mochila —
           qual conjunto de itens cabe e vale mais?
         </p>
-        <Explicacao
-          simples={EXPLICACOES.programacaoDinamica.simples}
-          tecnica={EXPLICACOES.programacaoDinamica.tecnica}
-          codigo={CODIGOS.mochila}
+        <Explanation
+          simple={EXPLANATIONS.dynamicProgramming.simple}
+          technique={EXPLANATIONS.dynamicProgramming.technique}
+          code={CODES.knapsack}
         />
       </header>
 
       <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
         <div className="flex flex-wrap gap-2">
-          {EXEMPLOS.map((e, i) => (
+          {EXAMPLES.map((e, i) => (
             <button
-              key={e.titulo}
+              key={e.title}
               onClick={() => {
-                setIndice(i);
-                setExecutado(false);
-                setPassoAtual(0);
+                setIndex(i);
+                setExecuted(false);
+                setCurrentStep(0);
               }}
               className={`cursor-pointer rounded-xl border px-4 py-2 text-sm transition-colors ${
-                i === indice
+                i === index
                   ? "border-emerald-500/60 bg-emerald-500/10 text-emerald-300"
                   : "border-zinc-700 text-zinc-300 hover:border-zinc-500"
               }`}
             >
-              {e.titulo}
+              {e.title}
             </button>
           ))}
         </div>
-        <p className="text-sm text-zinc-400">{exemplo.descricao}</p>
+        <p className="text-sm text-zinc-400">{example.description}</p>
         <ul className="grid gap-2 sm:grid-cols-3">
-          {exemplo.itens.map((item) => (
+          {example.items.map((item) => (
             <li
-              key={item.nome}
+              key={item.name}
               className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm"
             >
-              <div className="font-medium text-zinc-200">{item.nome}</div>
+              <div className="font-medium text-zinc-200">{item.name}</div>
               <div className="font-mono text-xs text-zinc-500">
-                {item.peso} kg · {dinheiro(item.valor)}
+                {item.weight} kg · {money(item.value)}
               </div>
             </li>
           ))}
@@ -111,30 +111,30 @@ export default function ProgramacaoDinamica() {
         <button
           className="cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600"
           onClick={() => {
-            setExecutado(true);
-            setPassoAtual(0);
+            setExecuted(true);
+            setCurrentStep(0);
           }}
         >
           Preencher a tabela
         </button>
       </div>
 
-      {executado && (
+      {executed && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Melhor valor (dinâmica)"
-              value={dinheiro(dp.valorTotal)}
+              value={money(dp.totalValue)}
               tone="text-emerald-400"
             />
             <Stat
               label="Guloso (maior valor)"
-              value={dinheiro(gulosa.valorTotal)}
+              value={money(greedyResult.totalValue)}
               tone="text-amber-400"
             />
             <Stat
               label="Célula"
-              value={`${passoAtual + 1} / ${total}`}
+              value={`${currentStep + 1} / ${total}`}
               tone="text-zinc-100"
             />
           </div>
@@ -142,11 +142,11 @@ export default function ProgramacaoDinamica() {
           <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p
-                className={`text-sm font-medium ${passo.usouItem ? "text-amber-400" : "text-zinc-300"}`}
+                className={`text-sm font-medium ${step.usedItem ? "text-amber-400" : "text-zinc-300"}`}
               >
-                {passo.descricao}
+                {step.description}
               </p>
-              <ControlesPassos passoAtual={passoAtual} total={total} onChange={setPassoAtual} />
+              <StepControls currentStep={currentStep} total={total} onChange={setCurrentStep} />
             </div>
 
             <div className="overflow-x-auto">
@@ -154,7 +154,7 @@ export default function ProgramacaoDinamica() {
                 <thead>
                   <tr className="text-xs text-zinc-500">
                     <th />
-                    {colunas.map((c) => (
+                    {columns.map((c) => (
                       <th key={c} className="px-2 py-1 font-medium">
                         {c} kg
                       </th>
@@ -162,34 +162,34 @@ export default function ProgramacaoDinamica() {
                   </tr>
                 </thead>
                 <tbody>
-                  {exemplo.itens.map((item, i) => (
-                    <tr key={item.nome}>
+                  {example.items.map((item, i) => (
+                    <tr key={item.name}>
                       <th className="whitespace-nowrap pr-3 text-right text-xs font-medium text-zinc-400">
-                        {item.nome}
+                        {item.name}
                       </th>
-                      {colunas.map((c, j) => {
-                        const ordem = i * exemplo.capacidade + j;
-                        const preenchida = ordem <= passoAtual;
-                        const atual = ordem === passoAtual;
-                        const escolhida =
+                      {columns.map((c, j) => {
+                        const order = i * example.capacity + j;
+                        const filled = order <= currentStep;
+                        const current = order === currentStep;
+                        const chosen =
                           final &&
-                          dp.celulasEscolhidas.some(
+                          dp.chosenCells.some(
                             ([li, co]) => li === i && co === j,
                           );
                         return (
                           <td
                             key={c}
                             className={`rounded-lg px-2 py-2.5 font-mono text-xs tabular-nums transition-colors ${
-                              escolhida
+                              chosen
                                 ? "bg-emerald-500 font-semibold text-emerald-950"
-                                : atual
+                                : current
                                   ? "bg-amber-500 font-semibold text-amber-950"
-                                  : preenchida
+                                  : filled
                                     ? "bg-zinc-800 text-zinc-200"
                                     : "bg-zinc-900 text-zinc-700"
                             }`}
                           >
-                            {preenchida ? dp.tabela[i][j].toLocaleString("pt-BR") : "·"}
+                            {filled ? dp.table[i][j].toLocaleString("pt-BR") : "·"}
                           </td>
                         );
                       })}
@@ -208,20 +208,20 @@ export default function ProgramacaoDinamica() {
           {final && (
             <div
               className={`flex flex-col gap-2 rounded-2xl border p-4 text-sm ${
-                dp.valorTotal > gulosa.valorTotal
+                dp.totalValue > greedyResult.totalValue
                   ? "border-amber-500/40 bg-amber-500/10 text-zinc-200"
                   : "border-emerald-500/30 bg-emerald-500/5 text-zinc-300"
               }`}
             >
               <div className="font-medium">
-                {dp.valorTotal > gulosa.valorTotal
+                {dp.totalValue > greedyResult.totalValue
                   ? "A programação dinâmica achou uma solução melhor que o guloso."
                   : "Aqui o guloso chegou ao mesmo valor."}
               </div>
               <div className="text-zinc-400">
-                Dinâmica: {dp.escolhidos.join(" + ")} ({dinheiro(dp.valorTotal)}
-                ). Guloso: {gulosa.escolhidos.join(" + ")} (
-                {dinheiro(gulosa.valorTotal)}).
+                Dinâmica: {dp.chosenSet.join(" + ")} ({money(dp.totalValue)}
+                ). Guloso: {greedyResult.chosenSet.join(" + ")} (
+                {money(greedyResult.totalValue)}).
               </div>
             </div>
           )}

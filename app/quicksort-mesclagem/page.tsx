@@ -1,51 +1,51 @@
 "use client";
 
-import { lerNumeros } from "@/lib/entrada";
-import { mesclagem } from "@/lib/mesclagem";
+import { readNumbers } from "@/lib/input";
+import { mergeSort } from "@/lib/merge-sort";
 import { quicksort } from "@/lib/quicksort";
 import {
-  listaAleatoria,
-  listaInversa,
-  listaOrdenada,
-} from "@/lib/geradores";
-import { NoMesclagem } from "@/types/mesclagem";
+  randomList,
+  reversedList,
+  sortedList,
+} from "@/lib/generators";
+import { MergeNode } from "@/types/merge-sort";
 import { useMemo, useState } from "react";
-import { Stat, botaoPrimario, inputClass } from "@/components/ui";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Stat, primaryButton, inputClass } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
-const celula =
+const cell =
   "flex h-8 min-w-8 items-center justify-center rounded-md px-1.5 font-mono text-xs tabular-nums";
 
-const ENTRADAS = [
-  { nome: "Aleatória", gerar: (n: number) => listaAleatoria(n) },
-  { nome: "Já ordenada", gerar: listaOrdenada },
-  { nome: "Em ordem inversa", gerar: listaInversa },
+const INPUTS = [
+  { name: "Aleatória", generate: (n: number) => randomList(n) },
+  { name: "Já ordenada", generate: sortedList },
+  { name: "Em ordem inversa", generate: reversedList },
 ];
 
 const fmt = (n: number) => n.toLocaleString("pt-BR");
 
-function Arvore({ no }: { no: NoMesclagem }) {
-  const folha = no.esquerda === undefined;
+function Tree({ node }: { node: MergeNode }) {
+  const leaf = node.left === undefined;
   return (
     <div className="flex flex-col items-center gap-2 px-1.5">
       <div className="flex flex-wrap justify-center gap-1 rounded-lg border border-zinc-700 bg-zinc-900 p-1.5">
-        {no.lista.map((n, i) => (
-          <div key={i} className={`${celula} bg-zinc-800 text-zinc-300`}>
+        {node.list.map((n, i) => (
+          <div key={i} className={`${cell} bg-zinc-800 text-zinc-300`}>
             {n}
           </div>
         ))}
       </div>
-      {!folha && (
+      {!leaf && (
         <>
           <div className="flex items-start">
-            {no.esquerda && <Arvore no={no.esquerda} />}
-            {no.direita && <Arvore no={no.direita} />}
+            {node.left && <Tree node={node.left} />}
+            {node.right && <Tree node={node.right} />}
           </div>
           <div className="flex flex-wrap justify-center gap-1 rounded-lg border border-emerald-500/40 bg-emerald-500/10 p-1.5">
-            {no.ordenada.map((n, i) => (
-              <div key={i} className={`${celula} bg-emerald-500/30 text-emerald-100`}>
+            {node.sorted.map((n, i) => (
+              <div key={i} className={`${cell} bg-emerald-500/30 text-emerald-100`}>
                 {n}
               </div>
             ))}
@@ -56,37 +56,37 @@ function Arvore({ no }: { no: NoMesclagem }) {
   );
 }
 
-export default function QuicksortMesclagem() {
+export default function QuicksortMergeSort() {
   const [n, setN] = useState(100);
-  const [texto, setTexto] = useState("38, 27, 43, 3, 9, 82, 10, 5");
-  const [erro, setErro] = useState("");
-  const [lista, setLista] = useState([38, 27, 43, 3, 9, 82, 10, 5]);
+  const [text, setText] = useState("38, 27, 43, 3, 9, 82, 10, 5");
+  const [error, setError] = useState("");
+  const [list, setList] = useState([38, 27, 43, 3, 9, 82, 10, 5]);
 
-  const tabela = useMemo(
+  const table = useMemo(
     () =>
-      ENTRADAS.map(({ nome, gerar }) => {
-        const entrada = gerar(n);
+      INPUTS.map(({ name, generate }) => {
+        const input = generate(n);
         return {
-          nome,
-          meio: quicksort(entrada, "meio").comparacoes,
-          primeiro: quicksort(entrada, "primeiro").comparacoes,
-          mescla: mesclagem(entrada).comparacoes,
+          name,
+          middle: quicksort(input, "middle").comparisons,
+          first: quicksort(input, "first").comparisons,
+          mergeStep: mergeSort(input).comparisons,
         };
       }),
     [n],
   );
 
-  const resultado = mesclagem(lista);
+  const result = mergeSort(list);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const numeros = lerNumeros(texto);
-    if (numeros.length === 0 || numeros.length > 16 || numeros.some((x) => !Number.isFinite(x))) {
-      setErro("Digite de 1 a 16 números, separados por vírgula.");
+    const numbers = readNumbers(text);
+    if (numbers.length === 0 || numbers.length > 16 || numbers.some((x) => !Number.isFinite(x))) {
+      setError("Digite de 1 a 16 números, separados por vírgula.");
       return;
     }
-    setErro("");
-    setLista(numeros);
+    setError("");
+    setList(numbers);
   }
 
   return (
@@ -100,10 +100,10 @@ export default function QuicksortMesclagem() {
           no caso médio e O(n²) no pior caso. Compare quantas comparações cada
           um faz.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.quicksortMesclagem.simples}
-          tecnica={EXPLICACOES.quicksortMesclagem.tecnica}
-          codigo={CODIGOS.mesclagem}
+        <Explanation
+          simple={EXPLANATIONS.quicksortMergeSort.simple}
+          technique={EXPLANATIONS.quicksortMergeSort.technique}
+          code={CODES.mergeSort}
         />
       </header>
 
@@ -138,16 +138,16 @@ export default function QuicksortMesclagem() {
               </tr>
             </thead>
             <tbody className="font-mono">
-              {tabela.map((linha) => {
-                const pior = Math.max(linha.meio, linha.primeiro, linha.mescla);
-                const cel = (v: number) =>
-                  `px-4 py-3 text-right ${v === pior && pior > 2 * Math.min(linha.meio, linha.primeiro, linha.mescla) ? "text-red-400" : "text-zinc-200"}`;
+              {table.map((line) => {
+                const worst = Math.max(line.middle, line.first, line.mergeStep);
+                const cellValue = (v: number) =>
+                  `px-4 py-3 text-right ${v === worst && worst > 2 * Math.min(line.middle, line.first, line.mergeStep) ? "text-red-400" : "text-zinc-200"}`;
                 return (
-                  <tr key={linha.nome} className="border-t border-zinc-800">
-                    <td className="px-4 py-3 font-sans text-zinc-300">{linha.nome}</td>
-                    <td className={cel(linha.meio)}>{fmt(linha.meio)}</td>
-                    <td className={cel(linha.primeiro)}>{fmt(linha.primeiro)}</td>
-                    <td className={cel(linha.mescla)}>{fmt(linha.mescla)}</td>
+                  <tr key={line.name} className="border-t border-zinc-800">
+                    <td className="px-4 py-3 font-sans text-zinc-300">{line.name}</td>
+                    <td className={cellValue(line.middle)}>{fmt(line.middle)}</td>
+                    <td className={cellValue(line.first)}>{fmt(line.first)}</td>
+                    <td className={cellValue(line.mergeStep)}>{fmt(line.mergeStep)}</td>
                   </tr>
                 );
               })}
@@ -200,40 +200,40 @@ export default function QuicksortMesclagem() {
             Números a ordenar (até 16)
             <input
               className={inputClass}
-              value={texto}
-              onChange={(e) => setTexto(e.target.value)}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
               placeholder="Ex.: 38, 27, 43, 3"
             />
           </label>
-          {erro && <p className="text-sm text-red-400">{erro}</p>}
+          {error && <p className="text-sm text-red-400">{error}</p>}
           <div className="flex gap-3">
             <button
               type="button"
               className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
               onClick={() => {
-                const aleatoria = Array.from({ length: 10 }, () => Math.floor(Math.random() * 99 + 1));
-                setTexto(aleatoria.join(", "));
-                setLista(aleatoria);
-                setErro("");
+                const randomValue = Array.from({ length: 10 }, () => Math.floor(Math.random() * 99 + 1));
+                setText(randomValue.join(", "));
+                setList(randomValue);
+                setError("");
               }}
             >
               Gerar aleatório
             </button>
-            <button type="submit" className={`${botaoPrimario} flex-1`}>
+            <button type="submit" className={`${primaryButton} flex-1`}>
               Ordenar
             </button>
           </div>
         </form>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <Stat label="Comparações" value={String(resultado.comparacoes)} tone="text-amber-400" />
-          <Stat label="Profundidade" value={String(resultado.profundidade)} tone="text-zinc-100" />
-          <Stat label="Itens" value={String(lista.length)} tone="text-zinc-100" />
+          <Stat label="Comparações" value={String(result.comparisons)} tone="text-amber-400" />
+          <Stat label="Profundidade" value={String(result.depth)} tone="text-zinc-100" />
+          <Stat label="Itens" value={String(list.length)} tone="text-zinc-100" />
         </div>
 
         <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
           <div className="flex w-max min-w-full justify-center">
-            <Arvore no={resultado.raiz} />
+            <Tree node={result.root} />
           </div>
         </div>
       </section>

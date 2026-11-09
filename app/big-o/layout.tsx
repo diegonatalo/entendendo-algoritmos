@@ -1,6 +1,6 @@
-import { metadataDaPagina } from "@/lib/metadata";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata = metadataDaPagina("/big-o");
+export const metadata = pageMetadata("/big-o");
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

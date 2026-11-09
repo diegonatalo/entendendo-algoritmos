@@ -1,26 +1,26 @@
-export type EntradaHash = {
-  chave: string;
-  valor: string;
+export type HashEntry = {
+  key: string;
+  value: string;
 };
 
-export type TabelaHash = EntradaHash[][];
+export type HashTable = HashEntry[][];
 
-export type ResultadoHash = {
-  soma: number;
-  indice: number;
+export type HashResult = {
+  sum: number;
+  index: number;
 };
 
-export type ResultadoInsercao = {
-  tabela: TabelaHash;
-  indice: number;
-  soma: number;
-  colisao: boolean;
-  atualizou: boolean;
+export type InsertionResult = {
+  table: HashTable;
+  index: number;
+  sum: number;
+  collision: boolean;
+  updated: boolean;
 };
 
-export type ResultadoBuscaHash = {
-  indice: number;
-  soma: number;
-  comparacoes: number;
-  valor?: string;
+export type HashSearchResult = {
+  index: number;
+  sum: number;
+  comparisons: number;
+  value?: string;
 };

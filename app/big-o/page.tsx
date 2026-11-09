@@ -1,26 +1,26 @@
 "use client";
 
-import { curvas, formatarPassos, formatarTempo } from "@/lib/big-o";
+import { curves, formatSteps, formatTime } from "@/lib/big-o";
 import { useState } from "react";
-import { GraficoRolavel } from "@/components/ui";
-import { Explicacao } from "@/components/explicacao";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { ScrollableChart } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { EXPLANATIONS } from "@/lib/explanations";
 
 const X_MAX = 20;
 const Y_MAX = 200;
-const LARGURA = 500;
-const ALTURA = 280;
-const M = { esq: 40, dir: 10, topo: 10, base: 30 };
+const WIDTH = 500;
+const HEIGHT = 280;
+const M = { esq: 40, dir: 10, top: 10, base: 30 };
 
 const gx = (n: number) =>
-  M.esq + ((n - 1) / (X_MAX - 1)) * (LARGURA - M.esq - M.dir);
+  M.esq + ((n - 1) / (X_MAX - 1)) * (WIDTH - M.esq - M.dir);
 const gy = (v: number) =>
-  ALTURA - M.base - (Math.min(v, Y_MAX) / Y_MAX) * (ALTURA - M.topo - M.base);
+  HEIGHT - M.base - (Math.min(v, Y_MAX) / Y_MAX) * (HEIGHT - M.top - M.base);
 
 export default function BigO() {
   const [n, setN] = useState(10);
 
-  const pontosX = Array.from({ length: X_MAX }, (_, i) => i + 1);
+  const pointsX = Array.from({ length: X_MAX }, (_, i) => i + 1);
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
@@ -31,9 +31,9 @@ export default function BigO() {
           quando a entrada cresce. Um algoritmo mais rápido para entradas
           pequenas pode perder feio para uma entrada grande.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.bigO.simples}
-          tecnica={EXPLICACOES.bigO.tecnica}
+        <Explanation
+          simple={EXPLANATIONS.bigO.simple}
+          technique={EXPLANATIONS.bigO.technique}
         />
       </header>
 
@@ -58,19 +58,19 @@ export default function BigO() {
           Operações para n de 1 a {X_MAX} (eixo cortado em {Y_MAX})
         </div>
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
-          {curvas.map((c) => (
-            <span key={c.id} className={`flex items-center gap-1.5 ${c.corTexto}`}>
+          {curves.map((c) => (
+            <span key={c.id} className={`flex items-center gap-1.5 ${c.textColor}`}>
               <span
                 className="h-0.5 w-4 rounded"
-                style={{ backgroundColor: c.cor }}
+                style={{ backgroundColor: c.color }}
               />
-              <span className="font-mono">{c.notacao}</span>
+              <span className="font-mono">{c.notation}</span>
             </span>
           ))}
         </div>
-        <GraficoRolavel minLargura={LARGURA}>
+        <ScrollableChart minWidthValue={WIDTH}>
         <svg
-          viewBox={`0 0 ${LARGURA} ${ALTURA}`}
+          viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
           className="mx-auto w-full max-w-2xl"
           role="img"
           aria-label="Gráfico comparando o crescimento das classes de custo"
@@ -79,7 +79,7 @@ export default function BigO() {
             <g key={v}>
               <line
                 x1={M.esq}
-                x2={LARGURA - M.dir}
+                x2={WIDTH - M.dir}
                 y1={gy(v)}
                 y2={gy(v)}
                 className="stroke-zinc-800"
@@ -100,7 +100,7 @@ export default function BigO() {
             <text
               key={v}
               x={gx(v)}
-              y={ALTURA - 10}
+              y={HEIGHT - 10}
               textAnchor="middle"
               fontSize={10}
               className="fill-zinc-500"
@@ -109,13 +109,13 @@ export default function BigO() {
             </text>
           ))}
 
-          {curvas.map((c) => (
+          {curves.map((c) => (
             <polyline
               key={c.id}
               fill="none"
-              stroke={c.cor}
+              stroke={c.color}
               strokeWidth={2}
-              points={pontosX.map((x) => `${gx(x)},${gy(c.passos(x))}`).join(" ")}
+              points={pointsX.map((x) => `${gx(x)},${gy(c.steps(x))}`).join(" ")}
             />
           ))}
 
@@ -123,14 +123,14 @@ export default function BigO() {
             <line
               x1={gx(n)}
               x2={gx(n)}
-              y1={M.topo}
-              y2={ALTURA - M.base}
+              y1={M.top}
+              y2={HEIGHT - M.base}
               className="stroke-zinc-400"
               strokeDasharray="4 4"
             />
           )}
         </svg>
-        </GraficoRolavel>
+        </ScrollableChart>
         {n > X_MAX && (
           <p className="text-center text-xs text-zinc-500">
             O gráfico mostra n até {X_MAX}; a tabela abaixo usa n = {n}.
@@ -153,19 +153,19 @@ export default function BigO() {
               </tr>
             </thead>
             <tbody>
-              {curvas.map((c) => {
-                const passos = c.passos(n);
+              {curves.map((c) => {
+                const steps = c.steps(n);
                 return (
                   <tr key={c.id} className="border-t border-zinc-800">
-                    <td className={`px-4 py-3 font-mono ${c.corTexto}`}>
-                      {c.notacao}
+                    <td className={`px-4 py-3 font-mono ${c.textColor}`}>
+                      {c.notation}
                     </td>
-                    <td className="px-4 py-3 text-zinc-400">{c.exemplo}</td>
+                    <td className="px-4 py-3 text-zinc-400">{c.example}</td>
                     <td className="px-4 py-3 text-right font-mono text-zinc-200">
-                      {formatarPassos(passos)}
+                      {formatSteps(steps)}
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-zinc-400">
-                      {formatarTempo(passos)}
+                      {formatTime(steps)}
                     </td>
                   </tr>
                 );

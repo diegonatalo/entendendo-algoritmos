@@ -1,30 +1,30 @@
 "use client";
 
-import { ControlesPassos } from "@/components/ui";
+import { StepControls } from "@/components/ui";
 import {
-  coberturaGulosa,
-  coberturaOtima,
-} from "@/lib/cobertura-conjuntos";
-import { Conjuntos } from "@/types/guloso";
+  greedyCoverage,
+  optimalCoverage,
+} from "@/lib/set-coverage";
+import { Sets } from "@/types/greedy";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
-type Exemplo = {
-  titulo: string;
-  descricao: string;
-  universo: string[];
-  conjuntos: Conjuntos;
+type Example = {
+  title: string;
+  description: string;
+  universe: string[];
+  sets: Sets;
 };
 
-const EXEMPLOS: Exemplo[] = [
+const EXAMPLES: Example[] = [
   {
-    titulo: "Estações de rádio (livro)",
-    descricao:
+    title: "Estações de rádio (livro)",
+    description:
       "Cada estação cobre alguns estados. Meta: cobrir todos os estados com o menor número de estações.",
-    universo: ["mt", "wa", "or", "id", "nv", "ut", "ca", "az"],
-    conjuntos: {
+    universe: ["mt", "wa", "or", "id", "nv", "ut", "ca", "az"],
+    sets: {
       kone: ["id", "nv", "ut"],
       ktwo: ["wa", "id", "mt"],
       kthree: ["or", "nv", "ca"],
@@ -33,11 +33,11 @@ const EXEMPLOS: Exemplo[] = [
     },
   },
   {
-    titulo: "Quando o guloso erra",
-    descricao:
+    title: "Quando o guloso erra",
+    description:
       "O conjunto 'grande' parece a melhor escolha, mas 'esq' e 'dir' sozinhos já cobrem tudo.",
-    universo: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-    conjuntos: {
+    universe: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+    sets: {
       grande: ["1", "2", "3", "4", "7", "8", "9"],
       esq: ["1", "2", "3", "4", "5", "6"],
       dir: ["7", "8", "9", "10", "11", "12"],
@@ -45,26 +45,26 @@ const EXEMPLOS: Exemplo[] = [
   },
 ];
 
-const corDoTipo = {
-  inicio: "text-zinc-300",
-  escolhe: "text-amber-400",
-  fim: "text-emerald-400",
+const colorOfType = {
+  start: "text-zinc-300",
+  choose: "text-amber-400",
+  end: "text-emerald-400",
 };
 
 const chip = "rounded-md px-2 py-1 font-mono text-xs";
 
-export default function AlgoritmoGuloso() {
-  const [indice, setIndice] = useState(0);
-  const [executado, setExecutado] = useState(false);
-  const [passoAtual, setPassoAtual] = useState(0);
+export default function GreedyAlgorithm() {
+  const [index, setIndex] = useState(0);
+  const [executed, setExecuted] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const exemplo = EXEMPLOS[indice];
-  const gulosa = coberturaGulosa(exemplo.universo, exemplo.conjuntos);
-  const otima = coberturaOtima(exemplo.universo, exemplo.conjuntos);
-  const passo = gulosa.passos[passoAtual];
+  const example = EXAMPLES[index];
+  const greedyResult = greedyCoverage(example.universe, example.sets);
+  const optimal = optimalCoverage(example.universe, example.sets);
+  const step = greedyResult.steps[currentStep];
 
-  const guloso = gulosa.solucao.length;
-  const minimo = otima.solucao?.length ?? 0;
+  const greedy = greedyResult.solution.length;
+  const minimum = optimal.solution?.length ?? 0;
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
@@ -78,40 +78,40 @@ export default function AlgoritmoGuloso() {
           testar todas as combinações (O(2ⁿ)); o guloso é uma aproximação
           rápida (O(n²)).
         </p>
-        <Explicacao
-          simples={EXPLICACOES.algoritmoGuloso.simples}
-          tecnica={EXPLICACOES.algoritmoGuloso.tecnica}
-          codigo={CODIGOS.coberturaGulosa}
+        <Explanation
+          simple={EXPLANATIONS.greedyAlgorithm.simple}
+          technique={EXPLANATIONS.greedyAlgorithm.technique}
+          code={CODES.greedyCoverage}
         />
       </header>
 
       <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
         <div className="flex flex-wrap gap-2">
-          {EXEMPLOS.map((e, i) => (
+          {EXAMPLES.map((e, i) => (
             <button
-              key={e.titulo}
+              key={e.title}
               onClick={() => {
-                setIndice(i);
-                setExecutado(false);
-                setPassoAtual(0);
+                setIndex(i);
+                setExecuted(false);
+                setCurrentStep(0);
               }}
               className={`cursor-pointer rounded-xl border px-4 py-2 text-sm transition-colors ${
-                i === indice
+                i === index
                   ? "border-emerald-500/60 bg-emerald-500/10 text-emerald-300"
                   : "border-zinc-700 text-zinc-300 hover:border-zinc-500"
               }`}
             >
-              {e.titulo}
+              {e.title}
             </button>
           ))}
         </div>
-        <p className="text-sm text-zinc-400">{exemplo.descricao}</p>
+        <p className="text-sm text-zinc-400">{example.description}</p>
         <div className="flex flex-col gap-2">
           <div className="text-xs uppercase tracking-wider text-zinc-500">
             Itens a cobrir
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {exemplo.universo.map((item) => (
+            {example.universe.map((item) => (
               <span key={item} className={`${chip} bg-zinc-800 text-zinc-300`}>
                 {item}
               </span>
@@ -121,46 +121,46 @@ export default function AlgoritmoGuloso() {
         <button
           className="cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600"
           onClick={() => {
-            setExecutado(true);
-            setPassoAtual(0);
+            setExecuted(true);
+            setCurrentStep(0);
           }}
         >
           Executar algoritmo guloso
         </button>
       </div>
 
-      {executado && (
+      {executed && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Conjuntos usados (guloso)"
-              value={String(guloso)}
+              value={String(greedy)}
               tone="text-amber-400"
             />
             <Stat
               label="Mínimo possível"
-              value={String(minimo)}
+              value={String(minimum)}
               tone="text-emerald-400"
             />
             <Stat
               label="Passo"
-              value={`${passoAtual + 1} / ${gulosa.passos.length}`}
+              value={`${currentStep + 1} / ${greedyResult.steps.length}`}
               tone="text-zinc-100"
             />
           </div>
 
           <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
-            <Legenda cor="bg-amber-500" texto="Conjunto escolhido agora" />
-            <Legenda cor="bg-emerald-500/30" texto="Já coberto" />
-            <Legenda cor="bg-red-500/20" texto="Ainda falta cobrir" />
+            <Legend color="bg-amber-500" text="Conjunto escolhido agora" />
+            <Legend color="bg-emerald-500/30" text="Já coberto" />
+            <Legend color="bg-red-500/20" text="Ainda falta cobrir" />
           </div>
 
           <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className={`text-sm font-medium ${corDoTipo[passo.tipo]}`}>
-                {passo.descricao}
+              <p className={`text-sm font-medium ${colorOfType[step.type]}`}>
+                {step.description}
               </p>
-              <ControlesPassos passoAtual={passoAtual} total={gulosa.passos.length} onChange={setPassoAtual} irAoFim={false} />
+              <StepControls currentStep={currentStep} total={greedyResult.steps.length} onChange={setCurrentStep} goToEnd={false} />
             </div>
 
             <div className="flex flex-col gap-2">
@@ -168,13 +168,13 @@ export default function AlgoritmoGuloso() {
                 Itens
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {exemplo.universo.map((item) => {
-                  const coberto = passo.cobertos.includes(item);
+                {example.universe.map((item) => {
+                  const covered = step.coveredItems.includes(item);
                   return (
                     <span
                       key={item}
                       className={`${chip} ${
-                        coberto
+                        covered
                           ? "bg-emerald-500/30 text-emerald-200"
                           : "bg-red-500/20 text-red-300"
                       }`}
@@ -187,35 +187,35 @@ export default function AlgoritmoGuloso() {
             </div>
 
             <ul className="flex flex-col gap-2">
-              {Object.entries(exemplo.conjuntos).map(([nome, itens]) => {
-                const escolhida = passo.escolhida === nome;
-                const usada = passo.solucao.includes(nome);
+              {Object.entries(example.sets).map(([name, items]) => {
+                const chosen = step.chosen === name;
+                const used = step.solution.includes(name);
                 return (
                   <li
-                    key={nome}
+                    key={name}
                     className={`flex flex-wrap items-center gap-3 rounded-xl border p-2.5 transition-colors ${
-                      escolhida
+                      chosen
                         ? "border-amber-500/60 bg-amber-500/10"
-                        : usada
+                        : used
                           ? "border-emerald-500/30 bg-emerald-500/5"
                           : "border-zinc-800 bg-zinc-900/40"
                     }`}
                   >
                     <span
-                      className={`w-16 shrink-0 font-mono text-sm ${escolhida ? "font-semibold text-amber-300" : "text-zinc-300"}`}
+                      className={`w-16 shrink-0 font-mono text-sm ${chosen ? "font-semibold text-amber-300" : "text-zinc-300"}`}
                     >
-                      {nome}
+                      {name}
                     </span>
                     <div className="flex flex-wrap gap-1.5">
-                      {itens.map((item) => (
+                      {items.map((item) => (
                         <span
                           key={item}
                           className={`${chip} ${
-                            escolhida && !passo.cobertos.includes(item)
+                            chosen && !step.coveredItems.includes(item)
                               ? "bg-zinc-800 text-zinc-300"
-                              : escolhida
+                              : chosen
                                 ? "bg-amber-500 font-semibold text-amber-950"
-                                : passo.cobertos.includes(item)
+                                : step.coveredItems.includes(item)
                                   ? "bg-zinc-800 text-zinc-500"
                                   : "bg-zinc-800 text-zinc-300"
                           }`}
@@ -224,9 +224,9 @@ export default function AlgoritmoGuloso() {
                         </span>
                       ))}
                     </div>
-                    {passo.tipo !== "fim" && (
+                    {step.type !== "end" && (
                       <span className="ml-auto text-xs text-zinc-500">
-                        cobriria {passo.candidatos[nome] ?? 0} novos
+                        cobriria {step.candidates[name] ?? 0} novos
                       </span>
                     )}
                   </li>
@@ -237,36 +237,36 @@ export default function AlgoritmoGuloso() {
 
           <div
             className={`flex flex-col gap-2 rounded-2xl border p-4 text-sm ${
-              guloso === minimo
+              greedy === minimum
                 ? "border-emerald-500/30 bg-emerald-500/5 text-zinc-300"
                 : "border-amber-500/40 bg-amber-500/10 text-zinc-200"
             }`}
           >
             <div className="font-medium">
-              {guloso === minimo
+              {greedy === minimum
                 ? "O guloso acertou: usou o mínimo possível."
                 : "O guloso não achou a solução mínima."}
             </div>
             <div className="text-zinc-400">
-              Guloso: {gulosa.solucao.join(", ")} ({guloso}). Força bruta:{" "}
-              {otima.solucao?.join(", ") ?? "sem solução"} ({minimo}), após
-              testar {otima.combinacoesTestadas} combinações.
+              Guloso: {greedyResult.solution.join(", ")} ({greedy}). Força bruta:{" "}
+              {optimal.solution?.join(", ") ?? "sem solução"} ({minimum}), após
+              testar {optimal.testedCombinations} combinações.
             </div>
           </div>
 
           <ol className="flex flex-col gap-1 text-sm">
-            {gulosa.passos.map((p, i) => (
+            {greedyResult.steps.map((p, i) => (
               <li key={i}>
                 <button
-                  onClick={() => setPassoAtual(i)}
+                  onClick={() => setCurrentStep(i)}
                   className={`w-full cursor-pointer rounded-lg px-3 py-1.5 text-left transition-colors hover:bg-zinc-800/60 ${
-                    i === passoAtual
+                    i === currentStep
                       ? "bg-zinc-800 text-zinc-100"
                       : "text-zinc-500"
                   }`}
                 >
                   <span className="mr-2 font-mono text-xs">{i + 1}.</span>
-                  {p.descricao}
+                  {p.description}
                 </button>
               </li>
             ))}
@@ -296,11 +296,11 @@ function Stat({
   );
 }
 
-function Legenda({ cor, texto }: { cor: string; texto: string }) {
+function Legend({ color, text }: { color: string; text: string }) {
   return (
     <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${cor}`} />
-      {texto}
+      <span className={`h-3 w-3 rounded ${color}`} />
+      {text}
     </span>
   );
 }

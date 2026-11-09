@@ -1,71 +1,71 @@
 import {
-  Mensagem,
-  ModeloBayes,
-  PalavraAnalisada,
-  ResultadoBayes,
+  Message,
+  BayesModel,
+  AnalyzedWord,
+  BayesResult,
 } from "@/types/naive-bayes";
 
-export function tokenizar(texto: string): string[] {
-  return texto
+export function tokenize(text: string): string[] {
+  return text
     .toLowerCase()
     .split(/[^\p{L}]+/u)
     .filter((p) => p.length >= 2);
 }
 
-export function treinar(mensagens: Mensagem[]): ModeloBayes {
-  const modelo: ModeloBayes = {
-    contagem: { spam: {}, normal: {} },
-    palavrasPorClasse: { spam: 0, normal: 0 },
-    mensagensPorClasse: { spam: 0, normal: 0 },
-    vocabulario: new Set(),
+export function train(messages: Message[]): BayesModel {
+  const model: BayesModel = {
+    count: { spam: {}, normal: {} },
+    wordsByCategory: { spam: 0, normal: 0 },
+    messagesByCategory: { spam: 0, normal: 0 },
+    vocabulary: new Set(),
   };
 
-  for (const { texto, spam } of mensagens) {
-    const classe = spam ? "spam" : "normal";
-    modelo.mensagensPorClasse[classe]++;
-    for (const palavra of tokenizar(texto)) {
-      modelo.contagem[classe][palavra] = (modelo.contagem[classe][palavra] ?? 0) + 1;
-      modelo.palavrasPorClasse[classe]++;
-      modelo.vocabulario.add(palavra);
+  for (const { text, spam } of messages) {
+    const category = spam ? "spam" : "normal";
+    model.messagesByCategory[category]++;
+    for (const word of tokenize(text)) {
+      model.count[category][word] = (model.count[category][word] ?? 0) + 1;
+      model.wordsByCategory[category]++;
+      model.vocabulary.add(word);
     }
   }
 
-  return modelo;
+  return model;
 }
 
 // Naive Bayes: "ingênuo" porque trata cada palavra como independente das outras.
 // P(spam | palavras) ∝ P(spam) × Π P(palavra | spam), com suavização de Laplace
 // (soma 1 a cada contagem) para que uma palavra nunca vista em uma classe não zere tudo.
-export function classificar(modelo: ModeloBayes, texto: string): ResultadoBayes {
-  const tamanhoVocabulario = modelo.vocabulario.size;
-  const totalMensagens =
-    modelo.mensagensPorClasse.spam + modelo.mensagensPorClasse.normal;
-  const priorSpam = modelo.mensagensPorClasse.spam / totalMensagens;
+export function classify(model: BayesModel, text: string): BayesResult {
+  const vocabularySize = model.vocabulary.size;
+  const totalMessages =
+    model.messagesByCategory.spam + model.messagesByCategory.normal;
+  const priorSpam = model.messagesByCategory.spam / totalMessages;
   const priorNormal = 1 - priorSpam;
 
-  const probabilidade = (palavra: string, classe: "spam" | "normal") =>
-    ((modelo.contagem[classe][palavra] ?? 0) + 1) /
-    (modelo.palavrasPorClasse[classe] + tamanhoVocabulario);
+  const probability = (word: string, category: "spam" | "normal") =>
+    ((model.count[category][word] ?? 0) + 1) /
+    (model.wordsByCategory[category] + vocabularySize);
 
-  const palavras: PalavraAnalisada[] = tokenizar(texto).map((palavra) => ({
-    palavra,
-    conhecida: modelo.vocabulario.has(palavra),
-    pSpam: probabilidade(palavra, "spam"),
-    pNormal: probabilidade(palavra, "normal"),
+  const words: AnalyzedWord[] = tokenize(text).map((word) => ({
+    word,
+    known: model.vocabulary.has(word),
+    pSpam: probability(word, "spam"),
+    pNormal: probability(word, "normal"),
   }));
 
   // trabalha com logaritmos para não perder precisão multiplicando muitos números pequenos
-  let logSpam = Math.log(priorSpam);
-  let logNormal = Math.log(priorNormal);
-  for (const p of palavras) {
-    if (!p.conhecida) continue;
-    logSpam += Math.log(p.pSpam);
-    logNormal += Math.log(p.pNormal);
+  let spamLog = Math.log(priorSpam);
+  let normalLog = Math.log(priorNormal);
+  for (const p of words) {
+    if (!p.known) continue;
+    spamLog += Math.log(p.pSpam);
+    normalLog += Math.log(p.pNormal);
   }
 
-  const maior = Math.max(logSpam, logNormal);
-  const eSpam = Math.exp(logSpam - maior);
-  const eNormal = Math.exp(logNormal - maior);
+  const largest = Math.max(spamLog, normalLog);
+  const spamFlag = Math.exp(spamLog - largest);
+  const isNormal = Math.exp(normalLog - largest);
 
-  return { palavras, probSpam: eSpam / (eSpam + eNormal), priorSpam };
+  return { words, spamProbability: spamFlag / (spamFlag + isNormal), priorSpam };
 }

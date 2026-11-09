@@ -1,48 +1,48 @@
 "use client";
 
-import { classificar, treinar } from "@/lib/naive-bayes";
-import { Mensagem } from "@/types/naive-bayes";
+import { classify, train } from "@/lib/naive-bayes";
+import { Message } from "@/types/naive-bayes";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 import { Stat } from "@/components/ui";
 
-const TREINO: Mensagem[] = [
-  { texto: "ganhe dinheiro rápido agora", spam: true },
-  { texto: "promoção imperdível clique aqui e ganhe prêmio", spam: true },
-  { texto: "você ganhou um prêmio grátis clique agora", spam: true },
-  { texto: "dinheiro fácil oferta grátis", spam: true },
-  { texto: "compre agora promoção desconto grátis", spam: true },
-  { texto: "clique aqui para receber seu prêmio", spam: true },
-  { texto: "oferta imperdível desconto exclusivo agora", spam: true },
-  { texto: "reunião amanhã às dez na sala", spam: false },
-  { texto: "segue o relatório do projeto em anexo", spam: false },
-  { texto: "vamos almoçar amanhã com a equipe", spam: false },
-  { texto: "o documento está em anexo para revisão", spam: false },
-  { texto: "confirmo a reunião de segunda", spam: false },
-  { texto: "obrigado pelo envio do relatório", spam: false },
-  { texto: "podemos conversar sobre o projeto amanhã", spam: false },
+const TRAINING: Message[] = [
+  { text: "ganhe dinheiro rápido agora", spam: true },
+  { text: "promoção imperdível clique aqui e ganhe prêmio", spam: true },
+  { text: "você ganhou um prêmio grátis clique agora", spam: true },
+  { text: "dinheiro fácil oferta grátis", spam: true },
+  { text: "compre agora promoção desconto grátis", spam: true },
+  { text: "clique aqui para receber seu prêmio", spam: true },
+  { text: "oferta imperdível desconto exclusivo agora", spam: true },
+  { text: "reunião amanhã às dez na sala", spam: false },
+  { text: "segue o relatório do projeto em anexo", spam: false },
+  { text: "vamos almoçar amanhã com a equipe", spam: false },
+  { text: "o documento está em anexo para revisão", spam: false },
+  { text: "confirmo a reunião de segunda", spam: false },
+  { text: "obrigado pelo envio do relatório", spam: false },
+  { text: "podemos conversar sobre o projeto amanhã", spam: false },
 ];
 
-const EXEMPLOS = [
+const EXAMPLES = [
   "Clique aqui e ganhe um prêmio grátis",
   "Confirmo a reunião de amanhã sobre o projeto",
   "Oferta de desconto: reunião de vendas",
   "Olá, tudo bem?",
 ];
 
-const MODELO = treinar(TREINO);
+const MODEL = train(TRAINING);
 
 const pct = (n: number) => `${(n * 100).toFixed(1).replace(".", ",")}%`;
 const num = (n: number) => n.toFixed(3).replace(".", ",");
 
-export default function FiltroSpam() {
-  const [texto, setTexto] = useState(EXEMPLOS[0]);
-  const resultado = texto.trim() ? classificar(MODELO, texto) : null;
-  const conhecidas = resultado?.palavras.filter((p) => p.conhecida).length ?? 0;
+export default function SpamFilter() {
+  const [text, setText] = useState(EXAMPLES[0]);
+  const result = text.trim() ? classify(MODEL, text) : null;
+  const knownItems = result?.words.filter((p) => p.known).length ?? 0;
 
-  const spam = resultado ? resultado.probSpam >= 0.5 : false;
+  const spam = result ? result.spamProbability >= 0.5 : false;
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
@@ -56,10 +56,10 @@ export default function FiltroSpam() {
           palavras. É &quot;ingênuo&quot; porque trata as palavras como se fossem
           independentes umas das outras.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.filtroSpam.simples}
-          tecnica={EXPLICACOES.filtroSpam.tecnica}
-          codigo={CODIGOS.naiveBayes}
+        <Explanation
+          simple={EXPLANATIONS.spamFilter.simple}
+          technique={EXPLANATIONS.spamFilter.technique}
+          code={CODES.naiveBayes}
         />
       </header>
 
@@ -68,16 +68,16 @@ export default function FiltroSpam() {
           Mensagem a classificar
           <textarea
             className="min-h-24 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
-            value={texto}
-            onChange={(e) => setTexto(e.target.value)}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
             maxLength={300}
           />
         </label>
         <div className="flex flex-wrap gap-2">
-          {EXEMPLOS.map((e) => (
+          {EXAMPLES.map((e) => (
             <button
               key={e}
-              onClick={() => setTexto(e)}
+              onClick={() => setText(e)}
               className="cursor-pointer rounded-xl border border-zinc-700 px-3 py-2.5 text-xs text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
             >
               {e}
@@ -86,19 +86,19 @@ export default function FiltroSpam() {
         </div>
       </section>
 
-      {resultado && (
+      {result && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Classificação"
-              value={conhecidas === 0 ? "Sem palavras conhecidas" : spam ? "Spam" : "Mensagem normal"}
-              tone={conhecidas === 0 ? "text-zinc-400" : spam ? "text-red-400" : "text-emerald-400"}
-              pequeno={conhecidas === 0}
+              value={knownItems === 0 ? "Sem palavras conhecidas" : spam ? "Spam" : "Mensagem normal"}
+              tone={knownItems === 0 ? "text-zinc-400" : spam ? "text-red-400" : "text-emerald-400"}
+              small={knownItems === 0}
             />
-            <Stat label="Chance de spam" value={pct(resultado.probSpam)} tone="text-amber-400" />
+            <Stat label="Chance de spam" value={pct(result.spamProbability)} tone="text-amber-400" />
             <Stat
               label="Palavras conhecidas"
-              value={`${conhecidas} de ${resultado.palavras.length}`}
+              value={`${knownItems} de ${result.words.length}`}
               tone="text-zinc-100"
             />
           </div>
@@ -111,11 +111,11 @@ export default function FiltroSpam() {
             <div className="h-3 overflow-hidden rounded-full bg-emerald-500/30">
               <div
                 className="h-full bg-red-500 transition-all"
-                style={{ width: `${resultado.probSpam * 100}%` }}
+                style={{ width: `${result.spamProbability * 100}%` }}
               />
             </div>
             <p className="text-xs text-zinc-500">
-              Antes de ler a mensagem, o filtro já parte de {pct(resultado.priorSpam)} de
+              Antes de ler a mensagem, o filtro já parte de {pct(result.priorSpam)} de
               chance de spam, a proporção de spam no treino.
             </p>
           </div>
@@ -131,21 +131,21 @@ export default function FiltroSpam() {
                 </tr>
               </thead>
               <tbody className="font-mono">
-                {resultado.palavras.map((p, i) => {
-                  const razao = p.pSpam / p.pNormal;
+                {result.words.map((p, i) => {
+                  const ratio = p.pSpam / p.pNormal;
                   return (
                     <tr key={i} className="border-t border-zinc-800">
-                      <td className="px-4 py-2.5 text-zinc-200">{p.palavra}</td>
-                      {p.conhecida ? (
+                      <td className="px-4 py-2.5 text-zinc-200">{p.word}</td>
+                      {p.known ? (
                         <>
                           <td className="px-4 py-2.5 text-right text-zinc-400">{num(p.pSpam)}</td>
                           <td className="px-4 py-2.5 text-right text-zinc-400">{num(p.pNormal)}</td>
                           <td
                             className={`px-4 py-2.5 font-sans ${
-                              razao > 1.01 ? "text-red-400" : razao < 0.99 ? "text-emerald-400" : "text-zinc-500"
+                              ratio > 1.01 ? "text-red-400" : ratio < 0.99 ? "text-emerald-400" : "text-zinc-500"
                             }`}
                           >
-                            {razao > 1.01 ? "spam" : razao < 0.99 ? "normal" : "neutra"}
+                            {ratio > 1.01 ? "spam" : ratio < 0.99 ? "normal" : "neutra"}
                           </td>
                         </>
                       ) : (
@@ -165,24 +165,24 @@ export default function FiltroSpam() {
       <section className="fade-up flex flex-col gap-3">
         <h2 className="text-lg font-semibold">Mensagens usadas no treino</h2>
         <p className="text-sm text-zinc-400">
-          {TREINO.length} mensagens inventadas para este exemplo; o vocabulário
-          tem {MODELO.vocabulario.size} palavras distintas. Palavras que não
+          {TRAINING.length} mensagens inventadas para este exemplo; o vocabulário
+          tem {MODEL.vocabulary.size} palavras distintas. Palavras que não
           aparecem aqui são ignoradas, e a probabilidade usa suavização de
           Laplace (soma 1 a cada contagem) para nenhuma classe zerar o resultado.
         </p>
         <div className="grid gap-4 md:grid-cols-2">
-          {[true, false].map((ehSpam) => (
+          {[true, false].map((isSpam) => (
             <div
-              key={String(ehSpam)}
+              key={String(isSpam)}
               className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
             >
-              <div className={`text-xs font-medium uppercase tracking-wider ${ehSpam ? "text-red-400" : "text-emerald-400"}`}>
-                {ehSpam ? "Spam" : "Normal"}
+              <div className={`text-xs font-medium uppercase tracking-wider ${isSpam ? "text-red-400" : "text-emerald-400"}`}>
+                {isSpam ? "Spam" : "Normal"}
               </div>
               <ul className="flex flex-col gap-1 text-sm text-zinc-400">
-                {TREINO.filter((m) => m.spam === ehSpam).map((m) => (
-                  <li key={m.texto}>
-                    {m.texto}
+                {TRAINING.filter((m) => m.spam === isSpam).map((m) => (
+                  <li key={m.text}>
+                    {m.text}
                   </li>
                 ))}
               </ul>

@@ -1,94 +1,94 @@
 import {
-  GrafoPonderado,
-  PassoDijkstra,
-  ResultadoDijkstra,
+  WeightedGraph,
+  DijkstraStep,
+  DijkstraResult,
 } from "@/types/dijkstra";
 
-const formatar = (custo: number) => (custo === Infinity ? "∞" : String(custo));
+const format = (cost: number) => (cost === Infinity ? "∞" : String(cost));
 
 export function dijkstra(
-  grafo: GrafoPonderado,
-  inicio: string,
-  fim: string,
-): ResultadoDijkstra {
-  const nos = Object.keys(grafo);
-  const custos: Record<string, number> = {};
-  const pais: Record<string, string | null> = {};
-  const processados: string[] = [];
-  const passos: PassoDijkstra[] = [];
+  graph: WeightedGraph,
+  start: string,
+  end: string,
+): DijkstraResult {
+  const nodes = Object.keys(graph);
+  const costs: Record<string, number> = {};
+  const parents: Record<string, string | null> = {};
+  const processed: string[] = [];
+  const steps: DijkstraStep[] = [];
 
-  for (const no of nos) {
-    custos[no] = no === inicio ? 0 : Infinity;
-    pais[no] = null;
+  for (const node of nodes) {
+    costs[node] = node === start ? 0 : Infinity;
+    parents[node] = null;
   }
 
-  function registrar(
-    tipo: PassoDijkstra["tipo"],
-    atual: string | null,
-    descricao: string,
+  function register(
+    type: DijkstraStep["type"],
+    current: string | null,
+    description: string,
   ) {
-    passos.push({
-      tipo,
-      atual,
-      custos: { ...custos },
-      pais: { ...pais },
-      processados: [...processados],
-      descricao,
+    steps.push({
+      type,
+      current,
+      costs: { ...costs },
+      parents: { ...parents },
+      processed: [...processed],
+      description,
     });
   }
 
-  function maisBarato(): string | null {
-    let menor: string | null = null;
-    for (const no of nos) {
-      if (processados.includes(no) || custos[no] === Infinity) continue;
-      if (menor === null || custos[no] < custos[menor]) menor = no;
+  function cheapest(): string | null {
+    let smallest: string | null = null;
+    for (const node of nodes) {
+      if (processed.includes(node) || costs[node] === Infinity) continue;
+      if (smallest === null || costs[node] < costs[smallest]) smallest = node;
     }
-    return menor;
+    return smallest;
   }
 
-  registrar("inicio", null, `Custo de ${inicio} = 0; os demais começam em ∞`);
+  register("start", null, `Custo de ${start} = 0; os demais começam em ∞`);
 
-  let atual = maisBarato();
-  while (atual !== null) {
-    const mudancas: string[] = [];
-    for (const [vizinho, peso] of Object.entries(grafo[atual])) {
-      const novoCusto = custos[atual] + peso;
-      if (novoCusto < custos[vizinho]) {
-        mudancas.push(
-          `${vizinho}: ${formatar(custos[vizinho])} → ${novoCusto}`,
+  let current = cheapest();
+  while (current !== null) {
+    const changes: string[] = [];
+    for (const [neighbor, weight] of Object.entries(graph[current])) {
+      const newCost = costs[current] + weight;
+      if (newCost < costs[neighbor]) {
+        changes.push(
+          `${neighbor}: ${format(costs[neighbor])} → ${newCost}`,
         );
-        custos[vizinho] = novoCusto;
-        pais[vizinho] = atual;
+        costs[neighbor] = newCost;
+        parents[neighbor] = current;
       }
     }
-    processados.push(atual);
+    processed.push(current);
 
-    registrar(
-      "processa",
-      atual,
-      `Nó mais barato: ${atual} (custo ${custos[atual]}). ${
-        mudancas.length > 0
-          ? `Atualiza ${mudancas.join("; ")}`
+    register(
+      "process",
+      current,
+      `Nó mais barato: ${current} (custo ${costs[current]}). ${
+        changes.length > 0
+          ? `Atualiza ${changes.join("; ")}`
           : "Nenhum custo melhorou"
       }`,
     );
 
-    atual = maisBarato();
+    current = cheapest();
   }
 
-  if (custos[fim] === Infinity) {
-    registrar("fim", null, `Não existe caminho de ${inicio} até ${fim}`);
-    return { passos, caminho: null, custoTotal: null };
+  if (costs[end] === Infinity) {
+    register("end", null, `Não existe caminho de ${start} até ${end}`);
+    return { steps, path: null, totalCost: null };
   }
 
-  const caminho: string[] = [];
-  for (let no: string | null = fim; no !== null; no = pais[no]) {
-    caminho.unshift(no);
+  const path: string[] = [];
+  for (let node: string | null = end; node !== null; node = parents[node]) {
+    path.unshift(node);
   }
-  registrar(
-    "fim",
+  register(
+    "end",
     null,
-    `Caminho mais barato: ${caminho.join(" → ")}, custo ${custos[fim]}`,
+    `Caminho mais barato: ${path.join(" → ")}, custo ${costs[end]}`,
   );
-  return { passos, caminho, custoTotal: custos[fim] };
+  return { steps, path, totalCost: costs[end] };
 }

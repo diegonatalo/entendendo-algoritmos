@@ -1,45 +1,45 @@
 "use client";
 
 import { knn } from "@/lib/knn";
-import { Classe, PontoKnn } from "@/types/knn";
+import { Category, KnnPoint } from "@/types/knn";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { GraficoRolavel } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { ScrollableChart } from "@/components/ui";
 
 // x = tamanho, y = vermelhidão (0 a 100)
-const PONTOS: PontoKnn[] = [
+const POINTS: KnnPoint[] = [
   ...(
     [
       [20, 70], [25, 55], [30, 65], [35, 50], [28, 80], [40, 62],
       [33, 40], [45, 55], [22, 45], [38, 75], [50, 48], [42, 35],
     ] as const
-  ).map(([x, y]): PontoKnn => ({ x, y, classe: "laranja" })),
+  ).map(([x, y]): KnnPoint => ({ x, y, category: "laranja" })),
   ...(
     [
       [60, 30], [70, 45], [75, 25], [65, 55], [80, 40], [85, 60],
       [72, 70], [58, 42], [90, 35], [68, 20], [55, 60], [78, 52],
     ] as const
-  ).map(([x, y]): PontoKnn => ({ x, y, classe: "toranja" })),
+  ).map(([x, y]): KnnPoint => ({ x, y, category: "toranja" })),
 ];
 
-const COR: Record<Classe, { fill: string; stroke: string; texto: string; barra: string }> = {
+const COLOR: Record<Category, { fill: string; stroke: string; text: string; bar: string }> = {
   laranja: {
     fill: "fill-amber-500",
     stroke: "stroke-amber-400",
-    texto: "text-amber-400",
-    barra: "bg-amber-500",
+    text: "text-amber-400",
+    bar: "bg-amber-500",
   },
   toranja: {
     fill: "fill-rose-500",
     stroke: "stroke-rose-400",
-    texto: "text-rose-400",
-    barra: "bg-rose-500",
+    text: "text-rose-400",
+    bar: "bg-rose-500",
   },
 };
 
-const NOME: Record<Classe, string> = { laranja: "Laranja", toranja: "Toranja" };
+const NAME: Record<Category, string> = { laranja: "Laranja", toranja: "Toranja" };
 
 // o gráfico usa a área de 15..115 (x) e 5..105 (y) do viewBox
 const OFFSET_X = 15;
@@ -48,23 +48,23 @@ const px = (x: number) => OFFSET_X + x;
 const py = (y: number) => BASE_Y - y;
 
 export default function Knn() {
-  const [novo, setNovo] = useState<{ x: number; y: number } | null>(null);
+  const [created, setCreated] = useState<{ x: number; y: number } | null>(null);
   const [k, setK] = useState(3);
 
-  const resultado = novo ? knn(PONTOS, novo, k) : null;
-  const raio = resultado
-    ? resultado.vizinhos[resultado.vizinhos.length - 1].distancia
+  const result = created ? knn(POINTS, created, k) : null;
+  const radius = result
+    ? result.neighbors[result.neighbors.length - 1].distance
     : 0;
 
   function handleClick(e: React.MouseEvent<SVGSVGElement>) {
     const svg = e.currentTarget;
-    const ponto = svg.createSVGPoint();
-    ponto.x = e.clientX;
-    ponto.y = e.clientY;
-    const local = ponto.matrixTransform(svg.getScreenCTM()!.inverse());
-    const x = Math.min(100, Math.max(0, local.x - OFFSET_X));
-    const y = Math.min(100, Math.max(0, BASE_Y - local.y));
-    setNovo({ x: Math.round(x), y: Math.round(y) });
+    const point = svg.createSVGPoint();
+    point.x = e.clientX;
+    point.y = e.clientY;
+    const location = point.matrixTransform(svg.getScreenCTM()!.inverse());
+    const x = Math.min(100, Math.max(0, location.x - OFFSET_X));
+    const y = Math.min(100, Math.max(0, BASE_Y - location.y));
+    setCreated({ x: Math.round(x), y: Math.round(y) });
   }
 
   return (
@@ -79,10 +79,10 @@ export default function Knn() {
           pontos em um plano: tamanho e vermelhidão. Clique no gráfico para
           colocar uma fruta nova.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.knnClassificacao.simples}
-          tecnica={EXPLICACOES.knnClassificacao.tecnica}
-          codigo={CODIGOS.knn}
+        <Explanation
+          simple={EXPLANATIONS.knnClassification.simple}
+          technique={EXPLANATIONS.knnClassification.technique}
+          code={CODES.knn}
         />
       </header>
 
@@ -106,7 +106,7 @@ export default function Knn() {
             <button
               className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
               onClick={() =>
-                setNovo({
+                setCreated({
                   x: Math.round(Math.random() * 100),
                   y: Math.round(Math.random() * 100),
                 })
@@ -116,8 +116,8 @@ export default function Knn() {
             </button>
             <button
               className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
-              disabled={!novo}
-              onClick={() => setNovo(null)}
+              disabled={!created}
+              onClick={() => setCreated(null)}
             >
               Limpar
             </button>
@@ -138,7 +138,7 @@ export default function Knn() {
         </div>
 
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <GraficoRolavel minLargura={340}>
+          <ScrollableChart minWidthValue={340}>
           <svg
             viewBox="0 0 120 115"
             className="mx-auto w-full max-w-xl cursor-crosshair"
@@ -195,23 +195,23 @@ export default function Knn() {
               vermelhidão →
             </text>
 
-            {novo && resultado && (
+            {created && result && (
               <>
                 <circle
-                  cx={px(novo.x)}
-                  cy={py(novo.y)}
-                  r={raio}
+                  cx={px(created.x)}
+                  cy={py(created.y)}
+                  r={radius}
                   className="fill-zinc-100/5 stroke-zinc-500"
                   strokeWidth={0.4}
                   strokeDasharray="2 2"
                 />
-                {resultado.vizinhos.map(({ ponto }, i) => (
+                {result.neighbors.map(({ point }, i) => (
                   <line
                     key={i}
-                    x1={px(novo.x)}
-                    y1={py(novo.y)}
-                    x2={px(ponto.x)}
-                    y2={py(ponto.y)}
+                    x1={px(created.x)}
+                    y1={py(created.y)}
+                    x2={px(point.x)}
+                    y2={py(point.y)}
                     className="stroke-zinc-400"
                     strokeWidth={0.5}
                   />
@@ -219,47 +219,47 @@ export default function Knn() {
               </>
             )}
 
-            {PONTOS.map((p, i) => {
-              const vizinho = resultado?.vizinhos.some(
-                (v) => v.ponto === p,
+            {POINTS.map((p, i) => {
+              const neighbor = result?.neighbors.some(
+                (v) => v.point === p,
               );
               return (
                 <circle
                   key={i}
                   cx={px(p.x)}
                   cy={py(p.y)}
-                  r={vizinho ? 2.6 : 2}
-                  className={`${COR[p.classe].fill} ${vizinho ? "stroke-zinc-100" : "stroke-transparent"}`}
+                  r={neighbor ? 2.6 : 2}
+                  className={`${COLOR[p.category].fill} ${neighbor ? "stroke-zinc-100" : "stroke-transparent"}`}
                   strokeWidth={0.8}
-                  opacity={resultado && !vizinho ? 0.45 : 1}
+                  opacity={result && !neighbor ? 0.45 : 1}
                 />
               );
             })}
 
-            {novo && resultado && (
+            {created && result && (
               <circle
-                cx={px(novo.x)}
-                cy={py(novo.y)}
+                cx={px(created.x)}
+                cy={py(created.y)}
                 r={3.8}
-                className={`${COR[resultado.classe].fill} stroke-zinc-100`}
+                className={`${COLOR[result.category].fill} stroke-zinc-100`}
                 strokeWidth={1.2}
               />
             )}
           </svg>
-          </GraficoRolavel>
+          </ScrollableChart>
         </div>
 
-        {resultado && novo ? (
+        {result && created ? (
           <div className="flex flex-col gap-5 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5">
             <div className="flex flex-wrap items-baseline gap-2">
               <span className="text-sm text-zinc-400">
-                Fruta em (tamanho {novo.x}, vermelhidão {novo.y}) é classificada
+                Fruta em (tamanho {created.x}, vermelhidão {created.y}) é classificada
                 como
               </span>
               <span
-                className={`text-xl font-semibold ${COR[resultado.classe].texto}`}
+                className={`text-xl font-semibold ${COLOR[result.category].text}`}
               >
-                {NOME[resultado.classe]}
+                {NAME[result.category]}
               </span>
             </div>
 
@@ -267,21 +267,21 @@ export default function Knn() {
               <div className="text-xs uppercase tracking-wider text-zinc-500">
                 Votação entre os {k} vizinhos
               </div>
-              {(Object.keys(NOME) as Classe[]).map((c) => (
+              {(Object.keys(NAME) as Category[]).map((c) => (
                 <div key={c} className="flex items-center gap-3 text-sm">
-                  <span className="w-16 text-zinc-300">{NOME[c]}</span>
+                  <span className="w-16 text-zinc-300">{NAME[c]}</span>
                   <div className="h-3 flex-1 overflow-hidden rounded-full bg-zinc-800">
                     <div
-                      className={`h-full ${COR[c].barra} transition-all`}
-                      style={{ width: `${(resultado.votos[c] / k) * 100}%` }}
+                      className={`h-full ${COLOR[c].bar} transition-all`}
+                      style={{ width: `${(result.votes[c] / k) * 100}%` }}
                     />
                   </div>
                   <span className="w-6 text-right font-mono text-zinc-400">
-                    {resultado.votos[c]}
+                    {result.votes[c]}
                   </span>
                 </div>
               ))}
-              {resultado.votos.laranja === resultado.votos.toranja && (
+              {result.votes.laranja === result.votes.toranja && (
                 <p className="text-xs text-zinc-500">
                   Empate: vale a categoria do vizinho mais próximo. Use um k
                   ímpar para evitar isso.
@@ -290,7 +290,7 @@ export default function Knn() {
             </div>
 
             <ol className="flex flex-col gap-1 text-sm">
-              {resultado.vizinhos.map(({ ponto, distancia: d }, i) => (
+              {result.neighbors.map(({ point, distance: d }, i) => (
                 <li
                   key={i}
                   className="flex items-center gap-3 rounded-lg bg-zinc-900 px-3 py-1.5"
@@ -298,11 +298,11 @@ export default function Knn() {
                   <span className="w-5 font-mono text-xs text-zinc-500">
                     {i + 1}.
                   </span>
-                  <span className={`w-16 ${COR[ponto.classe].texto}`}>
-                    {NOME[ponto.classe]}
+                  <span className={`w-16 ${COLOR[point.category].text}`}>
+                    {NAME[point.category]}
                   </span>
                   <span className="font-mono text-xs text-zinc-500">
-                    ({ponto.x}, {ponto.y})
+                    ({point.x}, {point.y})
                   </span>
                   <span className="ml-auto font-mono text-xs text-zinc-300">
                     distância {d.toFixed(1)}

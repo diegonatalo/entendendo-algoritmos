@@ -1,15 +1,15 @@
 "use client";
 
-import { buscaEmLargura } from "@/lib/busca-em-largura";
-import { Grafo } from "@/types/grafo";
+import { breadthFirstSearch } from "@/lib/breadth-first-search";
+import { Graph } from "@/types/graph";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { ControlesPassos, GraficoRolavel } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { StepControls, ScrollableChart } from "@/components/ui";
 
 // rede de amigos do exemplo do livro (arestas dirigidas)
-const GRAFO: Grafo = {
+const GRAPH: Graph = {
   voce: ["alice", "bob", "claire"],
   alice: ["peggy"],
   bob: ["anuj", "peggy"],
@@ -20,7 +20,7 @@ const GRAFO: Grafo = {
   jonny: [],
 };
 
-const POSICOES: Record<string, { x: number; y: number }> = {
+const POSITIONS: Record<string, { x: number; y: number }> = {
   voce: { x: 70, y: 170 },
   alice: { x: 230, y: 50 },
   bob: { x: 230, y: 170 },
@@ -31,49 +31,49 @@ const POSICOES: Record<string, { x: number; y: number }> = {
   jonny: { x: 400, y: 340 },
 };
 
-const RAIO = 26;
-const nomes = Object.keys(GRAFO);
+const RADIUS = 26;
+const names = Object.keys(GRAPH);
 
 const selectClass =
   "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
-const corDoTipo = {
-  inicio: "text-zinc-300",
-  visita: "text-amber-400",
-  ignora: "text-zinc-500",
-  achou: "text-emerald-400",
-  fim: "text-red-400",
+const colorOfType = {
+  start: "text-zinc-300",
+  visit: "text-amber-400",
+  ignores: "text-zinc-500",
+  didFind: "text-emerald-400",
+  end: "text-red-400",
 };
 
-export default function BuscaEmLargura() {
-  const [inicio, setInicio] = useState("voce");
-  const [alvo, setAlvo] = useState("thom");
-  const [resultado, setResultado] = useState<ReturnType<
-    typeof buscaEmLargura
+export default function BreadthFirstSearch() {
+  const [start, setStart] = useState("voce");
+  const [target, setTarget] = useState("thom");
+  const [result, setResult] = useState<ReturnType<
+    typeof breadthFirstSearch
   > | null>(null);
-  const [passoAtual, setPassoAtual] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const passo = resultado?.passos[passoAtual];
-  const noCaminho = (nome: string) =>
-    passo?.tipo === "achou" && resultado?.caminho?.includes(nome);
-  const arestaNoCaminho = (de: string, para: string) => {
-    if (passo?.tipo !== "achou" || !resultado?.caminho) return false;
-    const i = resultado.caminho.indexOf(de);
-    return i !== -1 && resultado.caminho[i + 1] === para;
+  const step = result?.steps[currentStep];
+  const onPath = (name: string) =>
+    step?.type === "didFind" && result?.path?.includes(name);
+  const edgeOnPath = (from: string, to: string) => {
+    if (step?.type !== "didFind" || !result?.path) return false;
+    const i = result.path.indexOf(from);
+    return i !== -1 && result.path[i + 1] === to;
   };
 
-  function estiloDoNo(nome: string) {
-    if (noCaminho(nome)) return "fill-emerald-500 stroke-emerald-300";
-    if (passo && passo.atual === nome) return "fill-amber-500 stroke-amber-300";
-    if (passo?.visitados.includes(nome)) return "fill-sky-900 stroke-sky-500";
-    if (passo?.fila.includes(nome))
+  function nodeStyle(name: string) {
+    if (onPath(name)) return "fill-emerald-500 stroke-emerald-300";
+    if (step && step.current === name) return "fill-amber-500 stroke-amber-300";
+    if (step?.visitedSet.includes(name)) return "fill-sky-900 stroke-sky-500";
+    if (step?.queue.includes(name))
       return "fill-violet-950 stroke-violet-400";
     return "fill-zinc-800 stroke-zinc-600";
   }
 
-  function textoDoNo(nome: string) {
-    if (noCaminho(nome)) return "fill-emerald-950";
-    if (passo && passo.atual === nome) return "fill-amber-950";
+  function nodeText(name: string) {
+    if (onPath(name)) return "fill-emerald-950";
+    if (step && step.current === name) return "fill-amber-950";
     return "fill-zinc-100";
   }
 
@@ -86,10 +86,10 @@ export default function BuscaEmLargura() {
           os vizinhos diretos, depois os vizinhos dos vizinhos, e assim por
           diante. Assim encontra o caminho com menos arestas. Custo: O(V + E).
         </p>
-        <Explicacao
-          simples={EXPLICACOES.buscaEmLargura.simples}
-          tecnica={EXPLICACOES.buscaEmLargura.tecnica}
-          codigo={CODIGOS.buscaEmLargura}
+        <Explanation
+          simple={EXPLANATIONS.breadthFirstSearch.simple}
+          technique={EXPLANATIONS.breadthFirstSearch.technique}
+          code={CODES.breadthFirstSearch}
         />
       </header>
 
@@ -97,8 +97,8 @@ export default function BuscaEmLargura() {
         className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
         onSubmit={(e) => {
           e.preventDefault();
-          setResultado(buscaEmLargura(GRAFO, inicio, alvo));
-          setPassoAtual(0);
+          setResult(breadthFirstSearch(GRAPH, start, target));
+          setCurrentStep(0);
         }}
       >
         <div className="grid gap-4 sm:grid-cols-2">
@@ -106,10 +106,10 @@ export default function BuscaEmLargura() {
             Começar em
             <select
               className={selectClass}
-              value={inicio}
-              onChange={(e) => setInicio(e.target.value)}
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
             >
-              {nomes.map((n) => (
+              {names.map((n) => (
                 <option key={n}>{n}</option>
               ))}
             </select>
@@ -118,10 +118,10 @@ export default function BuscaEmLargura() {
             Procurar por
             <select
               className={selectClass}
-              value={alvo}
-              onChange={(e) => setAlvo(e.target.value)}
+              value={target}
+              onChange={(e) => setTarget(e.target.value)}
             >
-              {nomes.map((n) => (
+              {names.map((n) => (
                 <option key={n}>{n}</option>
               ))}
             </select>
@@ -135,47 +135,47 @@ export default function BuscaEmLargura() {
         </button>
       </form>
 
-      {resultado && passo && (
+      {result && step && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Caminho"
               value={
-                resultado.caminho
-                  ? resultado.caminho.join(" → ")
+                result.path
+                  ? result.path.join(" → ")
                   : "Não existe"
               }
-              tone={resultado.caminho ? "text-emerald-400" : "text-red-400"}
-              pequeno
+              tone={result.path ? "text-emerald-400" : "text-red-400"}
+              small
             />
             <Stat
               label="Arestas no caminho"
-              value={resultado.caminho ? String(resultado.caminho.length - 1) : "—"}
+              value={result.path ? String(result.path.length - 1) : "—"}
               tone="text-amber-400"
             />
             <Stat
               label="Passo"
-              value={`${passoAtual + 1} / ${resultado.passos.length}`}
+              value={`${currentStep + 1} / ${result.steps.length}`}
               tone="text-zinc-100"
             />
           </div>
 
           <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
-            <Legenda cor="bg-amber-500" texto="Sendo verificado" />
-            <Legenda cor="bg-sky-900 ring-1 ring-sky-500" texto="Já verificado" />
-            <Legenda cor="bg-violet-950 ring-1 ring-violet-400" texto="Na fila" />
-            <Legenda cor="bg-emerald-500" texto="Caminho" />
+            <Legend color="bg-amber-500" text="Sendo verificado" />
+            <Legend color="bg-sky-900 ring-1 ring-sky-500" text="Já verificado" />
+            <Legend color="bg-violet-950 ring-1 ring-violet-400" text="Na fila" />
+            <Legend color="bg-emerald-500" text="Caminho" />
           </div>
 
           <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className={`text-sm font-medium ${corDoTipo[passo.tipo]}`}>
-                {passo.descricao}
+              <p className={`text-sm font-medium ${colorOfType[step.type]}`}>
+                {step.description}
               </p>
-              <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} irAoFim={false} />
+              <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} goToEnd={false} />
             </div>
 
-            <GraficoRolavel minLargura={470}>
+            <ScrollableChart minWidthValue={470}>
             <svg
               viewBox="0 0 470 390"
               className="mx-auto w-full max-w-xl"
@@ -207,21 +207,21 @@ export default function BuscaEmLargura() {
                 </marker>
               </defs>
 
-              {nomes.flatMap((de) =>
-                GRAFO[de].map((para) => {
-                  const a = POSICOES[de];
-                  const b = POSICOES[para];
+              {names.flatMap((from) =>
+                GRAPH[from].map((to) => {
+                  const a = POSITIONS[from];
+                  const b = POSITIONS[to];
                   const dx = b.x - a.x;
                   const dy = b.y - a.y;
                   const d = Math.hypot(dx, dy);
-                  const ok = arestaNoCaminho(de, para);
+                  const ok = edgeOnPath(from, to);
                   return (
                     <line
-                      key={`${de}-${para}`}
-                      x1={a.x + (dx / d) * RAIO}
-                      y1={a.y + (dy / d) * RAIO}
-                      x2={b.x - (dx / d) * (RAIO + 2)}
-                      y2={b.y - (dy / d) * (RAIO + 2)}
+                      key={`${from}-${to}`}
+                      x1={a.x + (dx / d) * RADIUS}
+                      y1={a.y + (dy / d) * RADIUS}
+                      x2={b.x - (dx / d) * (RADIUS + 2)}
+                      y2={b.y - (dy / d) * (RADIUS + 2)}
                       strokeWidth={ok ? 3 : 1.5}
                       className={ok ? "stroke-emerald-400" : "stroke-zinc-600"}
                       markerEnd={`url(#${ok ? "seta-ok" : "seta"})`}
@@ -230,49 +230,49 @@ export default function BuscaEmLargura() {
                 }),
               )}
 
-              {nomes.map((nome) => (
-                <g key={nome}>
+              {names.map((name) => (
+                <g key={name}>
                   <circle
-                    cx={POSICOES[nome].x}
-                    cy={POSICOES[nome].y}
-                    r={RAIO}
+                    cx={POSITIONS[name].x}
+                    cy={POSITIONS[name].y}
+                    r={RADIUS}
                     strokeWidth={2}
-                    className={`transition-colors ${estiloDoNo(nome)}`}
+                    className={`transition-colors ${nodeStyle(name)}`}
                   />
                   <text
-                    x={POSICOES[nome].x}
-                    y={POSICOES[nome].y}
+                    x={POSITIONS[name].x}
+                    y={POSITIONS[name].y}
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize={11}
-                    className={`font-mono ${textoDoNo(nome)}`}
+                    className={`font-mono ${nodeText(name)}`}
                   >
-                    {nome}
+                    {name}
                   </text>
                 </g>
               ))}
             </svg>
-            </GraficoRolavel>
+            </ScrollableChart>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              <Lista titulo="Fila (próximo à esquerda)" itens={passo.fila} />
-              <Lista titulo="Já verificados" itens={passo.visitados} />
+              <List title="Fila (próximo à esquerda)" items={step.queue} />
+              <List title="Já verificados" items={step.visitedSet} />
             </div>
           </div>
 
           <ol className="flex flex-col gap-1 text-sm">
-            {resultado.passos.map((p, i) => (
+            {result.steps.map((p, i) => (
               <li key={i}>
                 <button
-                  onClick={() => setPassoAtual(i)}
+                  onClick={() => setCurrentStep(i)}
                   className={`w-full cursor-pointer rounded-lg px-3 py-1.5 text-left transition-colors hover:bg-zinc-800/60 ${
-                    i === passoAtual
+                    i === currentStep
                       ? "bg-zinc-800 text-zinc-100"
                       : "text-zinc-500"
                   }`}
                 >
                   <span className="mr-2 font-mono text-xs">{i + 1}.</span>
-                  {p.descricao}
+                  {p.description}
                 </button>
               </li>
             ))}
@@ -283,17 +283,17 @@ export default function BuscaEmLargura() {
   );
 }
 
-function Lista({ titulo, itens }: { titulo: string; itens: string[] }) {
+function List({ title, items }: { title: string; items: string[] }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="text-xs uppercase tracking-wider text-zinc-500">
-        {titulo}
+        {title}
       </div>
       <div className="flex min-h-9 flex-wrap gap-1.5">
-        {itens.length === 0 ? (
+        {items.length === 0 ? (
           <span className="text-xs text-zinc-600">vazia</span>
         ) : (
-          itens.map((n, i) => (
+          items.map((n, i) => (
             <span
               key={i}
               className="rounded-lg bg-zinc-800 px-2.5 py-1.5 font-mono text-xs text-zinc-300"
@@ -311,12 +311,12 @@ function Stat({
   label,
   value,
   tone,
-  pequeno,
+  small: small,
 }: {
   label: string;
   value: string;
   tone: string;
-  pequeno?: boolean;
+  small?: boolean;
 }) {
   return (
     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
@@ -324,7 +324,7 @@ function Stat({
         {label}
       </div>
       <div
-        className={`mt-1 font-semibold ${pequeno ? "text-base leading-8" : "text-2xl"} ${tone}`}
+        className={`mt-1 font-semibold ${small ? "text-base leading-8" : "text-2xl"} ${tone}`}
       >
         {value}
       </div>
@@ -332,11 +332,11 @@ function Stat({
   );
 }
 
-function Legenda({ cor, texto }: { cor: string; texto: string }) {
+function Legend({ color, text }: { color: string; text: string }) {
   return (
     <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${cor}`} />
-      {texto}
+      <span className={`h-3 w-3 rounded ${color}`} />
+      {text}
     </span>
   );
 }

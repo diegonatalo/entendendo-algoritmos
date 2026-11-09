@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { Sidebar } from "@/components/sidebar";
 import { openGraphBase } from "@/lib/metadata";
-import { DESCRICAO_DO_SITE, NOME_DO_SITE, SITE_URL } from "@/lib/site";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,18 +17,18 @@ const geistMono = Geist_Mono({
 });
 
 // escolha salva ou, na falta dela, a preferência do sistema; sem JS fica o tema escuro
-const TEMA_INICIAL = `try{var t=localStorage.getItem("tema");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.dataset.theme=t}catch(e){}`;
+const INITIAL_THEME = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.dataset.theme=t}catch(e){}`;
 
 export const metadata: Metadata = {
   metadataBase: SITE_URL,
-  applicationName: NOME_DO_SITE,
+  applicationName: SITE_NAME,
   title: {
-    default: NOME_DO_SITE,
-    template: `%s · ${NOME_DO_SITE}`,
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
   },
-  description: DESCRICAO_DO_SITE,
+  description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
-  ...openGraphBase(NOME_DO_SITE, DESCRICAO_DO_SITE, "/", "/og/inicio"),
+  ...openGraphBase(SITE_NAME, SITE_DESCRIPTION, "/", "/og/inicio"),
 };
 
 export default function RootLayout({
@@ -45,7 +45,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Script id="tema-inicial" strategy="beforeInteractive">
-          {TEMA_INICIAL}
+          {INITIAL_THEME}
         </Script>
         <a
           href="#conteudo"

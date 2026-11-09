@@ -1,17 +1,17 @@
-export type EstrategiaPivo = "meio" | "primeiro";
+export type PivotStrategy = "middle" | "first";
 
-export type NoQuicksort = {
-  lista: number[];
-  pivo?: number;
-  indicePivo?: number;
-  menores?: NoQuicksort;
-  maiores?: NoQuicksort;
-  ordenada: number[];
+export type QuicksortNode = {
+  list: number[];
+  pivot?: number;
+  pivotIndex?: number;
+  smallerOnes?: QuicksortNode;
+  largerOnes?: QuicksortNode;
+  sorted: number[];
 };
 
-export type ResultadoQuicksort = {
-  raiz: NoQuicksort;
-  ordenado: number[];
-  comparacoes: number;
-  profundidade: number;
+export type QuicksortResult = {
+  root: QuicksortNode;
+  isSorted: number[];
+  comparisons: number;
+  depth: number;
 };

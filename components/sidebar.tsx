@@ -3,21 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
-import { Capitulo, capitulos } from "@/lib/capitulos";
-import { BotaoTema } from "./botao-tema";
+import { Chapter, chapters } from "@/lib/chapters";
+import { ThemeButton } from "./theme-button";
 
 // agrupa as páginas por capítulo, mantendo a ordem de capitulos.ts
-const grupos: { numero: number; paginas: Capitulo[] }[] = capitulos.reduce(
-  (acc, pagina) => {
-    const ultimo = acc[acc.length - 1];
-    if (ultimo && ultimo.numero === pagina.numero) ultimo.paginas.push(pagina);
-    else acc.push({ numero: pagina.numero, paginas: [pagina] });
+const groups: { number: number; pages: Chapter[] }[] = chapters.reduce(
+  (acc, page) => {
+    const last = acc[acc.length - 1];
+    if (last && last.number === page.number) last.pages.push(page);
+    else acc.push({ number: page.number, pages: [page] });
     return acc;
   },
-  [] as { numero: number; paginas: Capitulo[] }[],
+  [] as { number: number; pages: Chapter[] }[],
 );
 
-function Marca({ onClick }: { onClick?: () => void }) {
+function Mark({ onClick }: { onClick?: () => void }) {
   return (
     <Link
       href="/"
@@ -32,24 +32,24 @@ function Marca({ onClick }: { onClick?: () => void }) {
 const foco =
   "focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-400";
 
-function Lista({ onNavigate }: { onNavigate?: () => void }) {
+function List({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
-  const prefixoId = useId();
-  const ativoRef = useRef<HTMLAnchorElement>(null);
-  const [abertosManual, setAbertosManual] = useState<Record<number, boolean>>({});
+  const idPrefix = useId();
+  const activeRef = useRef<HTMLAnchorElement>(null);
+  const [manuallyOpened, setManuallyOpened] = useState<Record<number, boolean>>({});
 
-  const capituloAtivo = grupos.find((g) =>
-    g.paginas.some((p) => p.href === pathname),
-  )?.numero;
+  const activeChapter = groups.find((g) =>
+    g.pages.some((p) => p.href === pathname),
+  )?.number;
 
   // leva o item da página atual para dentro da área visível do menu
   useEffect(() => {
-    ativoRef.current?.scrollIntoView({ block: "nearest" });
+    activeRef.current?.scrollIntoView({ block: "nearest" });
   }, [pathname]);
 
-  const itemClass = (ativo: boolean) =>
+  const itemClass = (active: boolean) =>
     `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${foco} ${
-      ativo
+      active
         ? "bg-zinc-800 text-zinc-50"
         : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
     }`;
@@ -60,60 +60,60 @@ function Lista({ onNavigate }: { onNavigate?: () => void }) {
         href="/"
         onClick={onNavigate}
         aria-current={pathname === "/" ? "page" : undefined}
-        ref={pathname === "/" ? ativoRef : undefined}
+        ref={pathname === "/" ? activeRef : undefined}
         className={itemClass(pathname === "/")}
       >
         Início
       </Link>
 
       <div className="mt-3 flex flex-col gap-0.5">
-        {grupos.map((grupo) => {
-          const ehAtivo = grupo.numero === capituloAtivo;
+        {groups.map((group) => {
+          const isActive = group.number === activeChapter;
           // o capítulo da página atual fica sempre aberto
-          const aberto = ehAtivo || abertosManual[grupo.numero] === true;
-          const idLista = `${prefixoId}-capitulo-${grupo.numero}`;
+          const isOpen = isActive || manuallyOpened[group.number] === true;
+          const listId = `${idPrefix}-capitulo-${group.number}`;
 
           return (
-            <div key={grupo.numero}>
+            <div key={group.number}>
               <button
                 type="button"
-                aria-expanded={aberto}
-                aria-controls={idLista}
+                aria-expanded={isOpen}
+                aria-controls={listId}
                 onClick={() =>
-                  !ehAtivo &&
-                  setAbertosManual((m) => ({ ...m, [grupo.numero]: !aberto }))
+                  !isActive &&
+                  setManuallyOpened((m) => ({ ...m, [group.number]: !isOpen }))
                 }
                 className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-medium uppercase tracking-wider transition-colors ${foco} ${
-                  ehAtivo
+                  isActive
                     ? "cursor-default text-emerald-400"
                     : "cursor-pointer text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
                 }`}
               >
-                <span>Capítulo {grupo.numero}</span>
+                <span>Capítulo {group.number}</span>
                 <span className="flex items-center gap-2">
                   <span className="font-mono text-[10px] normal-case tracking-normal text-zinc-400">
-                    {grupo.paginas.length}
+                    {group.pages.length}
                   </span>
                   <span aria-hidden className="w-3 text-center">
-                    {aberto ? "▾" : "▸"}
+                    {isOpen ? "▾" : "▸"}
                   </span>
                 </span>
               </button>
 
-              {aberto && (
-                <ul id={idLista} className="mb-1 ml-3 flex flex-col gap-0.5 border-l border-zinc-800 pl-2">
-                  {grupo.paginas.map((pagina) => {
-                    const ativo = pathname === pagina.href;
+              {isOpen && (
+                <ul id={listId} className="mb-1 ml-3 flex flex-col gap-0.5 border-l border-zinc-800 pl-2">
+                  {group.pages.map((page) => {
+                    const active = pathname === page.href;
                     return (
-                      <li key={pagina.href}>
+                      <li key={page.href}>
                         <Link
-                          href={pagina.href}
+                          href={page.href}
                           onClick={onNavigate}
-                          aria-current={ativo ? "page" : undefined}
-                          ref={ativo ? ativoRef : undefined}
-                          className={itemClass(ativo)}
+                          aria-current={active ? "page" : undefined}
+                          ref={active ? activeRef : undefined}
+                          className={itemClass(active)}
                         >
-                          {pagina.titulo}
+                          {page.title}
                         </Link>
                       </li>
                     );
@@ -128,86 +128,86 @@ function Lista({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-const SELETOR_FOCAVEL =
+const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 export function Sidebar() {
   const pathname = usePathname();
   // guarda em qual página a gaveta foi aberta: ao navegar, ela fecha sozinha
-  const [abertoEm, setAbertoEm] = useState<string | null>(null);
-  const aberto = abertoEm === pathname;
+  const [openedAt, setOpenedAt] = useState<string | null>(null);
+  const isOpen = openedAt === pathname;
 
-  const gavetaRef = useRef<HTMLDivElement>(null);
-  const botaoAbrirRef = useRef<HTMLButtonElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
 
-  const fechar = () => setAbertoEm(null);
+  const close = () => setOpenedAt(null);
 
   useEffect(() => {
-    if (!aberto) return;
+    if (!isOpen) return;
 
-    const gaveta = gavetaRef.current;
-    const botaoAbrir = botaoAbrirRef.current;
-    const overflowAnterior = document.body.style.overflow;
+    const drawer = drawerRef.current;
+    const openButton = openButtonRef.current;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const focaveis = () =>
-      gaveta ? Array.from(gaveta.querySelectorAll<HTMLElement>(SELETOR_FOCAVEL)) : [];
-    (gaveta?.querySelector<HTMLElement>('[aria-label="Fechar menu"]') ?? focaveis()[0])?.focus();
+      drawer ? Array.from(drawer.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)) : [];
+    (drawer?.querySelector<HTMLElement>('[aria-label="Fechar menu"]') ?? focaveis()[0])?.focus();
 
-    function aoTeclar(e: KeyboardEvent) {
+    function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        setAbertoEm(null);
+        setOpenedAt(null);
         return;
       }
       if (e.key !== "Tab") return;
 
       // mantém o foco do teclado dentro da gaveta
-      const itens = focaveis();
-      if (itens.length === 0) return;
-      const primeiro = itens[0];
-      const ultimo = itens[itens.length - 1];
-      if (e.shiftKey && document.activeElement === primeiro) {
+      const items = focaveis();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
-        ultimo.focus();
-      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
         e.preventDefault();
-        primeiro.focus();
+        first.focus();
       }
     }
 
-    document.addEventListener("keydown", aoTeclar);
+    document.addEventListener("keydown", onKeyDown);
     return () => {
-      document.removeEventListener("keydown", aoTeclar);
-      document.body.style.overflow = overflowAnterior;
-      botaoAbrir?.focus();
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      openButton?.focus();
     };
-  }, [aberto]);
+  }, [isOpen]);
 
   return (
     <>
       {/* telas largas: barra lateral fixa */}
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col gap-6 overflow-y-auto border-r border-zinc-800/80 bg-zinc-950/80 p-4 backdrop-blur lg:flex">
         <div className="px-3 pt-1">
-          <Marca />
+          <Mark />
         </div>
-        <Lista />
+        <List />
         <div className="mt-auto px-1">
-          <BotaoTema />
+          <ThemeButton />
         </div>
       </aside>
 
       {/* celular e tablet: barra superior com menu em gaveta */}
       <header className="sticky top-0 z-20 flex items-center justify-between border-b border-zinc-800/80 bg-zinc-950/80 px-4 py-3 backdrop-blur lg:hidden">
-        <Marca />
+        <Mark />
         <div className="flex items-center gap-2">
-          <BotaoTema compacto />
+          <ThemeButton compact />
           <button
-            ref={botaoAbrirRef}
+            ref={openButtonRef}
             type="button"
             aria-label="Abrir menu de capítulos"
             aria-haspopup="dialog"
-            aria-expanded={aberto}
-            onClick={() => setAbertoEm(pathname)}
+            aria-expanded={isOpen}
+            onClick={() => setOpenedAt(pathname)}
             className={`cursor-pointer rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-600 ${foco}`}
           >
             ☰ Capítulos
@@ -215,32 +215,32 @@ export function Sidebar() {
         </div>
       </header>
 
-      {aberto && (
+      {isOpen && (
         <div className="fixed inset-0 z-30 lg:hidden">
           <div
             aria-hidden
-            onClick={fechar}
+            onClick={close}
             className="absolute inset-0 bg-black/60"
           />
           <div
-            ref={gavetaRef}
+            ref={drawerRef}
             role="dialog"
             aria-modal="true"
             aria-label="Menu de capítulos"
             className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col gap-6 overflow-y-auto border-r border-zinc-800 bg-zinc-950 p-4"
           >
             <div className="flex items-center justify-between px-3 pt-1">
-              <Marca onClick={fechar} />
+              <Mark onClick={close} />
               <button
                 type="button"
                 aria-label="Fechar menu"
-                onClick={fechar}
+                onClick={close}
                 className={`cursor-pointer rounded-md px-1.5 text-zinc-400 hover:text-zinc-100 ${foco}`}
               >
                 ✕
               </button>
             </div>
-            <Lista onNavigate={fechar} />
+            <List onNavigate={close} />
           </div>
         </div>
       )}

@@ -4,6 +4,6 @@ export const SITE_URL = new URL(
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://entendendo-algoritmos.vercel.app",
 );
 
-export const NOME_DO_SITE = "Entendendo Algoritmos";
-export const DESCRICAO_DO_SITE =
+export const SITE_NAME = "Entendendo Algoritmos";
+export const SITE_DESCRIPTION =
   "Visualizações interativas, passo a passo, para entender como cada algoritmo toma suas decisões.";

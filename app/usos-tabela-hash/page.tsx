@@ -1,56 +1,56 @@
 "use client";
 
 import {
-  CUSTO_ACERTO_MS,
-  CUSTO_FALHA_MS,
-  consultarCache,
-  votar,
-} from "@/lib/usos-hash";
+  HIT_COST_MS,
+  MISS_COST_MS,
+  queryCache,
+  vote,
+} from "@/lib/hash-uses";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { Stat, botaoPrimario, inputClass } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { Stat, primaryButton, inputClass } from "@/components/ui";
 
-const botaoSecundario =
+const secondaryButton =
   "cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100";
 
-const NOMES_EXEMPLO = [
+const EXAMPLE_NAMES = [
   "ana", "bruno", "carla", "diego", "elisa", "fabio", "gabi", "hugo", "iris", "joao",
 ];
 
-const PAGINAS = ["/inicio", "/produtos", "/sobre", "/contato"];
+const PAGES = ["/inicio", "/produtos", "/sobre", "/contato"];
 
-type EntradaVoto = { nome: string; aceito: boolean; comparacoesLista: number };
-type EntradaCache = { url: string; acerto: boolean; custoMs: number };
+type VoteEntry = { name: string; isAccepted: boolean; listComparisons: number };
+type CacheEntry = { url: string; hit: boolean; costMs: number };
 
-export default function UsosTabelaHash() {
-  const [votantes, setVotantes] = useState<string[]>([]);
-  const [votos, setVotos] = useState<EntradaVoto[]>([]);
+export default function HashTableUses() {
+  const [voters, setVoters] = useState<string[]>([]);
+  const [votes, setVotes] = useState<VoteEntry[]>([]);
   const [cache, setCache] = useState<string[]>([]);
-  const [acessos, setAcessos] = useState<EntradaCache[]>([]);
+  const [accesses, setAccesses] = useState<CacheEntry[]>([]);
 
-  function registrarVoto(nome: string, base: string[]): string[] {
-    const r = votar(base, nome);
-    setVotos((v) => [
-      { nome: nome.trim().toLowerCase(), aceito: r.aceito, comparacoesLista: r.comparacoesLista },
+  function registerVote(name: string, base: string[]): string[] {
+    const r = vote(base, name);
+    setVotes((v) => [
+      { name: name.trim().toLowerCase(), isAccepted: r.isAccepted, listComparisons: r.listComparisons },
       ...v,
     ]);
-    return r.votantes;
+    return r.voters;
   }
 
-  function acessar(url: string) {
-    const r = consultarCache(cache, url);
+  function access(url: string) {
+    const r = queryCache(cache, url);
     setCache(r.cache);
-    setAcessos((a) => [{ url, acerto: r.acerto, custoMs: r.custoMs }, ...a]);
+    setAccesses((a) => [{ url, hit: r.hit, costMs: r.costMs }, ...a]);
   }
 
-  const totalLista = votos.reduce((s, v) => s + v.comparacoesLista, 0);
-  const rejeitados = votos.filter((v) => !v.aceito).length;
+  const listTotal = votes.reduce((s, v) => s + v.listComparisons, 0);
+  const rejectedItems = votes.filter((v) => !v.isAccepted).length;
 
-  const acertos = acessos.filter((a) => a.acerto).length;
-  const tempoComCache = acessos.reduce((s, a) => s + a.custoMs, 0);
-  const tempoSemCache = acessos.length * CUSTO_FALHA_MS;
+  const hits = accesses.filter((a) => a.hit).length;
+  const timeWithCache = accesses.reduce((s, a) => s + a.costMs, 0);
+  const timeWithoutCache = accesses.length * MISS_COST_MS;
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-14 px-6 py-12">
@@ -62,10 +62,10 @@ export default function UsosTabelaHash() {
           foi visto (duplicatas) e guardar respostas para não repetir um
           trabalho caro (cache).
         </p>
-        <Explicacao
-          simples={EXPLICACOES.usosTabelaHash.simples}
-          tecnica={EXPLICACOES.usosTabelaHash.tecnica}
-          codigo={CODIGOS.usosHash}
+        <Explanation
+          simple={EXPLANATIONS.hashTableUses.simple}
+          technique={EXPLANATIONS.hashTableUses.technique}
+          code={CODES.hashUses}
         />
       </header>
 
@@ -83,29 +83,29 @@ export default function UsosTabelaHash() {
           className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
           onSubmit={(e) => {
             e.preventDefault();
-            const nome = e.currentTarget.nome.value.trim();
-            if (!nome) return;
-            setVotantes(registrarVoto(nome, votantes));
+            const name = e.currentTarget.userName.value.trim();
+            if (!name) return;
+            setVoters(registerVote(name, voters));
             e.currentTarget.reset();
           }}
         >
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Nome do eleitor
-            <input className={inputClass} name="nome" placeholder="Ex.: ana" />
+            <input className={inputClass} name="userName" placeholder="Ex.: ana" />
           </label>
           <div className="flex flex-wrap gap-3">
-            <button type="submit" className={`${botaoPrimario} flex-1`}>
+            <button type="submit" className={`${primaryButton} flex-1`}>
               Votar
             </button>
             <button
               type="button"
-              className={botaoSecundario}
+              className={secondaryButton}
               onClick={() => {
-                let atual = votantes;
-                for (const nome of [...NOMES_EXEMPLO, "ana", "carla", "joao"]) {
-                  atual = registrarVoto(nome, atual);
+                let current = voters;
+                for (const name of [...EXAMPLE_NAMES, "ana", "carla", "joao"]) {
+                  current = registerVote(name, current);
                 }
-                setVotantes(atual);
+                setVoters(current);
               }}
             >
               Carregar votos de exemplo
@@ -114,8 +114,8 @@ export default function UsosTabelaHash() {
               type="button"
               className="cursor-pointer rounded-xl px-4 py-2 text-sm text-zinc-500 hover:text-zinc-300"
               onClick={() => {
-                setVotantes([]);
-                setVotos([]);
+                setVoters([]);
+                setVotes([]);
               }}
             >
               Limpar
@@ -124,29 +124,29 @@ export default function UsosTabelaHash() {
         </form>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <Stat label="Votos aceitos" value={String(votantes.length)} tone="text-emerald-400" />
-          <Stat label="Duplicatas barradas" value={String(rejeitados)} tone="text-red-400" />
+          <Stat label="Votos aceitos" value={String(voters.length)} tone="text-emerald-400" />
+          <Stat label="Duplicatas barradas" value={String(rejectedItems)} tone="text-red-400" />
           <Stat
             label="Comparações: lista × hash"
-            value={`${totalLista} × ${votos.length}`}
+            value={`${listTotal} × ${votes.length}`}
             tone="text-amber-400"
           />
         </div>
 
-        {votos.length > 0 && (
+        {votes.length > 0 && (
           <ol className="flex max-h-72 flex-col gap-1 overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">
-            {votos.map((v, i) => (
+            {votes.map((v, i) => (
               <li
-                key={votos.length - i}
+                key={votes.length - i}
                 className="flex items-center gap-3 rounded-lg bg-zinc-900 px-3 py-1.5"
               >
-                <span className="w-16 font-mono text-zinc-200">{v.nome}</span>
-                <span className={v.aceito ? "text-emerald-400" : "text-red-400"}>
-                  {v.aceito ? "voto aceito" : "já votou: barrado"}
+                <span className="w-16 font-mono text-zinc-200">{v.name}</span>
+                <span className={v.isAccepted ? "text-emerald-400" : "text-red-400"}>
+                  {v.isAccepted ? "voto aceito" : "já votou: barrado"}
                 </span>
                 <span className="ml-auto font-mono text-xs text-zinc-500">
-                  lista: {v.comparacoesLista}{" "}
-                  {v.comparacoesLista === 1 ? "comparação" : "comparações"} · hash: 1 consulta
+                  lista: {v.listComparisons}{" "}
+                  {v.listComparisons === 1 ? "comparação" : "comparações"} · hash: 1 consulta
                 </span>
               </li>
             ))}
@@ -161,16 +161,16 @@ export default function UsosTabelaHash() {
             Gerar uma página no servidor é caro. O cache é uma tabela hash cuja
             chave é o endereço da página e cujo valor é a página pronta: se já
             está lá, devolve na hora; senão, gera, guarda e devolve. Neste
-            exemplo, buscar no servidor custa {CUSTO_FALHA_MS} ms e usar o cache
-            custa {CUSTO_ACERTO_MS} ms.
+            exemplo, buscar no servidor custa {MISS_COST_MS} ms e usar o cache
+            custa {HIT_COST_MS} ms.
           </p>
         </div>
 
         <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
           <div className="text-sm text-zinc-300">Acessar uma página</div>
           <div className="flex flex-wrap gap-2">
-            {PAGINAS.map((p) => (
-              <button key={p} className={botaoSecundario} onClick={() => acessar(p)}>
+            {PAGES.map((p) => (
+              <button key={p} className={secondaryButton} onClick={() => access(p)}>
                 {p}
               </button>
             ))}
@@ -178,7 +178,7 @@ export default function UsosTabelaHash() {
               className="cursor-pointer rounded-xl px-4 py-2 text-sm text-zinc-500 hover:text-zinc-300"
               onClick={() => {
                 setCache([]);
-                setAcessos([]);
+                setAccesses([]);
               }}
             >
               Limpar
@@ -189,11 +189,11 @@ export default function UsosTabelaHash() {
         <div className="grid gap-4 sm:grid-cols-3">
           <Stat
             label="Acertos no cache"
-            value={`${acertos} de ${acessos.length}`}
+            value={`${hits} de ${accesses.length}`}
             tone="text-emerald-400"
           />
-          <Stat label="Tempo com cache" value={`${tempoComCache} ms`} tone="text-emerald-400" />
-          <Stat label="Tempo sem cache" value={`${tempoSemCache} ms`} tone="text-amber-400" />
+          <Stat label="Tempo com cache" value={`${timeWithCache} ms`} tone="text-emerald-400" />
+          <Stat label="Tempo sem cache" value={`${timeWithoutCache} ms`} tone="text-amber-400" />
         </div>
 
         <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
@@ -213,18 +213,18 @@ export default function UsosTabelaHash() {
           </div>
         </div>
 
-        {acessos.length > 0 && (
+        {accesses.length > 0 && (
           <ol className="flex max-h-72 flex-col gap-1 overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900/40 p-3 text-sm">
-            {acessos.map((a, i) => (
+            {accesses.map((a, i) => (
               <li
-                key={acessos.length - i}
+                key={accesses.length - i}
                 className="flex items-center gap-3 rounded-lg bg-zinc-900 px-3 py-1.5"
               >
                 <span className="w-24 font-mono text-zinc-200">{a.url}</span>
-                <span className={a.acerto ? "text-emerald-400" : "text-amber-400"}>
-                  {a.acerto ? "acerto: veio do cache" : "falha: buscou no servidor e guardou"}
+                <span className={a.hit ? "text-emerald-400" : "text-amber-400"}>
+                  {a.hit ? "acerto: veio do cache" : "falha: buscou no servidor e guardou"}
                 </span>
-                <span className="ml-auto font-mono text-xs text-zinc-500">{a.custoMs} ms</span>
+                <span className="ml-auto font-mono text-xs text-zinc-500">{a.costMs} ms</span>
               </li>
             ))}
           </ol>

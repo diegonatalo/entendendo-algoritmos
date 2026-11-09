@@ -1,27 +1,27 @@
-export type Aresta = {
-  de: string;
-  para: string;
-  peso: number;
+export type Edge = {
+  from: string;
+  to: string;
+  weight: number;
 };
 
-export type PassoBellmanFord = {
-  rodada: number;
-  aresta: Aresta | null;
-  melhorou: boolean;
-  custos: Record<string, number>;
-  pais: Record<string, string | null>;
-  descricao: string;
+export type BellmanFordStep = {
+  round: number;
+  edge: Edge | null;
+  improved: boolean;
+  costs: Record<string, number>;
+  parents: Record<string, string | null>;
+  description: string;
 };
 
-export type ResultadoBellmanFord = {
-  passos: PassoBellmanFord[];
-  custos: Record<string, number>;
-  caminho: string[] | null;
-  cicloNegativo: boolean;
+export type BellmanFordResult = {
+  steps: BellmanFordStep[];
+  costs: Record<string, number>;
+  path: string[] | null;
+  negativeCycle: boolean;
 };
 
-export type ResultadoDijkstraSimples = {
-  custos: Record<string, number>;
-  caminho: string[] | null;
-  custoTotal: number | null;
+export type SimpleDijkstraResult = {
+  costs: Record<string, number>;
+  path: string[] | null;
+  totalCost: number | null;
 };

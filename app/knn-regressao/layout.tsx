@@ -1,6 +1,6 @@
-import { metadataDaPagina } from "@/lib/metadata";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata = metadataDaPagina("/knn-regressao");
+export const metadata = pageMetadata("/knn-regressao");
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

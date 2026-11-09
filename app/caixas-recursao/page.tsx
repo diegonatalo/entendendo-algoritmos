@@ -1,74 +1,74 @@
 "use client";
 
 import {
-  ALVO,
-  LOCAIS_DA_CHAVE,
-  buscarChave,
-  criarCaixas,
-} from "@/lib/caixas";
-import { Caixa, PassoCaixa } from "@/types/caixas";
+  TARGET,
+  KEY_LOCATIONS,
+  searchKey,
+  createBoxes,
+} from "@/lib/boxes";
+import { Box, BoxStep } from "@/types/boxes";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { ControlesPassos, Legenda, Stat, botaoPrimario } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { StepControls, Legend, Stat, primaryButton } from "@/components/ui";
 
 const selectClass =
   "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
-function CaixaVisual({
-  caixa,
-  passo,
-  executado,
-  encontradaEm,
+function BoxVisual({
+  box,
+  step,
+  executed,
+  foundAt,
 }: {
-  caixa: Caixa;
-  passo: PassoCaixa;
-  executado: boolean;
-  encontradaEm: string | null;
+  box: Box;
+  step: BoxStep;
+  executed: boolean;
+  foundAt: string | null;
 }) {
-  const noPasso = passo.atual === caixa.id;
-  const emFim = passo.tipo === "achou" && encontradaEm === caixa.id;
-  const aberta = executado && passo.pilha.includes(caixa.id);
-  const vasculhada = executado && passo.vasculhadas.includes(caixa.id);
+  const atStep = step.current === box.id;
+  const atEnd = step.type === "didFind" && foundAt === box.id;
+  const isOpen = executed && step.stack.includes(box.id);
+  const scanned = executed && step.scannedItems.includes(box.id);
 
-  const estilo = emFim
+  const style = atEnd
     ? "border-emerald-500 bg-emerald-500/10"
-    : noPasso && aberta
+    : atStep && isOpen
       ? "border-amber-500 bg-amber-500/10"
-      : aberta
+      : isOpen
         ? "border-sky-500/60 bg-sky-500/5"
-        : vasculhada
+        : scanned
           ? "border-zinc-700 bg-zinc-900/60 opacity-60"
           : "border-zinc-800 bg-zinc-900/40";
 
   return (
-    <div className={`flex flex-col gap-2 rounded-xl border p-3 transition-colors ${estilo}`}>
+    <div className={`flex flex-col gap-2 rounded-xl border p-3 transition-colors ${style}`}>
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <span className="font-medium text-zinc-200">📦 {caixa.nome}</span>
-        {caixa.itens.map((item) => (
+        <span className="font-medium text-zinc-200">📦 {box.name}</span>
+        {box.items.map((item) => (
           <span
             key={item}
             className={`rounded-md px-2 py-0.5 font-mono text-xs ${
-              item === ALVO
+              item === TARGET
                 ? "bg-emerald-500 font-semibold text-emerald-950"
                 : "bg-zinc-800 text-zinc-400"
             }`}
           >
-            {item === ALVO ? "🔑 chave" : item}
+            {item === TARGET ? "🔑 chave" : item}
           </span>
         ))}
-        {vasculhada && <span className="text-xs text-zinc-500">vasculhada</span>}
+        {scanned && <span className="text-xs text-zinc-500">vasculhada</span>}
       </div>
-      {caixa.caixas.length > 0 && (
+      {box.boxes.length > 0 && (
         <div className="ml-4 flex flex-col gap-2 border-l border-zinc-800 pl-3">
-          {caixa.caixas.map((filha) => (
-            <CaixaVisual
-              key={filha.id}
-              caixa={filha}
-              passo={passo}
-              executado={executado}
-              encontradaEm={encontradaEm}
+          {box.boxes.map((child) => (
+            <BoxVisual
+              key={child.id}
+              box={child}
+              step={step}
+              executed={executed}
+              foundAt={foundAt}
             />
           ))}
         </div>
@@ -77,19 +77,19 @@ function CaixaVisual({
   );
 }
 
-export default function CaixasRecursao() {
-  const [local, setLocal] = useState<string>("azul2p");
-  const [executado, setExecutado] = useState(false);
-  const [passoAtual, setPassoAtual] = useState(0);
+export default function RecursionBoxes() {
+  const [location, setLocation] = useState<string>("azul2p");
+  const [executed, setExecuted] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const raiz = criarCaixas(local === "nenhuma" ? null : local);
-  const resultado = buscarChave(raiz);
-  const passo = resultado.passos[passoAtual];
-  const final = passoAtual === resultado.passos.length - 1;
-  const nomeDe = (id: string) => {
-    const achar = (c: Caixa): string | null =>
-      c.id === id ? c.nome : c.caixas.map(achar).find((n) => n !== null) ?? null;
-    return achar(raiz) ?? id;
+  const root = createBoxes(location === "nenhuma" ? null : location);
+  const result = searchKey(root);
+  const step = result.steps[currentStep];
+  const final = currentStep === result.steps.length - 1;
+  const nameOf = (id: string) => {
+    const find = (c: Box): string | null =>
+      c.id === id ? c.name : c.boxes.map(find).find((n) => n !== null) ?? null;
+    return find(root) ?? id;
   };
 
   return (
@@ -102,10 +102,10 @@ export default function CaixasRecursao() {
           lista de caixas por conta própria, a função se chama para cada
           caixa interna. Quando não há mais caixas dentro, é o caso base.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.caixasRecursao.simples}
-          tecnica={EXPLICACOES.caixasRecursao.tecnica}
-          codigo={CODIGOS.caixas}
+        <Explanation
+          simple={EXPLANATIONS.recursionBoxes.simple}
+          technique={EXPLANATIONS.recursionBoxes.technique}
+          code={CODES.boxes}
         />
       </header>
 
@@ -114,26 +114,26 @@ export default function CaixasRecursao() {
           Onde está a chave?
           <select
             className={selectClass}
-            value={local}
+            value={location}
             onChange={(e) => {
-              setLocal(e.target.value);
-              setExecutado(false);
-              setPassoAtual(0);
+              setLocation(e.target.value);
+              setExecuted(false);
+              setCurrentStep(0);
             }}
           >
-            {LOCAIS_DA_CHAVE.map((l) => (
+            {KEY_LOCATIONS.map((l) => (
               <option key={l.id} value={l.id}>
-                {l.rotulo}
+                {l.label}
               </option>
             ))}
             <option value="nenhuma">Em nenhuma caixa</option>
           </select>
         </label>
         <button
-          className={botaoPrimario}
+          className={primaryButton}
           onClick={() => {
-            setExecutado(true);
-            setPassoAtual(0);
+            setExecuted(true);
+            setCurrentStep(0);
           }}
         >
           Procurar a chave
@@ -141,78 +141,78 @@ export default function CaixasRecursao() {
       </div>
 
       <section className="fade-up flex flex-col gap-6">
-        {executado && (
+        {executed && (
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Resultado"
               value={
                 final
-                  ? resultado.encontradaEm
+                  ? result.foundAt
                     ? "Encontrada"
                     : "Não encontrada"
                   : "Procurando…"
               }
-              tone={final && !resultado.encontradaEm ? "text-red-400" : "text-emerald-400"}
+              tone={final && !result.foundAt ? "text-red-400" : "text-emerald-400"}
             />
             <Stat
               label="Caixas abertas agora"
-              value={String(passo.pilha.length)}
+              value={String(step.stack.length)}
               tone="text-amber-400"
             />
             <Stat
               label="Passo"
-              value={`${passoAtual + 1} / ${resultado.passos.length}`}
+              value={`${currentStep + 1} / ${result.steps.length}`}
               tone="text-zinc-100"
             />
           </div>
         )}
 
         <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
-          <Legenda cor="bg-amber-500" texto="Caixa sendo vasculhada" />
-          <Legenda cor="bg-sky-500/40" texto="Aberta, esperando as de dentro" />
-          <Legenda cor="bg-zinc-700" texto="Já vasculhada" />
-          <Legenda cor="bg-emerald-500" texto="Achou" />
+          <Legend color="bg-amber-500" text="Caixa sendo vasculhada" />
+          <Legend color="bg-sky-500/40" text="Aberta, esperando as de dentro" />
+          <Legend color="bg-zinc-700" text="Já vasculhada" />
+          <Legend color="bg-emerald-500" text="Achou" />
         </div>
 
         <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-          {executado && (
+          {executed && (
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p
-                className={`text-sm font-medium ${passo.tipo === "achou" ? "text-emerald-400" : "text-amber-400"}`}
+                className={`text-sm font-medium ${step.type === "didFind" ? "text-emerald-400" : "text-amber-400"}`}
               >
-                {passo.descricao}
+                {step.description}
               </p>
-              <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} />
+              <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} />
             </div>
           )}
 
-          <CaixaVisual
-            caixa={raiz}
-            passo={passo}
-            executado={executado}
-            encontradaEm={resultado.encontradaEm}
+          <BoxVisual
+            box={root}
+            step={step}
+            executed={executed}
+            foundAt={result.foundAt}
           />
 
-          {executado && (
+          {executed && (
             <div className="flex flex-col gap-2">
               <div className="text-xs uppercase tracking-wider text-zinc-500">
                 Pilha de chamadas (a última é a caixa em uso)
               </div>
               <div className="flex flex-wrap items-center gap-1.5">
-                {passo.pilha.length === 0 ? (
+                {step.stack.length === 0 ? (
                   <span className="text-xs text-zinc-600">vazia</span>
                 ) : (
-                  passo.pilha.map((id, i) => (
+                  step.stack.map((id, i) => (
                     <span key={id} className="flex items-center gap-1.5">
                       {i > 0 && <span className="text-zinc-600">→</span>}
                       <span
                         className={`rounded-lg px-2.5 py-1.5 text-xs ${
-                          i === passo.pilha.length - 1
+                          i === step.stack.length - 1
                             ? "bg-amber-500 font-semibold text-amber-950"
                             : "bg-zinc-800 text-zinc-300"
                         }`}
                       >
-                        {nomeDe(id)}
+                        {nameOf(id)}
                       </span>
                     </span>
                   ))

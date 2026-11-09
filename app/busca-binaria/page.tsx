@@ -1,26 +1,26 @@
 "use client";
 
 import { inputClass } from "@/components/ui";
-import { buscaBinaria } from "@/lib/busca-binaria";
+import { binarySearch } from "@/lib/binary-search";
 import { ArrayVisual } from "@/components/array";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
-export default function BuscaBinaria() {
-  const [resultado, setResultado] = useState<ReturnType<
-    typeof buscaBinaria
+export default function BinarySearch() {
+  const [result, setResult] = useState<ReturnType<
+    typeof binarySearch
   > | null>(null);
-  const [alvo, setAlvo] = useState(0);
+  const [target, setTarget] = useState(0);
 
-  function handleSearch(tamanho: number, alvo: number) {
-    const array = Array.from({ length: tamanho }, (_, i) => i + 1);
-    setAlvo(alvo);
-    setResultado(buscaBinaria(array, alvo));
+  function handleSearch(size: number, target: number) {
+    const array = Array.from({ length: size }, (_, i) => i + 1);
+    setTarget(target);
+    setResult(binarySearch(array, target));
   }
 
-  const encontrado = resultado !== null && resultado.indice !== -1;
+  const found = result !== null && result.index !== -1;
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
@@ -30,10 +30,10 @@ export default function BuscaBinaria() {
           Em um array ordenado de 1 até N, o algoritmo olha para o elemento do
           meio e descarta metade das opções a cada tentativa.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.buscaBinaria.simples}
-          tecnica={EXPLICACOES.buscaBinaria.tecnica}
-          codigo={CODIGOS.buscaBinaria}
+        <Explanation
+          simple={EXPLANATIONS.binarySearch.simple}
+          technique={EXPLANATIONS.binarySearch.technique}
+          code={CODES.binarySearch}
         />
       </header>
 
@@ -41,9 +41,9 @@ export default function BuscaBinaria() {
         className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
         onSubmit={(e) => {
           e.preventDefault();
-          const tamanho = Number(e.currentTarget.tamanho.value);
-          const alvo = Number(e.currentTarget.alvo.value);
-          handleSearch(tamanho, alvo);
+          const size = Number(e.currentTarget.size.value);
+          const target = Number(e.currentTarget.searchTarget.value);
+          handleSearch(size, target);
         }}
       >
         <div className="grid gap-4 sm:grid-cols-2">
@@ -51,7 +51,7 @@ export default function BuscaBinaria() {
             Tamanho do array
             <input
               className={inputClass}
-              name="tamanho"
+              name="size"
               type="number"
               min="1"
               max="1000"
@@ -63,7 +63,7 @@ export default function BuscaBinaria() {
             Número alvo
             <input
               className={inputClass}
-              name="alvo"
+              name="searchTarget"
               type="number"
               min="1"
               max="1000"
@@ -80,58 +80,58 @@ export default function BuscaBinaria() {
         </button>
       </form>
 
-      {resultado && (
+      {result && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Resultado"
-              value={encontrado ? "Encontrado" : "Não encontrado"}
-              tone={encontrado ? "text-emerald-400" : "text-red-400"}
+              value={found ? "Encontrado" : "Não encontrado"}
+              tone={found ? "text-emerald-400" : "text-red-400"}
             />
             <Stat
               label="Tentativas usadas"
-              value={String(resultado.tentativas)}
+              value={String(result.attempts)}
               tone="text-amber-400"
             />
             <Stat
               label="Máximo possível"
-              value={String(resultado.maxTentativas)}
+              value={String(result.maxAttempts)}
               tone="text-zinc-100"
             />
           </div>
 
           <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
-            <Legenda cor="bg-amber-500" texto="Elemento do meio" />
-            <Legenda cor="bg-emerald-500" texto="Alvo encontrado" />
-            <Legenda cor="bg-zinc-800" texto="Ainda em jogo" />
+            <Legend color="bg-amber-500" text="Elemento do meio" />
+            <Legend color="bg-emerald-500" text="Alvo encontrado" />
+            <Legend color="bg-zinc-800" text="Ainda em jogo" />
           </div>
 
           <ol className="flex flex-col gap-4">
-            {resultado.passos.map((item) => (
+            {result.steps.map((item) => (
               <li
-                key={item.tentativa}
+                key={item.attempt}
                 className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
               >
                 <div className="flex items-center gap-2 text-sm">
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800 text-xs font-semibold">
-                    {item.tentativa}
+                    {item.attempt}
                   </span>
                   <span className="text-zinc-300">
                     Meio ={" "}
                     <span className="font-mono text-amber-400">
-                      {item.valorMeio}
+                      {item.middleValue}
                     </span>
-                    {item.valorMeio === alvo
+                    {item.middleValue === target
                       ? " — é o alvo!"
-                      : item.valorMeio < alvo
+                      : item.middleValue < target
                         ? " — menor que o alvo, descarta a esquerda"
                         : " — maior que o alvo, descarta a direita"}
                   </span>
                 </div>
                 <ArrayVisual
-                  arr={item.arrayAtual}
-                  meio={item.valorMeio}
-                  alvo={alvo}
+                  arr={item.currentArray}
+                  middle={item.middleValue}
+                  target={target}
                 />
               </li>
             ))}
@@ -161,11 +161,11 @@ function Stat({
   );
 }
 
-function Legenda({ cor, texto }: { cor: string; texto: string }) {
+function Legend({ color, text }: { color: string; text: string }) {
   return (
     <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${cor}`} />
-      {texto}
+      <span className={`h-3 w-3 rounded ${color}`} />
+      {text}
     </span>
   );
 }

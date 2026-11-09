@@ -1,69 +1,69 @@
 "use client";
 
 import { dijkstra } from "@/lib/dijkstra";
-import { GrafoPonderado } from "@/types/dijkstra";
+import { WeightedGraph } from "@/types/dijkstra";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { ControlesPassos, GraficoRolavel } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { StepControls, ScrollableChart } from "@/components/ui";
 
 // grafo do exemplo do livro (arestas dirigidas, com pesos)
-const GRAFO: GrafoPonderado = {
+const GRAPH: WeightedGraph = {
   inicio: { a: 6, b: 2 },
   a: { fim: 1 },
   b: { a: 3, fim: 5 },
   fim: {},
 };
 
-const INICIO = "inicio";
-const FIM = "fim";
+const START = "inicio";
+const END = "fim";
 
-const POSICOES: Record<string, { x: number; y: number }> = {
+const POSITIONS: Record<string, { x: number; y: number }> = {
   inicio: { x: 70, y: 150 },
   a: { x: 240, y: 50 },
   b: { x: 240, y: 250 },
   fim: { x: 410, y: 150 },
 };
 
-const RAIO = 28;
-const nomes = Object.keys(GRAFO);
+const RADIUS = 28;
+const names = Object.keys(GRAPH);
 
-const corDoTipo = {
-  inicio: "text-zinc-300",
-  processa: "text-amber-400",
-  fim: "text-emerald-400",
+const colorOfType = {
+  start: "text-zinc-300",
+  process: "text-amber-400",
+  end: "text-emerald-400",
 };
 
-const formatar = (custo: number) => (custo === Infinity ? "∞" : String(custo));
+const format = (cost: number) => (cost === Infinity ? "∞" : String(cost));
 
 export default function Dijkstra() {
-  const [resultado, setResultado] = useState<ReturnType<
+  const [result, setResult] = useState<ReturnType<
     typeof dijkstra
   > | null>(null);
-  const [passoAtual, setPassoAtual] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const passo = resultado?.passos[passoAtual];
-  const final = passo?.tipo === "fim" && resultado?.caminho;
+  const step = result?.steps[currentStep];
+  const final = step?.type === "end" && result?.path;
 
-  const noCaminho = (nome: string) => final && resultado.caminho?.includes(nome);
-  const arestaNoCaminho = (de: string, para: string) => {
-    if (!final || !resultado.caminho) return false;
-    const i = resultado.caminho.indexOf(de);
-    return i !== -1 && resultado.caminho[i + 1] === para;
+  const onPath = (name: string) => final && result.path?.includes(name);
+  const edgeOnPath = (from: string, to: string) => {
+    if (!final || !result.path) return false;
+    const i = result.path.indexOf(from);
+    return i !== -1 && result.path[i + 1] === to;
   };
 
-  function estiloDoNo(nome: string) {
-    if (noCaminho(nome)) return "fill-emerald-500 stroke-emerald-300";
-    if (passo?.atual === nome) return "fill-amber-500 stroke-amber-300";
-    if (passo?.processados.includes(nome))
+  function nodeStyle(name: string) {
+    if (onPath(name)) return "fill-emerald-500 stroke-emerald-300";
+    if (step?.current === name) return "fill-amber-500 stroke-amber-300";
+    if (step?.processed.includes(name))
       return "fill-sky-900 stroke-sky-500";
     return "fill-zinc-800 stroke-zinc-600";
   }
 
-  function textoDoNo(nome: string) {
-    if (noCaminho(nome)) return "fill-emerald-950";
-    if (passo?.atual === nome) return "fill-amber-950";
+  function nodeText(name: string) {
+    if (onPath(name)) return "fill-emerald-950";
+    if (step?.current === name) return "fill-amber-950";
     return "fill-zinc-100";
   }
 
@@ -82,10 +82,10 @@ export default function Dijkstra() {
           O caminho com menos arestas (inicio → a → fim) não é o mais barato:
           veja como o algoritmo descobre isso.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.dijkstra.simples}
-          tecnica={EXPLICACOES.dijkstra.tecnica}
-          codigo={CODIGOS.dijkstra}
+        <Explanation
+          simple={EXPLANATIONS.dijkstra.simple}
+          technique={EXPLANATIONS.dijkstra.technique}
+          code={CODES.dijkstra}
         />
       </header>
 
@@ -93,54 +93,54 @@ export default function Dijkstra() {
         <button
           className="w-full cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600"
           onClick={() => {
-            setResultado(dijkstra(GRAFO, INICIO, FIM));
-            setPassoAtual(0);
+            setResult(dijkstra(GRAPH, START, END));
+            setCurrentStep(0);
           }}
         >
-          Executar de {INICIO} até {FIM}
+          Executar de {START} até {END}
         </button>
       </div>
 
-      {resultado && passo && (
+      {result && step && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Menor custo"
               value={
-                resultado.custoTotal !== null
-                  ? String(resultado.custoTotal)
+                result.totalCost !== null
+                  ? String(result.totalCost)
                   : "—"
               }
               tone="text-emerald-400"
             />
             <Stat
               label="Caminho"
-              value={resultado.caminho ? resultado.caminho.join(" → ") : "—"}
+              value={result.path ? result.path.join(" → ") : "—"}
               tone="text-zinc-100"
-              pequeno
+              small
             />
             <Stat
               label="Passo"
-              value={`${passoAtual + 1} / ${resultado.passos.length}`}
+              value={`${currentStep + 1} / ${result.steps.length}`}
               tone="text-zinc-100"
             />
           </div>
 
           <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
-            <Legenda cor="bg-amber-500" texto="Nó mais barato (atual)" />
-            <Legenda cor="bg-sky-900 ring-1 ring-sky-500" texto="Já processado" />
-            <Legenda cor="bg-emerald-500" texto="Caminho final" />
+            <Legend color="bg-amber-500" text="Nó mais barato (atual)" />
+            <Legend color="bg-sky-900 ring-1 ring-sky-500" text="Já processado" />
+            <Legend color="bg-emerald-500" text="Caminho final" />
           </div>
 
           <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className={`text-sm font-medium ${corDoTipo[passo.tipo]}`}>
-                {passo.descricao}
+              <p className={`text-sm font-medium ${colorOfType[step.type]}`}>
+                {step.description}
               </p>
-              <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} irAoFim={false} />
+              <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} goToEnd={false} />
             </div>
 
-            <GraficoRolavel minLargura={480}>
+            <ScrollableChart minWidthValue={480}>
             <svg
               viewBox="0 0 480 300"
               className="mx-auto w-full max-w-xl"
@@ -172,24 +172,24 @@ export default function Dijkstra() {
                 </marker>
               </defs>
 
-              {nomes.flatMap((de) =>
-                Object.entries(GRAFO[de]).map(([para, peso]) => {
-                  const a = POSICOES[de];
-                  const b = POSICOES[para];
+              {names.flatMap((from) =>
+                Object.entries(GRAPH[from]).map(([to, weight]) => {
+                  const a = POSITIONS[from];
+                  const b = POSITIONS[to];
                   const dx = b.x - a.x;
                   const dy = b.y - a.y;
                   const d = Math.hypot(dx, dy);
-                  const ok = arestaNoCaminho(de, para);
+                  const ok = edgeOnPath(from, to);
                   // rótulo deslocado para o lado da aresta
                   const lx = (a.x + b.x) / 2 + (dy / d) * 14;
                   const ly = (a.y + b.y) / 2 - (dx / d) * 14;
                   return (
-                    <g key={`${de}-${para}`}>
+                    <g key={`${from}-${to}`}>
                       <line
-                        x1={a.x + (dx / d) * RAIO}
-                        y1={a.y + (dy / d) * RAIO}
-                        x2={b.x - (dx / d) * (RAIO + 2)}
-                        y2={b.y - (dy / d) * (RAIO + 2)}
+                        x1={a.x + (dx / d) * RADIUS}
+                        y1={a.y + (dy / d) * RADIUS}
+                        x2={b.x - (dx / d) * (RADIUS + 2)}
+                        y2={b.y - (dy / d) * (RADIUS + 2)}
                         strokeWidth={ok ? 3 : 1.5}
                         className={ok ? "stroke-emerald-400" : "stroke-zinc-600"}
                         markerEnd={`url(#${ok ? "seta-d-ok" : "seta-d"})`}
@@ -202,36 +202,36 @@ export default function Dijkstra() {
                         fontSize={13}
                         className={`font-mono font-semibold ${ok ? "fill-emerald-300" : "fill-zinc-400"}`}
                       >
-                        {peso}
+                        {weight}
                       </text>
                     </g>
                   );
                 }),
               )}
 
-              {nomes.map((nome) => (
-                <g key={nome}>
+              {names.map((name) => (
+                <g key={name}>
                   <circle
-                    cx={POSICOES[nome].x}
-                    cy={POSICOES[nome].y}
-                    r={RAIO}
+                    cx={POSITIONS[name].x}
+                    cy={POSITIONS[name].y}
+                    r={RADIUS}
                     strokeWidth={2}
-                    className={`transition-colors ${estiloDoNo(nome)}`}
+                    className={`transition-colors ${nodeStyle(name)}`}
                   />
                   <text
-                    x={POSICOES[nome].x}
-                    y={POSICOES[nome].y}
+                    x={POSITIONS[name].x}
+                    y={POSITIONS[name].y}
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize={12}
-                    className={`font-mono ${textoDoNo(nome)}`}
+                    className={`font-mono ${nodeText(name)}`}
                   >
-                    {nome}
+                    {name}
                   </text>
                 </g>
               ))}
             </svg>
-            </GraficoRolavel>
+            </ScrollableChart>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
@@ -244,19 +244,19 @@ export default function Dijkstra() {
                   </tr>
                 </thead>
                 <tbody className="font-mono">
-                  {nomes.map((nome) => (
-                    <tr key={nome} className="border-t border-zinc-800">
-                      <td className="py-2 pr-4 text-zinc-300">{nome}</td>
+                  {names.map((name) => (
+                    <tr key={name} className="border-t border-zinc-800">
+                      <td className="py-2 pr-4 text-zinc-300">{name}</td>
                       <td
-                        className={`py-2 pr-4 ${passo.custos[nome] === Infinity ? "text-zinc-600" : "text-amber-400"}`}
+                        className={`py-2 pr-4 ${step.costs[name] === Infinity ? "text-zinc-600" : "text-amber-400"}`}
                       >
-                        {formatar(passo.custos[nome])}
+                        {format(step.costs[name])}
                       </td>
                       <td className="py-2 pr-4 text-zinc-400">
-                        {passo.pais[nome] ?? "—"}
+                        {step.parents[name] ?? "—"}
                       </td>
                       <td className="py-2 text-xs text-zinc-500">
-                        {passo.processados.includes(nome)
+                        {step.processed.includes(name)
                           ? "processado"
                           : "pendente"}
                       </td>
@@ -268,18 +268,18 @@ export default function Dijkstra() {
           </div>
 
           <ol className="flex flex-col gap-1 text-sm">
-            {resultado.passos.map((p, i) => (
+            {result.steps.map((p, i) => (
               <li key={i}>
                 <button
-                  onClick={() => setPassoAtual(i)}
+                  onClick={() => setCurrentStep(i)}
                   className={`w-full cursor-pointer rounded-lg px-3 py-1.5 text-left transition-colors hover:bg-zinc-800/60 ${
-                    i === passoAtual
+                    i === currentStep
                       ? "bg-zinc-800 text-zinc-100"
                       : "text-zinc-500"
                   }`}
                 >
                   <span className="mr-2 font-mono text-xs">{i + 1}.</span>
-                  {p.descricao}
+                  {p.description}
                 </button>
               </li>
             ))}
@@ -294,12 +294,12 @@ function Stat({
   label,
   value,
   tone,
-  pequeno,
+  small: small,
 }: {
   label: string;
   value: string;
   tone: string;
-  pequeno?: boolean;
+  small?: boolean;
 }) {
   return (
     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
@@ -307,7 +307,7 @@ function Stat({
         {label}
       </div>
       <div
-        className={`mt-1 font-semibold ${pequeno ? "text-base leading-8" : "text-2xl"} ${tone}`}
+        className={`mt-1 font-semibold ${small ? "text-base leading-8" : "text-2xl"} ${tone}`}
       >
         {value}
       </div>
@@ -315,11 +315,11 @@ function Stat({
   );
 }
 
-function Legenda({ cor, texto }: { cor: string; texto: string }) {
+function Legend({ color, text }: { color: string; text: string }) {
   return (
     <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${cor}`} />
-      {texto}
+      <span className={`h-3 w-3 rounded ${color}`} />
+      {text}
     </span>
   );
 }

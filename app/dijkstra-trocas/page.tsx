@@ -1,15 +1,15 @@
 "use client";
 
 import { dijkstra } from "@/lib/dijkstra";
-import { GrafoPonderado } from "@/types/dijkstra";
+import { WeightedGraph } from "@/types/dijkstra";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { StepControls, ScrollableChart, Legend, Stat, primaryButton } from "@/components/ui";
 
 // cada aresta é uma troca: o peso é o dinheiro a pagar além do item entregue
-const TROCAS: GrafoPonderado = {
+const SWAPS: WeightedGraph = {
   livro: { LP: 5, pôster: 0 },
   LP: { baixo: 15, bateria: 20 },
   pôster: { baixo: 30, bateria: 35 },
@@ -18,7 +18,7 @@ const TROCAS: GrafoPonderado = {
   piano: {},
 };
 
-const POSICOES: Record<string, { x: number; y: number }> = {
+const POSITIONS: Record<string, { x: number; y: number }> = {
   livro: { x: 55, y: 150 },
   LP: { x: 205, y: 55 },
   pôster: { x: 205, y: 245 },
@@ -27,46 +27,46 @@ const POSICOES: Record<string, { x: number; y: number }> = {
   piano: { x: 505, y: 150 },
 };
 
-const INICIO = "livro";
-const FIM = "piano";
-const RAIO = 30;
-const nomes = Object.keys(TROCAS);
+const START = "livro";
+const END = "piano";
+const RADIUS = 30;
+const names = Object.keys(SWAPS);
 
-const corDoTipo = {
-  inicio: "text-zinc-300",
-  processa: "text-amber-400",
-  fim: "text-emerald-400",
+const colorOfType = {
+  start: "text-zinc-300",
+  process: "text-amber-400",
+  end: "text-emerald-400",
 };
 
-const fmt = (custo: number) => (custo === Infinity ? "∞" : `R$ ${custo}`);
+const fmt = (cost: number) => (cost === Infinity ? "∞" : `R$ ${cost}`);
 
-export default function DijkstraTrocas() {
-  const [comCiclo, setComCiclo] = useState(false);
-  const [executado, setExecutado] = useState(false);
-  const [passoAtual, setPassoAtual] = useState(0);
+export default function DijkstraSwaps() {
+  const [withCycle, setWithCycle] = useState(false);
+  const [executed, setExecuted] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
   // aresta que fecha um ciclo: LP → baixo → LP
-  const grafo: GrafoPonderado = comCiclo
-    ? { ...TROCAS, baixo: { ...TROCAS.baixo, LP: 2 } }
-    : TROCAS;
+  const graph: WeightedGraph = withCycle
+    ? { ...SWAPS, baixo: { ...SWAPS.baixo, LP: 2 } }
+    : SWAPS;
 
-  const resultado = dijkstra(grafo, INICIO, FIM);
-  const passo = resultado.passos[passoAtual];
-  const final = passoAtual === resultado.passos.length - 1;
-  const mostrarCaminho = final && resultado.caminho;
+  const result = dijkstra(graph, START, END);
+  const step = result.steps[currentStep];
+  const final = currentStep === result.steps.length - 1;
+  const showPath = final && result.path;
 
-  const noCaminho = (nome: string) => mostrarCaminho && resultado.caminho?.includes(nome);
-  const arestaNoCaminho = (de: string, para: string) => {
-    if (!mostrarCaminho || !resultado.caminho) return false;
-    const i = resultado.caminho.indexOf(de);
-    return i !== -1 && resultado.caminho[i + 1] === para;
+  const onPath = (name: string) => showPath && result.path?.includes(name);
+  const edgeOnPath = (from: string, to: string) => {
+    if (!showPath || !result.path) return false;
+    const i = result.path.indexOf(from);
+    return i !== -1 && result.path[i + 1] === to;
   };
 
-  function estiloDoNo(nome: string) {
-    if (!executado) return "fill-zinc-800 stroke-zinc-600";
-    if (noCaminho(nome)) return "fill-emerald-500 stroke-emerald-300";
-    if (passo.atual === nome) return "fill-amber-500 stroke-amber-300";
-    if (passo.processados.includes(nome)) return "fill-sky-900 stroke-sky-500";
+  function nodeStyle(name: string) {
+    if (!executed) return "fill-zinc-800 stroke-zinc-600";
+    if (onPath(name)) return "fill-emerald-500 stroke-emerald-300";
+    if (step.current === name) return "fill-amber-500 stroke-amber-300";
+    if (step.processed.includes(name)) return "fill-sky-900 stroke-sky-500";
     return "fill-zinc-800 stroke-zinc-600";
   }
 
@@ -81,10 +81,10 @@ export default function DijkstraTrocas() {
           de trocas mais econômica. O Dijkstra serve para qualquer custo, não
           só distância ou tempo, desde que não seja negativo.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.dijkstraTrocas.simples}
-          tecnica={EXPLICACOES.dijkstraTrocas.tecnica}
-          codigo={CODIGOS.dijkstra}
+        <Explanation
+          simple={EXPLANATIONS.dijkstraSwaps.simple}
+          technique={EXPLANATIONS.dijkstraSwaps.technique}
+          code={CODES.dijkstra}
         />
       </header>
 
@@ -92,11 +92,11 @@ export default function DijkstraTrocas() {
         <label className="flex cursor-pointer items-start gap-3 text-sm text-zinc-300">
           <input
             type="checkbox"
-            checked={comCiclo}
+            checked={withCycle}
             onChange={(e) => {
-              setComCiclo(e.target.checked);
-              setExecutado(false);
-              setPassoAtual(0);
+              setWithCycle(e.target.checked);
+              setExecuted(false);
+              setCurrentStep(0);
             }}
             className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-500"
           />
@@ -107,83 +107,83 @@ export default function DijkstraTrocas() {
           </span>
         </label>
         <button
-          className={botaoPrimario}
+          className={primaryButton}
           onClick={() => {
-            setExecutado(true);
-            setPassoAtual(0);
+            setExecuted(true);
+            setCurrentStep(0);
           }}
         >
           Achar as trocas mais baratas
         </button>
       </div>
 
-      {executado && (
+      {executed && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
             <Stat
               label="Custo mínimo"
-              value={resultado.custoTotal !== null ? `R$ ${resultado.custoTotal}` : "—"}
+              value={result.totalCost !== null ? `R$ ${result.totalCost}` : "—"}
               tone="text-emerald-400"
             />
             <Stat
               label="Trocas"
-              value={resultado.caminho ? resultado.caminho.join(" → ") : "—"}
+              value={result.path ? result.path.join(" → ") : "—"}
               tone="text-zinc-100"
-              pequeno
+              small
             />
             <Stat
               label="Passo"
-              value={`${passoAtual + 1} / ${resultado.passos.length}`}
+              value={`${currentStep + 1} / ${result.steps.length}`}
               tone="text-zinc-100"
             />
           </div>
 
           <div className="flex flex-wrap gap-4 text-xs text-zinc-400">
-            <Legenda cor="bg-amber-500" texto="Item mais barato agora" />
-            <Legenda cor="bg-sky-900 ring-1 ring-sky-500" texto="Já processado" />
-            <Legenda cor="bg-emerald-500" texto="Trocas escolhidas" />
+            <Legend color="bg-amber-500" text="Item mais barato agora" />
+            <Legend color="bg-sky-900 ring-1 ring-sky-500" text="Já processado" />
+            <Legend color="bg-emerald-500" text="Trocas escolhidas" />
           </div>
 
           <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className={`text-sm font-medium ${corDoTipo[passo.tipo]}`}>{passo.descricao}</p>
-              <ControlesPassos passoAtual={passoAtual} total={resultado.passos.length} onChange={setPassoAtual} />
+              <p className={`text-sm font-medium ${colorOfType[step.type]}`}>{step.description}</p>
+              <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} />
             </div>
 
-            <GraficoRolavel minLargura={560}>
+            <ScrollableChart minWidthValue={560}>
             <svg viewBox="0 0 560 300" className="mx-auto w-full max-w-2xl" role="img" aria-label="Grafo de trocas do livro até o piano">
               <defs>
                 {[
                   ["seta-tr", "fill-zinc-500"],
                   ["seta-tr-ok", "fill-emerald-400"],
-                ].map(([id, cls]) => (
+                ].map(([id, cssClass]) => (
                   <marker key={id} id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                    <path d="M0,0 L10,5 L0,10 z" className={cls} />
+                    <path d="M0,0 L10,5 L0,10 z" className={cssClass} />
                   </marker>
                 ))}
               </defs>
 
-              {nomes.flatMap((de) =>
-                Object.entries(grafo[de]).map(([para, peso]) => {
-                  const a = POSICOES[de];
-                  const b = POSICOES[para];
+              {names.flatMap((from) =>
+                Object.entries(graph[from]).map(([to, weight]) => {
+                  const a = POSITIONS[from];
+                  const b = POSITIONS[to];
                   const dx = b.x - a.x;
                   const dy = b.y - a.y;
                   const d = Math.hypot(dx, dy);
-                  const oposta = grafo[para]?.[de] !== undefined;
-                  const desvio = oposta ? 8 : 0;
-                  const ox = (dy / d) * desvio;
-                  const oy = (-dx / d) * desvio;
-                  const ok = arestaNoCaminho(de, para);
-                  const lx = a.x + dx * 0.4 + (dy / d) * (oposta ? 20 : 12) ;
-                  const ly = a.y + dy * 0.4 - (dx / d) * (oposta ? 20 : 12);
+                  const opposite = graph[to]?.[from] !== undefined;
+                  const deviation = opposite ? 8 : 0;
+                  const ox = (dy / d) * deviation;
+                  const oy = (-dx / d) * deviation;
+                  const ok = edgeOnPath(from, to);
+                  const lx = a.x + dx * 0.4 + (dy / d) * (opposite ? 20 : 12) ;
+                  const ly = a.y + dy * 0.4 - (dx / d) * (opposite ? 20 : 12);
                   return (
-                    <g key={`${de}-${para}`}>
+                    <g key={`${from}-${to}`}>
                       <line
-                        x1={a.x + (dx / d) * RAIO + ox}
-                        y1={a.y + (dy / d) * RAIO + oy}
-                        x2={b.x - (dx / d) * (RAIO + 2) + ox}
-                        y2={b.y - (dy / d) * (RAIO + 2) + oy}
+                        x1={a.x + (dx / d) * RADIUS + ox}
+                        y1={a.y + (dy / d) * RADIUS + oy}
+                        x2={b.x - (dx / d) * (RADIUS + 2) + ox}
+                        y2={b.y - (dy / d) * (RADIUS + 2) + oy}
                         strokeWidth={ok ? 3 : 1.5}
                         className={ok ? "stroke-emerald-400" : "stroke-zinc-600"}
                         markerEnd={`url(#${ok ? "seta-tr-ok" : "seta-tr"})`}
@@ -196,46 +196,46 @@ export default function DijkstraTrocas() {
                         fontSize={12}
                         className={`font-mono font-semibold ${ok ? "fill-emerald-300" : "fill-zinc-400"}`}
                       >
-                        {peso}
+                        {weight}
                       </text>
                     </g>
                   );
                 }),
               )}
 
-              {nomes.map((nome) => (
-                <g key={nome}>
+              {names.map((name) => (
+                <g key={name}>
                   <circle
-                    cx={POSICOES[nome].x}
-                    cy={POSICOES[nome].y}
-                    r={RAIO}
+                    cx={POSITIONS[name].x}
+                    cy={POSITIONS[name].y}
+                    r={RADIUS}
                     strokeWidth={2}
-                    className={`transition-colors ${estiloDoNo(nome)}`}
+                    className={`transition-colors ${nodeStyle(name)}`}
                   />
                   <text
-                    x={POSICOES[nome].x}
-                    y={POSICOES[nome].y - 5}
+                    x={POSITIONS[name].x}
+                    y={POSITIONS[name].y - 5}
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize={11}
-                    className={noCaminho(nome) || passo.atual === nome ? "fill-black" : "fill-zinc-100"}
+                    className={onPath(name) || step.current === name ? "fill-black" : "fill-zinc-100"}
                   >
-                    {nome}
+                    {name}
                   </text>
                   <text
-                    x={POSICOES[nome].x}
-                    y={POSICOES[nome].y + 9}
+                    x={POSITIONS[name].x}
+                    y={POSITIONS[name].y + 9}
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize={10}
-                    className={`font-mono font-semibold ${noCaminho(nome) || passo.atual === nome ? "fill-black" : "fill-amber-400"}`}
+                    className={`font-mono font-semibold ${onPath(name) || step.current === name ? "fill-black" : "fill-amber-400"}`}
                   >
-                    {fmt(passo.custos[nome])}
+                    {fmt(step.costs[name])}
                   </text>
                 </g>
               ))}
             </svg>
-            </GraficoRolavel>
+            </ScrollableChart>
             <p className="text-xs text-zinc-500">
               O número em cada seta é o dinheiro pago naquela troca; o valor
               dentro de cada item é o menor custo conhecido para chegar nele.
@@ -252,15 +252,15 @@ export default function DijkstraTrocas() {
                   </tr>
                 </thead>
                 <tbody className="font-mono">
-                  {nomes.map((nome) => (
-                    <tr key={nome} className="border-t border-zinc-800">
-                      <td className="py-2 pr-4 text-zinc-300">{nome}</td>
-                      <td className={`py-2 pr-4 ${passo.custos[nome] === Infinity ? "text-zinc-500" : "text-amber-400"}`}>
-                        {fmt(passo.custos[nome])}
+                  {names.map((name) => (
+                    <tr key={name} className="border-t border-zinc-800">
+                      <td className="py-2 pr-4 text-zinc-300">{name}</td>
+                      <td className={`py-2 pr-4 ${step.costs[name] === Infinity ? "text-zinc-500" : "text-amber-400"}`}>
+                        {fmt(step.costs[name])}
                       </td>
-                      <td className="py-2 pr-4 text-zinc-400">{passo.pais[nome] ?? "—"}</td>
+                      <td className="py-2 pr-4 text-zinc-400">{step.parents[name] ?? "—"}</td>
                       <td className="py-2 text-xs text-zinc-400">
-                        {passo.processados.includes(nome) ? "processado" : "pendente"}
+                        {step.processed.includes(name) ? "processado" : "pendente"}
                       </td>
                     </tr>
                   ))}

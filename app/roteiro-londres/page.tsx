@@ -1,58 +1,58 @@
 "use client";
 
-import { mochila } from "@/lib/mochila";
-import { ItemMochila } from "@/types/mochila";
+import { knapsack } from "@/lib/knapsack";
+import { KnapsackItem } from "@/types/knapsack";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
-import { ControlesPassos, Stat, botaoPrimario } from "@/components/ui";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
+import { StepControls, Stat, primaryButton } from "@/components/ui";
 
 // a tabela trabalha em meios dias, para que todos os tempos sejam números inteiros
-const ATRACOES: ItemMochila[] = [
-  { nome: "Abadia de Westminster", peso: 1, valor: 7 },
-  { nome: "Globe Theater", peso: 1, valor: 6 },
-  { nome: "Galeria Nacional", peso: 2, valor: 9 },
-  { nome: "Museu Britânico", peso: 4, valor: 9 },
-  { nome: "Catedral de St. Paul", peso: 1, valor: 8 },
+const ATTRACTIONS: KnapsackItem[] = [
+  { name: "Abadia de Westminster", weight: 1, value: 7 },
+  { name: "Globe Theater", weight: 1, value: 6 },
+  { name: "Galeria Nacional", weight: 2, value: 9 },
+  { name: "Museu Britânico", weight: 4, value: 9 },
+  { name: "Catedral de St. Paul", weight: 1, value: 8 },
 ];
 
-const EXTRA: ItemMochila = { nome: "Torre de Londres", peso: 2, valor: 10 };
+const EXTRA: KnapsackItem = { name: "Torre de Londres", weight: 2, value: 10 };
 
-const OPCOES_DIAS = [1, 1.5, 2, 2.5, 3];
+const DAY_OPTIONS = [1, 1.5, 2, 2.5, 3];
 
 const selectClass =
   "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
-const dias = (meiosDias: number) => {
-  const d = meiosDias / 2;
-  const texto = String(d).replace(".", ",");
-  return d === 1 ? "1 dia" : `${texto} dias`;
+const days = (halfDays: number) => {
+  const d = halfDays / 2;
+  const text = String(d).replace(".", ",");
+  return d === 1 ? "1 dia" : `${text} dias`;
 };
 
-export default function RoteiroLondres() {
-  const [diasTotais, setDiasTotais] = useState(2);
-  const [comExtra, setComExtra] = useState(false);
-  const [executado, setExecutado] = useState(false);
-  const [passoAtual, setPassoAtual] = useState(0);
+export default function LondonItinerary() {
+  const [totalDays, setTotalDays] = useState(2);
+  const [withExtra, setWithExtra] = useState(false);
+  const [executed, setExecuted] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const itens = comExtra ? [...ATRACOES, EXTRA] : ATRACOES;
-  const capacidade = diasTotais * 2;
-  const dp = mochila(itens, capacidade, "meios-dias");
+  const items = withExtra ? [...ATTRACTIONS, EXTRA] : ATTRACTIONS;
+  const capacity = totalDays * 2;
+  const dp = knapsack(items, capacity, "meios-dias");
 
-  const total = dp.passos.length;
-  const passo = dp.passos[passoAtual];
-  const final = passoAtual === total - 1;
-  const colunas = Array.from({ length: capacidade }, (_, i) => i + 1);
+  const total = dp.steps.length;
+  const step = dp.steps[currentStep];
+  const final = currentStep === total - 1;
+  const columns = Array.from({ length: capacity }, (_, i) => i + 1);
 
-  const escolhidasNomes = dp.escolhidos;
-  const tempoUsado = itens
-    .filter((i) => escolhidasNomes.includes(i.nome))
-    .reduce((s, i) => s + i.peso, 0);
+  const chosenNames = dp.chosenSet;
+  const timeUsed = items
+    .filter((i) => chosenNames.includes(i.name))
+    .reduce((s, i) => s + i.weight, 0);
 
-  function reiniciar() {
-    setExecutado(false);
-    setPassoAtual(0);
+  function reset() {
+    setExecuted(false);
+    setCurrentStep(0);
   }
 
   return (
@@ -67,20 +67,20 @@ export default function RoteiroLondres() {
           pode visitar metade de uma atração, e é por isso que a tabela só usa
           números inteiros de meios dias.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.roteiroLondres.simples}
-          tecnica={EXPLICACOES.roteiroLondres.tecnica}
-          codigo={CODIGOS.mochila}
+        <Explanation
+          simple={EXPLANATIONS.londonItinerary.simple}
+          technique={EXPLANATIONS.londonItinerary.technique}
+          code={CODES.knapsack}
         />
       </header>
 
       <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
         <ul className="grid gap-2 sm:grid-cols-3">
-          {itens.map((item) => (
-            <li key={item.nome} className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm">
-              <div className="font-medium text-zinc-200">{item.nome}</div>
+          {items.map((item) => (
+            <li key={item.name} className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm">
+              <div className="font-medium text-zinc-200">{item.name}</div>
               <div className="font-mono text-xs text-zinc-400">
-                {dias(item.peso)} · nota {item.valor}
+                {days(item.weight)} · nota {item.value}
               </div>
             </li>
           ))}
@@ -91,13 +91,13 @@ export default function RoteiroLondres() {
             Tempo disponível
             <select
               className={selectClass}
-              value={diasTotais}
+              value={totalDays}
               onChange={(e) => {
-                setDiasTotais(Number(e.target.value));
-                reiniciar();
+                setTotalDays(Number(e.target.value));
+                reset();
               }}
             >
-              {OPCOES_DIAS.map((d) => (
+              {DAY_OPTIONS.map((d) => (
                 <option key={d} value={d}>
                   {String(d).replace(".", ",")} {d === 1 ? "dia" : "dias"}
                 </option>
@@ -107,10 +107,10 @@ export default function RoteiroLondres() {
           <label className="flex cursor-pointer items-start gap-3 self-end pb-2 text-sm text-zinc-300">
             <input
               type="checkbox"
-              checked={comExtra}
+              checked={withExtra}
               onChange={(e) => {
-                setComExtra(e.target.checked);
-                reiniciar();
+                setWithExtra(e.target.checked);
+                reset();
               }}
               className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-500"
             />
@@ -122,35 +122,35 @@ export default function RoteiroLondres() {
         </div>
 
         <button
-          className={botaoPrimario}
+          className={primaryButton}
           onClick={() => {
-            setExecutado(true);
-            setPassoAtual(0);
+            setExecuted(true);
+            setCurrentStep(0);
           }}
         >
           Preencher a tabela
         </button>
       </div>
 
-      {executado && (
+      {executed && (
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-3">
-            <Stat label="Maior nota total" value={String(dp.valorTotal)} tone="text-emerald-400" />
+            <Stat label="Maior nota total" value={String(dp.totalValue)} tone="text-emerald-400" />
             <Stat
               label="Tempo usado"
-              value={`${dias(tempoUsado)} de ${dias(capacidade)}`}
+              value={`${days(timeUsed)} de ${days(capacity)}`}
               tone="text-amber-400"
-              pequeno
+              small
             />
-            <Stat label="Célula" value={`${passoAtual + 1} / ${total}`} tone="text-zinc-100" />
+            <Stat label="Célula" value={`${currentStep + 1} / ${total}`} tone="text-zinc-100" />
           </div>
 
           <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className={`text-sm font-medium ${passo.usouItem ? "text-amber-400" : "text-zinc-300"}`}>
-                {passo.descricao}
+              <p className={`text-sm font-medium ${step.usedItem ? "text-amber-400" : "text-zinc-300"}`}>
+                {step.description}
               </p>
-              <ControlesPassos passoAtual={passoAtual} total={total} onChange={setPassoAtual} />
+              <StepControls currentStep={currentStep} total={total} onChange={setCurrentStep} />
             </div>
             <p className="text-xs text-zinc-500">
               Na descrição acima, o tempo aparece em meios-dias (1 = meio dia) e
@@ -162,39 +162,39 @@ export default function RoteiroLondres() {
                 <thead>
                   <tr className="text-xs text-zinc-400">
                     <th />
-                    {colunas.map((c) => (
+                    {columns.map((c) => (
                       <th key={c} className="whitespace-nowrap px-2 py-1 font-medium">
-                        {dias(c)}
+                        {days(c)}
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {itens.map((item, i) => (
-                    <tr key={item.nome}>
+                  {items.map((item, i) => (
+                    <tr key={item.name}>
                       <th className="whitespace-nowrap pr-3 text-right text-xs font-medium text-zinc-400">
-                        {item.nome}
+                        {item.name}
                       </th>
-                      {colunas.map((c, j) => {
-                        const ordem = i * capacidade + j;
-                        const preenchida = ordem <= passoAtual;
-                        const atual = ordem === passoAtual;
-                        const escolhida =
-                          final && dp.celulasEscolhidas.some(([li, co]) => li === i && co === j);
+                      {columns.map((c, j) => {
+                        const order = i * capacity + j;
+                        const filled = order <= currentStep;
+                        const current = order === currentStep;
+                        const chosen =
+                          final && dp.chosenCells.some(([li, co]) => li === i && co === j);
                         return (
                           <td
                             key={c}
                             className={`rounded-lg px-2 py-2.5 font-mono text-xs tabular-nums transition-colors ${
-                              escolhida
+                              chosen
                                 ? "bg-emerald-500 font-semibold text-emerald-950"
-                                : atual
+                                : current
                                   ? "bg-amber-500 font-semibold text-amber-950"
-                                  : preenchida
+                                  : filled
                                     ? "bg-zinc-800 text-zinc-200"
                                     : "bg-zinc-900 text-zinc-600"
                             }`}
                           >
-                            {preenchida ? dp.tabela[i][j] : "·"}
+                            {filled ? dp.table[i][j] : "·"}
                           </td>
                         );
                       })}
@@ -207,10 +207,10 @@ export default function RoteiroLondres() {
 
           {final && (
             <div className="flex flex-col gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 text-sm">
-              <div className="font-medium text-zinc-200">Roteiro: {escolhidasNomes.join(" + ")}</div>
+              <div className="font-medium text-zinc-200">Roteiro: {chosenNames.join(" + ")}</div>
               <div className="text-zinc-400">
-                Nota total {dp.valorTotal} em {dias(tempoUsado)}.
-                {comExtra &&
+                Nota total {dp.totalValue} em {days(timeUsed)}.
+                {withExtra &&
                   " Repare que adicionar uma atração não obriga a recomeçar do zero: só acrescenta uma linha à tabela, que usa as respostas das linhas de cima."}
               </div>
             </div>

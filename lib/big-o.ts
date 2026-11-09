@@ -1,88 +1,88 @@
-export type CurvaBigO = {
+export type BigOCurve = {
   id: string;
-  notacao: string;
-  nome: string;
-  exemplo: string;
-  cor: string;
-  corTexto: string;
-  passos: (n: number) => number;
+  notation: string;
+  name: string;
+  example: string;
+  color: string;
+  textColor: string;
+  steps: (n: number) => number;
 };
 
-function fatorialNumero(n: number): number {
+function factorialNumber(n: number): number {
   let r = 1;
   for (let i = 2; i <= n; i++) r *= i;
   return r;
 }
 
-export const curvas: CurvaBigO[] = [
+export const curves: BigOCurve[] = [
   {
     id: "log",
-    notacao: "O(log n)",
-    nome: "Logarítmico",
-    exemplo: "Busca binária",
-    cor: "#34d399",
-    corTexto: "text-emerald-400",
-    passos: (n) => Math.log2(n),
+    notation: "O(log n)",
+    name: "Logarítmico",
+    example: "Busca binária",
+    color: "#34d399",
+    textColor: "text-emerald-400",
+    steps: (n) => Math.log2(n),
   },
   {
     id: "n",
-    notacao: "O(n)",
-    nome: "Linear",
-    exemplo: "Busca simples",
-    cor: "#38bdf8",
-    corTexto: "text-sky-400",
-    passos: (n) => n,
+    notation: "O(n)",
+    name: "Linear",
+    example: "Busca simples",
+    color: "#38bdf8",
+    textColor: "text-sky-400",
+    steps: (n) => n,
   },
   {
     id: "nlog",
-    notacao: "O(n log n)",
-    nome: "Linearítmico",
-    exemplo: "Quicksort (caso médio)",
-    cor: "#a78bfa",
-    corTexto: "text-violet-400",
-    passos: (n) => n * Math.log2(n),
+    notation: "O(n log n)",
+    name: "Linearítmico",
+    example: "Quicksort (caso médio)",
+    color: "#a78bfa",
+    textColor: "text-violet-400",
+    steps: (n) => n * Math.log2(n),
   },
   {
     id: "n2",
-    notacao: "O(n²)",
-    nome: "Quadrático",
-    exemplo: "Ordenação por seleção",
-    cor: "#fbbf24",
-    corTexto: "text-amber-400",
-    passos: (n) => n * n,
+    notation: "O(n²)",
+    name: "Quadrático",
+    example: "Ordenação por seleção",
+    color: "#fbbf24",
+    textColor: "text-amber-400",
+    steps: (n) => n * n,
   },
   {
     id: "fat",
-    notacao: "O(n!)",
-    nome: "Fatorial",
-    exemplo: "Caixeiro-viajante (força bruta)",
-    cor: "#fb7185",
-    corTexto: "text-rose-400",
-    passos: (n) => fatorialNumero(n),
+    notation: "O(n!)",
+    name: "Fatorial",
+    example: "Caixeiro-viajante (força bruta)",
+    color: "#fb7185",
+    textColor: "text-rose-400",
+    steps: (n) => factorialNumber(n),
   },
 ];
 
-export function formatarPassos(valor: number): string {
-  if (valor < 1000) {
-    return Number.isInteger(valor)
-      ? String(valor)
-      : valor.toFixed(1).replace(".", ",");
+export function formatSteps(value: number): string {
+  if (value < 1000) {
+    return Number.isInteger(value)
+      ? String(value)
+      : value.toFixed(1).replace(".", ",");
   }
-  if (valor < 1e9) {
-    return Math.round(valor).toLocaleString("pt-BR");
+  if (value < 1e9) {
+    return Math.round(value).toLocaleString("pt-BR");
   }
-  return valor.toExponential(1).replace(".", ",").replace("e+", " × 10^");
+  return value.toExponential(1).replace(".", ",").replace("e+", " × 10^");
 }
 
 // tempo estimado se cada operação levasse 1 ms (como no exemplo do livro)
-export function formatarTempo(passos: number): string {
-  const segundos = passos / 1000;
-  if (segundos < 1) return `${Math.round(passos)} ms`;
-  if (segundos < 60) return `${segundos.toFixed(1).replace(".", ",")} s`;
-  if (segundos < 3600) return `${(segundos / 60).toFixed(1).replace(".", ",")} min`;
-  if (segundos < 86400) return `${(segundos / 3600).toFixed(1).replace(".", ",")} h`;
-  const anos = segundos / 31_557_600;
-  if (anos < 1) return `${(segundos / 86400).toFixed(1).replace(".", ",")} dias`;
-  if (anos < 1e6) return `${Math.round(anos).toLocaleString("pt-BR")} anos`;
+export function formatTime(steps: number): string {
+  const seconds = steps / 1000;
+  if (seconds < 1) return `${Math.round(steps)} ms`;
+  if (seconds < 60) return `${seconds.toFixed(1).replace(".", ",")} s`;
+  if (seconds < 3600) return `${(seconds / 60).toFixed(1).replace(".", ",")} min`;
+  if (seconds < 86400) return `${(seconds / 3600).toFixed(1).replace(".", ",")} h`;
+  const years = seconds / 31_557_600;
+  if (years < 1) return `${(seconds / 86400).toFixed(1).replace(".", ",")} dias`;
+  if (years < 1e6) return `${Math.round(years).toLocaleString("pt-BR")} anos`;
   return "mais que a idade do universo";
 }

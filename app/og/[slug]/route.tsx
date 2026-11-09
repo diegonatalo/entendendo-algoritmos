@@ -1,13 +1,13 @@
 import { ImageResponse } from "next/og";
-import { capitulos } from "@/lib/capitulos";
-import { NOME_DO_SITE } from "@/lib/site";
+import { chapters } from "@/lib/chapters";
+import { SITE_NAME } from "@/lib/site";
 
 // Cartão de compartilhamento (1200×630) de cada página, gerado no build:
 // /og/busca-binaria, /og/quicksort… e /og/inicio para a página inicial.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return [{ slug: "inicio" }, ...capitulos.map((c) => ({ slug: c.href.slice(1) }))];
+  return [{ slug: "start" }, ...chapters.map((c) => ({ slug: c.href.slice(1) }))];
 }
 
 export async function GET(
@@ -15,11 +15,11 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
-  const pagina = capitulos.find((c) => c.href === `/${slug}`);
+  const page = chapters.find((c) => c.href === `/${slug}`);
 
-  const etiqueta = pagina ? `CAPÍTULO ${pagina.numero}` : "VISUALIZAÇÕES INTERATIVAS";
-  const titulo = pagina ? pagina.titulo : "Veja os algoritmos acontecendo";
-  const descricao = pagina ? pagina.descricao : "Visualizações interativas, passo a passo.";
+  const label = page ? `CAPÍTULO ${page.number}` : "VISUALIZAÇÕES INTERATIVAS";
+  const title = page ? page.title : "Veja os algoritmos acontecendo";
+  const description = page ? page.description : "Visualizações interativas, passo a passo.";
 
   return new ImageResponse(
     (
@@ -39,25 +39,25 @@ export async function GET(
       >
         <div style={{ display: "flex", alignItems: "center", fontSize: 34, fontWeight: 600 }}>
           <span style={{ color: "#34d399", marginRight: 14 }}>{"</>"}</span>
-          {NOME_DO_SITE}
+          {SITE_NAME}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 30, letterSpacing: 4, color: "#34d399", marginBottom: 20 }}>
-            {etiqueta}
+            {label}
           </div>
           <div
             style={{
-              fontSize: titulo.length <= 18 ? 104 : titulo.length <= 24 ? 88 : 76,
+              fontSize: title.length <= 18 ? 104 : title.length <= 24 ? 88 : 76,
               lineHeight: 1.05,
               fontWeight: 700,
               letterSpacing: -3,
             }}
           >
-            {titulo}
+            {title}
           </div>
           <div style={{ fontSize: 34, lineHeight: 1.35, color: "#a1a1aa", marginTop: 28, maxWidth: 980 }}>
-            {descricao}
+            {description}
           </div>
         </div>
 

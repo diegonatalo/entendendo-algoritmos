@@ -177,19 +177,19 @@ NEXT_PUBLIC_SITE_URL=https://seu-dominio.com
 app/
 ├── <rota>/page.tsx      uma pasta por página (busca-binaria, quicksort, dijkstra…)
 ├── og/[slug]/route.tsx  imagem de compartilhamento (1200×630) de cada página, gerada no build
-├── sitemap.ts           sitemap.xml: a home e as páginas de lib/capitulos.ts
+├── sitemap.ts           sitemap.xml: a home e as páginas de lib/chapters.ts
 ├── robots.ts            robots.txt: libera tudo e aponta para o sitemap
 ├── not-found.tsx        página 404 com sugestão de páginas parecidas
 └── icon.svg, favicon.ico, apple-icon.png
 components/              menu lateral, explicação Simples/Técnica, bloco de código, botão de tema
 lib/
 ├── <algoritmo>.ts       algoritmos puros em TypeScript (devolvem o resultado e cada passo)
-├── capitulos.ts         lista única de páginas: menu, home, títulos e sitemap leem daqui
-├── codigos/             trechos de código mostrados nas páginas, um arquivo por capítulo
-├── explicacoes/         textos Simples e Técnico de cada página, um arquivo por capítulo
+├── chapters.ts          lista única de páginas: menu, home, títulos e sitemap leem daqui
+├── codes/               trechos de código mostrados nas páginas, um arquivo por capítulo
+├── explanations/         textos Simples e Técnico de cada página, um arquivo por capítulo
 ├── metadata.ts          título, descrição e tags Open Graph de cada rota
 ├── site.ts              endereço público e nome do site
-└── entrada.ts           leitura e geração das listas de números dos formulários
+└── input.ts             leitura e geração das listas de números dos formulários
 types/                   tipos dos resultados de cada algoritmo
 docs/img/                banner e capturas de tela deste README
 ```
@@ -204,11 +204,11 @@ docs/img/                banner e capturas de tela deste README
 
 ### 🧩 Adicionando um algoritmo novo
 
-1. **Função:** crie `lib/meu-algoritmo.ts`, uma função pura que devolve o resultado e uma lista de passos, e os tipos em `types/meu-algoritmo.d.ts`.
+1. **Função:** crie `lib/meu-algoritmo.ts`, uma função pura que devolve o resultado e uma lista de passos, e os tipos em `types/meu-algoritmo.ts`.
 2. **Página:** crie `app/meu-algoritmo/page.tsx` (use uma página parecida como modelo) para desenhar os passos.
-3. **Registro:** acrescente a página em `lib/capitulos.ts` com número do capítulo, título, rota e descrição. Menu, home, sitemap e imagem de compartilhamento saem dessa lista.
-4. **Título da aba:** crie `app/meu-algoritmo/layout.tsx` copiando o de uma página existente (ele lê o título de `capitulos.ts`).
-5. **Conteúdo:** acrescente os textos Simples e Técnico em `lib/explicacoes/capNN.ts` e o trecho de código em `lib/codigos/capNN.ts` (do capítulo da página), e use o componente `Explicacao` na página.
+3. **Registro:** acrescente a página em `lib/chapters.ts` com número do capítulo, título, rota e descrição. Menu, home, sitemap e imagem de compartilhamento saem dessa lista.
+4. **Título da aba:** crie `app/meu-algoritmo/layout.tsx` copiando o de uma página existente (ele lê o título de `chapters.ts`).
+5. **Conteúdo:** acrescente os textos Simples e Técnico em `lib/explanations/chNN.ts` e o trecho de código em `lib/codes/chNN.ts` (do capítulo da página), e use o componente `Explicacao` na página.
 6. **Confira:** rode `pnpm lint`, `npx tsc --noEmit` e `pnpm build`.
 
 ### 🔒 Seus dados
@@ -224,8 +224,8 @@ recarregar. A única coisa guardada no navegador é a escolha do tema (`localSto
 |---|---|
 | **Algoritmo** | Cada um é uma função pura em `lib/` que devolve o resultado e, quando faz sentido, a lista de passos. |
 | **Página** | Só desenha o que a função devolveu. Os botões de passo movem um índice nessa lista. |
-| **Registro de páginas** | `lib/capitulos.ts` é a lista única: o menu, a home, os títulos, o sitemap e as imagens de compartilhamento leem dela. |
-| **Textos e código** | Ficam em `lib/explicacoes/` e `lib/codigos/`, um arquivo por capítulo. |
+| **Registro de páginas** | `lib/chapters.ts` é a lista única: o menu, a home, os títulos, o sitemap e as imagens de compartilhamento leem dela. |
+| **Textos e código** | Ficam em `lib/explanations/` e `lib/codes/`, um arquivo por capítulo. |
 
 <details>
 <summary><b>Ver as 29 páginas por capítulo</b></summary>
@@ -264,7 +264,7 @@ Next.js sem backend, não precisa de `vercel.json`: todas as páginas saem está
 ### 🧭 Próximos passos
 
 - [ ] Páginas interativas para os assuntos do capítulo 11 (árvore binária de busca, índice invertido, filtro de Bloom).
-- [ ] Testes automatizados para as funções de `lib/` e para os trechos de `lib/codigos/`.
+- [ ] Testes automatizados para as funções de `lib/` e para os trechos de `lib/codes/`.
 - [ ] CI no GitHub Actions rodando lint, tipos e build a cada push.
 - [ ] Editar nós e arestas dos grafos, hoje fixos.
 - [ ] Capturas do README também no tema claro.

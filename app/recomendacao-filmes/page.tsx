@@ -1,57 +1,57 @@
 "use client";
 
-import { recomendar } from "@/lib/recomendacao";
-import { Metodo, Usuario } from "@/types/recomendacao";
+import { recommend } from "@/lib/recommendation";
+import { Method, User } from "@/types/recommendation";
 import { useState } from "react";
-import { Explicacao } from "@/components/explicacao";
-import { CODIGOS } from "@/lib/codigos";
-import { EXPLICACOES } from "@/lib/explicacoes";
+import { Explanation } from "@/components/explanation";
+import { CODES } from "@/lib/codes";
+import { EXPLANATIONS } from "@/lib/explanations";
 
-const FILMES = ["Velocidade Máxima", "Noite de Risadas", "Cartas ao Vento", "Galáxia Zero", "A Casa Escura"];
-const FILME_NOVO = "Horizonte Azul";
+const MOVIES = ["Velocidade Máxima", "Noite de Risadas", "Cartas ao Vento", "Galáxia Zero", "A Casa Escura"];
+const NEW_MOVIE = "Horizonte Azul";
 
 // notas de 1 a 5 inventadas para este exemplo
 const VOCE = [5, 4, 2, 5, 1];
 
-const OUTROS: Usuario[] = [
-  { nome: "Bia", notas: [2, 1, 1, 2, 1], notaNova: 5 },
-  { nome: "Caio", notas: [4, 4, 4, 4, 4], notaNova: 2 },
-  { nome: "Davi", notas: [5, 5, 5, 5, 5], notaNova: 3 },
-  { nome: "Eva", notas: [1, 5, 5, 1, 5], notaNova: 1 },
+const OTHERS: User[] = [
+  { name: "Bia", ratings: [2, 1, 1, 2, 1], newRating: 5 },
+  { name: "Caio", ratings: [4, 4, 4, 4, 4], newRating: 2 },
+  { name: "Davi", ratings: [5, 5, 5, 5, 5], newRating: 3 },
+  { name: "Eva", ratings: [1, 5, 5, 1, 5], newRating: 1 },
 ];
 
-const METODOS: Record<Metodo, { titulo: string; explicacao: string; unidade: string }> = {
-  euclidiana: {
-    titulo: "Distância comum",
-    explicacao:
+const METHODS: Record<Method, { title: string; explanation: string; unit: string }> = {
+  euclidean: {
+    title: "Distância comum",
+    explanation:
       "Compara as notas diretamente. Funciona se todos usam a escala do mesmo jeito, mas falha quando uns dão sempre notas altas e outros sempre baixas.",
-    unidade: "distância",
+    unit: "distância",
   },
-  normalizada: {
-    titulo: "Notas normalizadas",
-    explicacao:
+  normalized: {
+    title: "Notas normalizadas",
+    explanation:
       "Subtrai de cada nota a média da própria pessoa antes de comparar. Assim, o que conta é o quanto ela gostou de cada filme em relação ao seu padrão.",
-    unidade: "distância",
+    unit: "distância",
   },
-  cosseno: {
-    titulo: "Similaridade do cosseno",
-    explicacao:
+  cosine: {
+    title: "Similaridade do cosseno",
+    explanation:
       "Compara a direção das notas, não o tamanho. Vai de −1 a 1: quanto mais perto de 1, mais parecidos os gostos, mesmo com escalas diferentes.",
-    unidade: "similaridade",
+    unit: "similaridade",
   },
 };
 
 const num = (n: number) => n.toFixed(2).replace(".", ",");
 
-export default function RecomendacaoFilmes() {
-  const [metodo, setMetodo] = useState<Metodo>("euclidiana");
+export default function MovieRecommendation() {
+  const [method, setMethod] = useState<Method>("euclidean");
   const [k, setK] = useState(1);
 
-  const resultado = recomendar(VOCE, OUTROS, metodo, k);
-  const previsoes = (Object.keys(METODOS) as Metodo[]).map((m) => ({
-    metodo: m,
-    previsao: recomendar(VOCE, OUTROS, m, k).previsao,
-    vizinhos: recomendar(VOCE, OUTROS, m, k).escolhidos.map((v) => v.usuario.nome),
+  const result = recommend(VOCE, OTHERS, method, k);
+  const predictions = (Object.keys(METHODS) as Method[]).map((m) => ({
+    method: m,
+    prediction: recommend(VOCE, OTHERS, m, k).prediction,
+    neighbors: recommend(VOCE, OTHERS, m, k).chosenSet.map((v) => v.user.name),
   }));
 
   return (
@@ -65,10 +65,10 @@ export default function RecomendacaoFilmes() {
           tira-se a média das notas dos vizinhos. O ponto delicado é medir a
           semelhança: nem todo mundo usa a escala de notas do mesmo jeito.
         </p>
-        <Explicacao
-          simples={EXPLICACOES.recomendacaoFilmes.simples}
-          tecnica={EXPLICACOES.recomendacaoFilmes.tecnica}
-          codigo={CODIGOS.recomendacao}
+        <Explanation
+          simple={EXPLANATIONS.movieRecommendation.simple}
+          technique={EXPLANATIONS.movieRecommendation.technique}
+          code={CODES.recommendation}
         />
       </header>
 
@@ -78,12 +78,12 @@ export default function RecomendacaoFilmes() {
             <thead className="bg-zinc-900/60 text-xs uppercase tracking-wider text-zinc-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Pessoa</th>
-                {FILMES.map((f) => (
+                {MOVIES.map((f) => (
                   <th key={f} className="px-3 py-3 text-center font-medium">
                     {f}
                   </th>
                 ))}
-                <th className="px-3 py-3 text-center font-medium text-emerald-400">{FILME_NOVO}</th>
+                <th className="px-3 py-3 text-center font-medium text-emerald-400">{NEW_MOVIE}</th>
               </tr>
             </thead>
             <tbody className="font-mono">
@@ -94,13 +94,13 @@ export default function RecomendacaoFilmes() {
                 ))}
                 <td className="px-3 py-3 text-center text-zinc-400">?</td>
               </tr>
-              {OUTROS.map((u) => (
-                <tr key={u.nome} className="border-t border-zinc-800">
-                  <td className="px-4 py-3 font-sans text-zinc-300">{u.nome}</td>
-                  {u.notas.map((n, i) => (
+              {OTHERS.map((u) => (
+                <tr key={u.name} className="border-t border-zinc-800">
+                  <td className="px-4 py-3 font-sans text-zinc-300">{u.name}</td>
+                  {u.ratings.map((n, i) => (
                     <td key={i} className="px-3 py-3 text-center text-zinc-300">{n}</td>
                   ))}
-                  <td className="px-3 py-3 text-center text-emerald-400">{u.notaNova}</td>
+                  <td className="px-3 py-3 text-center text-emerald-400">{u.newRating}</td>
                 </tr>
               ))}
             </tbody>
@@ -115,21 +115,21 @@ export default function RecomendacaoFilmes() {
       <section className="fade-up flex flex-col gap-6">
         <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
           <div className="flex flex-wrap gap-2">
-            {(Object.keys(METODOS) as Metodo[]).map((m) => (
+            {(Object.keys(METHODS) as Method[]).map((m) => (
               <button
                 key={m}
-                onClick={() => setMetodo(m)}
+                onClick={() => setMethod(m)}
                 className={`cursor-pointer rounded-xl border px-4 py-2 text-sm transition-colors ${
-                  m === metodo
+                  m === method
                     ? "border-emerald-500/60 bg-emerald-500/10 text-emerald-300"
                     : "border-zinc-700 text-zinc-300 hover:border-zinc-500"
                 }`}
               >
-                {METODOS[m].titulo}
+                {METHODS[m].title}
               </button>
             ))}
           </div>
-          <p className="text-sm text-zinc-400">{METODOS[metodo].explicacao}</p>
+          <p className="text-sm text-zinc-400">{METHODS[method].explanation}</p>
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             <span className="flex items-center justify-between">
               Número de vizinhos (k)
@@ -138,7 +138,7 @@ export default function RecomendacaoFilmes() {
             <input
               type="range"
               min={1}
-              max={OUTROS.length}
+              max={OTHERS.length}
               value={k}
               onChange={(e) => setK(Number(e.target.value))}
               className="w-full accent-emerald-500"
@@ -148,23 +148,23 @@ export default function RecomendacaoFilmes() {
 
         <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
           <div className="text-xs uppercase tracking-wider text-zinc-500">
-            Mais parecidos com você ({METODOS[metodo].unidade})
+            Mais parecidos com você ({METHODS[method].unit})
           </div>
           <ol className="flex flex-col gap-1 text-sm">
-            {resultado.ranking.map((v, i) => {
-              const escolhido = i < k;
+            {result.ranking.map((v, i) => {
+              const chosenOne = i < k;
               return (
                 <li
-                  key={v.usuario.nome}
+                  key={v.user.name}
                   className={`flex items-center gap-3 rounded-lg px-3 py-1.5 ${
-                    escolhido ? "bg-emerald-500/10 text-zinc-100" : "bg-zinc-900 text-zinc-500"
+                    chosenOne ? "bg-emerald-500/10 text-zinc-100" : "bg-zinc-900 text-zinc-500"
                   }`}
                 >
                   <span className="w-5 font-mono text-xs">{i + 1}.</span>
-                  <span className="w-14">{v.usuario.nome}</span>
-                  <span className="font-mono text-xs">{num(v.medida)}</span>
+                  <span className="w-14">{v.user.name}</span>
+                  <span className="font-mono text-xs">{num(v.measure)}</span>
                   <span className="ml-auto font-mono text-xs">
-                    {escolhido ? `deu ${v.usuario.notaNova} a ${FILME_NOVO}` : "fora dos k vizinhos"}
+                    {chosenOne ? `deu ${v.user.newRating} a ${NEW_MOVIE}` : "fora dos k vizinhos"}
                   </span>
                 </li>
               );
@@ -174,13 +174,13 @@ export default function RecomendacaoFilmes() {
 
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5">
           <div className="text-sm text-zinc-400">
-            Nota prevista para <span className="text-zinc-200">{FILME_NOVO}</span>:
+            Nota prevista para <span className="text-zinc-200">{NEW_MOVIE}</span>:
           </div>
           <div className="mt-1 text-3xl font-semibold text-emerald-400">
-            {num(resultado.previsao)}
+            {num(result.prediction)}
           </div>
           <div className="mt-1 font-mono text-xs text-zinc-500">
-            média de {resultado.escolhidos.map((v) => v.usuario.notaNova).join(" + ")} ÷ {k}
+            média de {result.chosenSet.map((v) => v.user.newRating).join(" + ")} ÷ {k}
           </div>
         </div>
 
@@ -194,11 +194,11 @@ export default function RecomendacaoFilmes() {
               </tr>
             </thead>
             <tbody>
-              {previsoes.map((p) => (
-                <tr key={p.metodo} className="border-t border-zinc-800">
-                  <td className="px-4 py-3 text-zinc-300">{METODOS[p.metodo].titulo}</td>
-                  <td className="px-4 py-3 text-zinc-400">{p.vizinhos.join(", ")}</td>
-                  <td className="px-4 py-3 text-right font-mono text-emerald-400">{num(p.previsao)}</td>
+              {predictions.map((p) => (
+                <tr key={p.method} className="border-t border-zinc-800">
+                  <td className="px-4 py-3 text-zinc-300">{METHODS[p.method].title}</td>
+                  <td className="px-4 py-3 text-zinc-400">{p.neighbors.join(", ")}</td>
+                  <td className="px-4 py-3 text-right font-mono text-emerald-400">{num(p.prediction)}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,11 +1,11 @@
 import {
-  PontoKnn,
-  PontoRegressao,
-  ResultadoKnn,
-  ResultadoRegressao,
+  KnnPoint,
+  RegressionPoint,
+  KnnResult,
+  RegressionResult,
 } from "@/types/knn";
 
-export function distancia(
+export function distance(
   a: { x: number; y: number },
   b: { x: number; y: number },
 ): number {
@@ -13,44 +13,44 @@ export function distancia(
 }
 
 // regressão: em vez de votar uma categoria, tira a média dos valores dos vizinhos
-export function regressaoKnn(
-  pontos: PontoRegressao[],
-  novo: { x: number; y: number },
+export function knnRegression(
+  points: RegressionPoint[],
+  created: { x: number; y: number },
   k: number,
-): ResultadoRegressao {
-  const vizinhos = pontos
-    .map((ponto) => ({ ponto, distancia: distancia(ponto, novo) }))
-    .sort((a, b) => a.distancia - b.distancia)
+): RegressionResult {
+  const neighbors = points
+    .map((point) => ({ point, distance: distance(point, created) }))
+    .sort((a, b) => a.distance - b.distance)
     .slice(0, k);
 
-  const media =
-    vizinhos.reduce((soma, v) => soma + v.ponto.valor, 0) / vizinhos.length;
+  const average =
+    neighbors.reduce((sum, v) => sum + v.point.value, 0) / neighbors.length;
 
-  return { vizinhos, media };
+  return { neighbors, average };
 }
 
 export function knn(
-  pontos: PontoKnn[],
-  novo: { x: number; y: number },
+  points: KnnPoint[],
+  created: { x: number; y: number },
   k: number,
-): ResultadoKnn {
-  const vizinhos = pontos
-    .map((ponto) => ({ ponto, distancia: distancia(ponto, novo) }))
-    .sort((a, b) => a.distancia - b.distancia)
+): KnnResult {
+  const neighbors = points
+    .map((point) => ({ point, distance: distance(point, created) }))
+    .sort((a, b) => a.distance - b.distance)
     .slice(0, k);
 
-  const votos = { laranja: 0, toranja: 0 };
-  for (const { ponto } of vizinhos) {
-    votos[ponto.classe]++;
+  const votes = { laranja: 0, toranja: 0 };
+  for (const { point } of neighbors) {
+    votes[point.category]++;
   }
 
   // em caso de empate, vale a classe do vizinho mais próximo
-  const classe =
-    votos.laranja === votos.toranja
-      ? vizinhos[0].ponto.classe
-      : votos.laranja > votos.toranja
+  const category =
+    votes.laranja === votes.toranja
+      ? neighbors[0].point.category
+      : votes.laranja > votes.toranja
         ? "laranja"
         : "toranja";
 
-  return { vizinhos, votos, classe };
+  return { neighbors, votes, category };
 }
