@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
   const routes = ["/", ...chapters.map((c) => c.href)];
   return routes.map((route) => ({
-    url: new URL(route, SITE_URL).href,
+    url: `${SITE_URL}${route}`,
     lastModified,
   }));
 }

@@ -1,8 +1,7 @@
-// Endereço público do site, usado para montar os links absolutos das tags Open Graph.
-// Para publicar em outro domínio, defina NEXT_PUBLIC_SITE_URL no ambiente do build.
-export const SITE_URL = new URL(
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://entendendo-algoritmos.vercel.app",
-);
+/** URL pública do site. Para outro domínio, defina NEXT_PUBLIC_SITE_URL no build. */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://entendendo-algoritmos.vercel.app"
+).replace(/\/+$/, "");
 
 export const SITE_NAME = "Entendendo Algoritmos";
 export const SITE_DESCRIPTION =

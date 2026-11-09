@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 const INITIAL_THEME = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.dataset.theme=t}catch(e){}`;
 
 export const metadata: Metadata = {
-  metadataBase: SITE_URL,
+  metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
   title: {
     default: SITE_NAME,
