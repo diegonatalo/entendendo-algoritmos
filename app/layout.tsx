@@ -27,7 +27,6 @@ export const metadata: Metadata = {
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
-  alternates: { canonical: "/" },
   ...openGraphBase(SITE_NAME, SITE_DESCRIPTION, "/", "/og/inicio"),
 };
 
