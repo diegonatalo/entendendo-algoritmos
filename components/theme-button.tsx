@@ -21,7 +21,7 @@ function toggle() {
   const created = readTheme() === "claro" ? "dark" : "light";
   document.documentElement.dataset.theme = created;
   try {
-    localStorage.setItem("theme", created);
+    localStorage.setItem("entendendo-algoritmos:theme:v1", created);
   } catch {
     // sem armazenamento (modo privado): o tema vale só até recarregar
   }

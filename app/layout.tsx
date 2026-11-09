@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 // escolha salva ou, na falta dela, a preferência do sistema; sem JS fica o tema escuro
-const INITIAL_THEME = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.dataset.theme=t}catch(e){}`;
+const INITIAL_THEME = `try{var t=localStorage.getItem("entendendo-algoritmos:theme:v1");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.dataset.theme=t}catch(e){}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
