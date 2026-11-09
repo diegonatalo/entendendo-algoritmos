@@ -3,8 +3,7 @@ import { chapters } from "@/lib/chapters";
 import { SITE_NAME } from "@/lib/site";
 
 // Cartão de compartilhamento (1200×630) de cada página, gerado no build:
-// /og/busca-binaria, /og/quicksort… e /og/inicio para a página inicial.
-export const dynamicParams = false;
+// /og/busca-binaria, /og/quicksort… e /og/start para a página inicial.
 
 export function generateStaticParams() {
   return [{ slug: "start" }, ...chapters.map((c) => ({ slug: c.href.slice(1) }))];
@@ -16,6 +15,7 @@ export async function GET(
 ) {
   const { slug } = await params;
   const page = chapters.find((c) => c.href === `/${slug}`);
+  if (!page && slug !== "start") return new Response("Not found", { status: 404 });
 
   const label = page ? `CAPÍTULO ${page.number}` : "VISUALIZAÇÕES INTERATIVAS";
   const title = page ? page.title : "Veja os algoritmos acontecendo";
