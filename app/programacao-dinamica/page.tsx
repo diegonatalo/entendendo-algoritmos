@@ -1,12 +1,12 @@
 "use client";
 
-import { ControlesPassos } from "../components/ui";
-import { mochila, mochilaGulosa } from "@/functions/mochila";
-import { ItemMochila } from "@/@types/mochila";
+import { ControlesPassos } from "../../components/ui";
+import { mochila, mochilaGulosa } from "@/lib/mochila";
+import { ItemMochila } from "@/types/mochila";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 type Exemplo = {
   titulo: string;

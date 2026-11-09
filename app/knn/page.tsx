@@ -1,12 +1,12 @@
 "use client";
 
-import { knn } from "@/functions/knn";
-import { Classe, PontoKnn } from "@/@types/knn";
+import { knn } from "@/lib/knn";
+import { Classe, PontoKnn } from "@/types/knn";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
-import { GraficoRolavel } from "../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
+import { GraficoRolavel } from "../../components/ui";
 
 // x = tamanho, y = vermelhidão (0 a 100)
 const PONTOS: PontoKnn[] = [

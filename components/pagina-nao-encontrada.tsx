@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { capitulos } from "../capitulos";
+import { capitulos } from "../lib/capitulos";
 
 // distância de edição entre dois textos: quantas letras trocar, inserir ou apagar
 function distancia(a: string, b: string): number {

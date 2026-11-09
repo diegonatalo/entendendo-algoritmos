@@ -3,7 +3,7 @@ import {
   ResultadoHash,
   ResultadoInsercao,
   TabelaHash,
-} from "@/@types/hash";
+} from "@/types/hash";
 
 export function criarTabela(tamanho: number): TabelaHash {
   return Array.from({ length: tamanho }, () => []);

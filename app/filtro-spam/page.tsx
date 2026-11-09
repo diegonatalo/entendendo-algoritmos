@@ -1,12 +1,12 @@
 "use client";
 
-import { classificar, treinar } from "@/functions/naiveBayes";
-import { Mensagem } from "@/@types/naiveBayes";
+import { classificar, treinar } from "@/lib/naive-bayes";
+import { Mensagem } from "@/types/naive-bayes";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
-import { Stat } from "../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
+import { Stat } from "../../components/ui";
 
 const TREINO: Mensagem[] = [
   { texto: "ganhe dinheiro rápido agora", spam: true },

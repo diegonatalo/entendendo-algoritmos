@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Explicacao } from "../components/explicacao";
-import { EXPLICACOES } from "../explicacoes";
+import { Explicacao } from "../../components/explicacao";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 type Topico = {
   titulo: string;

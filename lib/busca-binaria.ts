@@ -1,4 +1,4 @@
-import { Passo, ResultadoBusca } from "@/@types/busca";
+import { Passo, ResultadoBusca } from "@/types/busca";
 
 export function buscaBinaria(arr: number[], alvo: number): ResultadoBusca {
   let inicio = 0;

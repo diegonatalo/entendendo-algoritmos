@@ -1,12 +1,12 @@
 "use client";
 
-import { inputClass } from "../components/ui";
-import { buscaBinaria } from "@/functions/buscaBinaria";
-import { ArrayVisual } from "../components/array";
+import { inputClass } from "../../components/ui";
+import { buscaBinaria } from "@/lib/busca-binaria";
+import { ArrayVisual } from "../../components/array";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 export default function BuscaBinaria() {
   const [resultado, setResultado] = useState<ReturnType<

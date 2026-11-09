@@ -2,10 +2,10 @@
 
 | Conceito | Regra |
 |---|---|
-| **Algoritmo** | Cada um é uma função pura em `functions/` que devolve o resultado e, quando faz sentido, a lista de passos. |
+| **Algoritmo** | Cada um é uma função pura em `lib/` que devolve o resultado e, quando faz sentido, a lista de passos. |
 | **Página** | Só desenha o que a função devolveu. Os botões de passo movem um índice nessa lista. |
-| **Registro de páginas** | `app/capitulos.ts` é a lista única: o menu, a home, os títulos, o sitemap e as imagens de compartilhamento leem dela. |
-| **Textos e código** | Ficam em `app/explicacoes/` e `app/codigos/`, um arquivo por capítulo. |
+| **Registro de páginas** | `lib/capitulos.ts` é a lista única: o menu, a home, os títulos, o sitemap e as imagens de compartilhamento leem dela. |
+| **Textos e código** | Ficam em `lib/explicacoes/` e `lib/codigos/`, um arquivo por capítulo. |
 
 <details>
 <summary><b>Ver as 29 páginas por capítulo</b></summary>

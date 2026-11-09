@@ -2,7 +2,7 @@ import {
   GrafoPonderado,
   PassoDijkstra,
   ResultadoDijkstra,
-} from "@/@types/dijkstra";
+} from "@/types/dijkstra";
 
 const formatar = (custo: number) => (custo === Infinity ? "∞" : String(custo));
 

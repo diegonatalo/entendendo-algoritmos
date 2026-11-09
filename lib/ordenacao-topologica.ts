@@ -2,7 +2,7 @@ import {
   GrafoDependencias,
   PassoTopologico,
   ResultadoTopologico,
-} from "@/@types/topologica";
+} from "@/types/topologica";
 
 // grafo[a] = tarefas que só podem começar depois de a
 // algoritmo de Kahn: remove repetidamente as tarefas sem dependências pendentes

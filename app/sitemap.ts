@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { capitulos } from "./capitulos";
-import { SITE_URL } from "./site";
+import { capitulos } from "../lib/capitulos";
+import { SITE_URL } from "../lib/site";
 
 // a home e todas as páginas registradas em capitulos.ts; página nova entra sozinha
 export default function sitemap(): MetadataRoute.Sitemap {

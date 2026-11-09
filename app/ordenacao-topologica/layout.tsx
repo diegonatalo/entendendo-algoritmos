@@ -1,4 +1,4 @@
-import { metadataDaPagina } from "../metadata";
+import { metadataDaPagina } from "../../lib/metadata";
 
 export const metadata = metadataDaPagina("/ordenacao-topologica");
 

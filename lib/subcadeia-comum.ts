@@ -2,7 +2,7 @@ import {
   ModoSubcadeia,
   PassoSubcadeia,
   ResultadoSubcadeia,
-} from "@/@types/subcadeia";
+} from "@/types/subcadeia";
 
 // tabela[i][j] compara as letras a[i] e b[j]
 //  - subcadeia (letras consecutivas): letras iguais = diagonal + 1; diferentes = 0

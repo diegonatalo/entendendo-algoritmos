@@ -1,4 +1,4 @@
-import { ExemploDigito, ResultadoOcr } from "@/@types/ocr";
+import { ExemploDigito, ResultadoOcr } from "@/types/ocr";
 
 export const LARGURA = 5;
 export const ALTURA = 7;

@@ -1,4 +1,4 @@
-import { Cidade, ResultadoOtimo, Rota } from "@/@types/caixeiro";
+import { Cidade, ResultadoOtimo, Rota } from "@/types/caixeiro";
 
 const distancia = (a: Cidade, b: Cidade) => Math.hypot(a.x - b.x, a.y - b.y);
 

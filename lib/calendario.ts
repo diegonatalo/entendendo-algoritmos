@@ -2,7 +2,7 @@ import {
   Aula,
   PassoCalendario,
   ResultadoCalendario,
-} from "@/@types/calendario";
+} from "@/types/calendario";
 
 export function formatarHora(hora: number): string {
   const h = Math.floor(hora);

@@ -1,12 +1,12 @@
 "use client";
 
-import { mochila } from "@/functions/mochila";
-import { ItemMochila } from "@/@types/mochila";
+import { mochila } from "@/lib/mochila";
+import { ItemMochila } from "@/types/mochila";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
-import { ControlesPassos, Stat, botaoPrimario } from "../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
+import { ControlesPassos, Stat, botaoPrimario } from "../../components/ui";
 
 // a tabela trabalha em meios dias, para que todos os tempos sejam números inteiros
 const ATRACOES: ItemMochila[] = [

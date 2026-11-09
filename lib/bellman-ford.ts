@@ -3,7 +3,7 @@ import {
   PassoBellmanFord,
   ResultadoBellmanFord,
   ResultadoDijkstraSimples,
-} from "@/@types/bellmanFord";
+} from "@/types/bellman-ford";
 
 const fmt = (custo: number) => (custo === Infinity ? "∞" : String(custo));
 

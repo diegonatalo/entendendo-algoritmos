@@ -1,12 +1,12 @@
 "use client";
 
-import { regressaoKnn } from "@/functions/knn";
-import { PontoRegressao } from "@/@types/knn";
+import { regressaoKnn } from "@/lib/knn";
+import { PontoRegressao } from "@/types/knn";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
-import { GraficoRolavel } from "../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
+import { GraficoRolavel } from "../../components/ui";
 
 // x = movimento na rua, y = temperatura (0 a 100); valor = pães vendidos no dia
 const PONTOS: PontoRegressao[] = (

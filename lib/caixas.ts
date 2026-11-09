@@ -1,4 +1,4 @@
-import { Caixa, PassoCaixa, ResultadoCaixas } from "@/@types/caixas";
+import { Caixa, PassoCaixa, ResultadoCaixas } from "@/types/caixas";
 
 export const ALVO = "chave";
 

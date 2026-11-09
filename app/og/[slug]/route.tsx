@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-import { capitulos } from "../../capitulos";
-import { NOME_DO_SITE } from "../../site";
+import { capitulos } from "../../../lib/capitulos";
+import { NOME_DO_SITE } from "../../../lib/site";
 
 // Cartão de compartilhamento (1200×630) de cada página, gerado no build:
 // /og/busca-binaria, /og/quicksort… e /og/inicio para a página inicial.

@@ -1,12 +1,12 @@
 "use client";
 
-import { ControlesPassos, inputMono } from "../components/ui";
-import { subcadeiaComum } from "@/functions/subcadeiaComum";
-import { ModoSubcadeia } from "@/@types/subcadeia";
+import { ControlesPassos, inputMono } from "../../components/ui";
+import { subcadeiaComum } from "@/lib/subcadeia-comum";
+import { ModoSubcadeia } from "@/types/subcadeia";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 const MAX_LETRAS = 10;
 

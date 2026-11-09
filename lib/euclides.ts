@@ -3,7 +3,7 @@ import {
   PassoEuclides,
   QuadradoTerreno,
   ResultadoEuclides,
-} from "@/@types/euclides";
+} from "@/types/euclides";
 
 // divide o terreno em quadrados: o maior quadrado que cabe, e repete no que sobra.
 // O lado do último quadrado é o maior divisor comum (MDC) das duas medidas.

@@ -1,12 +1,12 @@
 "use client";
 
-import { dijkstra } from "@/functions/dijkstra";
-import { GrafoPonderado } from "@/@types/dijkstra";
+import { dijkstra } from "@/lib/dijkstra";
+import { GrafoPonderado } from "@/types/dijkstra";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
-import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
+import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "../../components/ui";
 
 // cada aresta é uma troca: o peso é o dinheiro a pagar além do item entregue
 const TROCAS: GrafoPonderado = {

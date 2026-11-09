@@ -1,4 +1,4 @@
-import { PassoRecursao, Quadro, ResultadoFatorial } from "@/@types/recursao";
+import { PassoRecursao, Quadro, ResultadoFatorial } from "@/types/recursao";
 
 export function fatorial(n: number): ResultadoFatorial {
   const pilha: Quadro[] = [];

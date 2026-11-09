@@ -2,7 +2,7 @@ import {
   EstrategiaPivo,
   NoQuicksort,
   ResultadoQuicksort,
-} from "@/@types/quicksort";
+} from "@/types/quicksort";
 
 export function quicksort(
   entrada: number[],

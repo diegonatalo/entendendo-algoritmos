@@ -3,7 +3,7 @@ import {
   ModeloBayes,
   PalavraAnalisada,
   ResultadoBayes,
-} from "@/@types/naiveBayes";
+} from "@/types/naive-bayes";
 
 export function tokenizar(texto: string): string[] {
   return texto

@@ -3,7 +3,7 @@ import {
   PassoGuloso,
   ResultadoGuloso,
   ResultadoOtimo,
-} from "@/@types/guloso";
+} from "@/types/guloso";
 
 export function coberturaGulosa(
   universo: string[],

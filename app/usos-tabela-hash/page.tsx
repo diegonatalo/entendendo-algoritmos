@@ -5,12 +5,12 @@ import {
   CUSTO_FALHA_MS,
   consultarCache,
   votar,
-} from "@/functions/usosHash";
+} from "@/lib/usos-hash";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
-import { Stat, botaoPrimario, inputClass } from "../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
+import { Stat, botaoPrimario, inputClass } from "../../components/ui";
 
 const botaoSecundario =
   "cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100";

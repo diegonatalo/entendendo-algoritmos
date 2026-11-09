@@ -1,4 +1,4 @@
-import { Grafo, PassoBFS, ResultadoBFS } from "@/@types/grafo";
+import { Grafo, PassoBFS, ResultadoBFS } from "@/types/grafo";
 
 export function buscaEmLargura(
   grafo: Grafo,

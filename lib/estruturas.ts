@@ -1,4 +1,4 @@
-import { ResultadoOperacao } from "@/@types/estruturas";
+import { ResultadoOperacao } from "@/types/estruturas";
 
 const intervalo = (de: number, ate: number) =>
   Array.from({ length: Math.max(0, ate - de + 1) }, (_, i) => de + i);

@@ -3,7 +3,7 @@ import {
   PassoMochila,
   ResultadoGulosoMochila,
   ResultadoMochila,
-} from "@/@types/mochila";
+} from "@/types/mochila";
 
 const dinheiro = (n: number) => n.toLocaleString("pt-BR");
 

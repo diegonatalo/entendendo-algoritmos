@@ -5,11 +5,11 @@ import {
   pontoDeCruzamento,
   tempoLinear,
   tempoLogaritmico,
-} from "@/functions/constantes";
+} from "@/lib/constantes";
 import { useState } from "react";
-import { GraficoRolavel, Stat, inputMono } from "../components/ui";
-import { Explicacao } from "../components/explicacao";
-import { EXPLICACOES } from "../explicacoes";
+import { GraficoRolavel, Stat, inputMono } from "../../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 const EXPOENTES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 

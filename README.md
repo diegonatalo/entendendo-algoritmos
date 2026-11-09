@@ -1,7 +1,7 @@
 <!-- Arquivo gerado pelo readme-kit. Não edite aqui: altere docs/readme/ e rode "readme-kit build". -->
 <div align="center">
 
-<img src="docs/assets/banner.svg" alt="Entendendo Algoritmos: Veja os algoritmos acontecendo. github.com/diegonatalo/entendendo-algoritmos. Stack: Next.js 16, React 19, TypeScript 6, Tailwind CSS 4" width="100%" />
+<img src="docs/assets/banner.svg" alt="Entendendo Algoritmos: Veja os algoritmos acontecendo. github.com/diegonatalo/entendendo-algoritmos. Stack: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4" width="100%" />
 
 <br />
 
@@ -12,7 +12,7 @@
 
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232a?style=flat-square&logo=react&logoColor=61dafb)
-![TypeScript](https://img.shields.io/badge/TypeScript_6-3178c6?style=flat-square&logo=typescript&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript_5-3178c6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Abrir o app](https://img.shields.io/badge/abrir_o_app-entendendo--algoritmos.vercel.app-10b981?style=flat-square&logo=vercel&logoColor=white)
 ![Sem backend](https://img.shields.io/badge/roda_no_navegador-10b981?style=flat-square)
@@ -124,7 +124,7 @@ Visualizações interativas, passo a passo, com explicação simples ou técnica
 
 <div align="center">
 
-<img src="docs/assets/stack.svg" alt="Stack: Next.js 16, React 19, TypeScript 6, Tailwind CSS 4, ESLint 9, pnpm 11" width="100%" />
+<img src="docs/assets/stack.svg" alt="Stack: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, ESLint 9, pnpm 11" width="100%" />
 
 </div>
 
@@ -159,7 +159,7 @@ Nenhuma é obrigatória.
 
 | Variável | Descrição | Se não definir |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Endereço público do site, usado nos links absolutos de Open Graph, sitemap e robots. | Usa `https://entendendo-algoritmos.vercel.app` (`app/site.ts`). |
+| `NEXT_PUBLIC_SITE_URL` | Endereço público do site, usado nos links absolutos de Open Graph, sitemap e robots. | Usa `https://entendendo-algoritmos.vercel.app` (`lib/site.ts`). |
 
 ```ini
 NEXT_PUBLIC_SITE_URL=https://seu-dominio.com
@@ -176,20 +176,21 @@ NEXT_PUBLIC_SITE_URL=https://seu-dominio.com
 ```text
 app/
 ├── <rota>/page.tsx      uma pasta por página (busca-binaria, quicksort, dijkstra…)
-├── components/          menu lateral, explicação Simples/Técnica, bloco de código, botão de tema
+├── og/[slug]/route.tsx  imagem de compartilhamento (1200×630) de cada página, gerada no build
+├── sitemap.ts           sitemap.xml: a home e as páginas de lib/capitulos.ts
+├── robots.ts            robots.txt: libera tudo e aponta para o sitemap
+├── not-found.tsx        página 404 com sugestão de páginas parecidas
+└── icon.svg, favicon.ico, apple-icon.png
+components/              menu lateral, explicação Simples/Técnica, bloco de código, botão de tema
+lib/
+├── <algoritmo>.ts       algoritmos puros em TypeScript (devolvem o resultado e cada passo)
 ├── capitulos.ts         lista única de páginas: menu, home, títulos e sitemap leem daqui
 ├── codigos/             trechos de código mostrados nas páginas, um arquivo por capítulo
 ├── explicacoes/         textos Simples e Técnico de cada página, um arquivo por capítulo
-├── og/[slug]/route.tsx  imagem de compartilhamento (1200×630) de cada página, gerada no build
 ├── metadata.ts          título, descrição e tags Open Graph de cada rota
 ├── site.ts              endereço público e nome do site
-├── sitemap.ts           sitemap.xml: a home e as páginas de capitulos.ts
-├── robots.ts            robots.txt: libera tudo e aponta para o sitemap
-├── entrada.ts           leitura e geração das listas de números dos formulários
-├── not-found.tsx        página 404 com sugestão de páginas parecidas
-└── icon.svg, favicon.ico, apple-icon.png
-functions/               algoritmos puros em TypeScript (devolvem o resultado e cada passo)
-@types/                  tipos dos resultados de cada algoritmo
+└── entrada.ts           leitura e geração das listas de números dos formulários
+types/                   tipos dos resultados de cada algoritmo
 docs/img/                banner e capturas de tela deste README
 ```
 
@@ -203,11 +204,11 @@ docs/img/                banner e capturas de tela deste README
 
 ### 🧩 Adicionando um algoritmo novo
 
-1. **Função:** crie `functions/meuAlgoritmo.ts`, uma função pura que devolve o resultado e uma lista de passos, e os tipos em `@types/meuAlgoritmo.d.ts`.
+1. **Função:** crie `lib/meu-algoritmo.ts`, uma função pura que devolve o resultado e uma lista de passos, e os tipos em `types/meu-algoritmo.d.ts`.
 2. **Página:** crie `app/meu-algoritmo/page.tsx` (use uma página parecida como modelo) para desenhar os passos.
-3. **Registro:** acrescente a página em `app/capitulos.ts` com número do capítulo, título, rota e descrição. Menu, home, sitemap e imagem de compartilhamento saem dessa lista.
+3. **Registro:** acrescente a página em `lib/capitulos.ts` com número do capítulo, título, rota e descrição. Menu, home, sitemap e imagem de compartilhamento saem dessa lista.
 4. **Título da aba:** crie `app/meu-algoritmo/layout.tsx` copiando o de uma página existente (ele lê o título de `capitulos.ts`).
-5. **Conteúdo:** acrescente os textos Simples e Técnico em `app/explicacoes/capNN.ts` e o trecho de código em `app/codigos/capNN.ts` (do capítulo da página), e use o componente `Explicacao` na página.
+5. **Conteúdo:** acrescente os textos Simples e Técnico em `lib/explicacoes/capNN.ts` e o trecho de código em `lib/codigos/capNN.ts` (do capítulo da página), e use o componente `Explicacao` na página.
 6. **Confira:** rode `pnpm lint`, `npx tsc --noEmit` e `pnpm build`.
 
 ### 🔒 Seus dados
@@ -221,10 +222,10 @@ recarregar. A única coisa guardada no navegador é a escolha do tema (`localSto
 
 | Conceito | Regra |
 |---|---|
-| **Algoritmo** | Cada um é uma função pura em `functions/` que devolve o resultado e, quando faz sentido, a lista de passos. |
+| **Algoritmo** | Cada um é uma função pura em `lib/` que devolve o resultado e, quando faz sentido, a lista de passos. |
 | **Página** | Só desenha o que a função devolveu. Os botões de passo movem um índice nessa lista. |
-| **Registro de páginas** | `app/capitulos.ts` é a lista única: o menu, a home, os títulos, o sitemap e as imagens de compartilhamento leem dela. |
-| **Textos e código** | Ficam em `app/explicacoes/` e `app/codigos/`, um arquivo por capítulo. |
+| **Registro de páginas** | `lib/capitulos.ts` é a lista única: o menu, a home, os títulos, o sitemap e as imagens de compartilhamento leem dela. |
+| **Textos e código** | Ficam em `lib/explicacoes/` e `lib/codigos/`, um arquivo por capítulo. |
 
 <details>
 <summary><b>Ver as 29 páginas por capítulo</b></summary>
@@ -263,7 +264,7 @@ Next.js sem backend, não precisa de `vercel.json`: todas as páginas saem está
 ### 🧭 Próximos passos
 
 - [ ] Páginas interativas para os assuntos do capítulo 11 (árvore binária de busca, índice invertido, filtro de Bloom).
-- [ ] Testes automatizados para as funções de `functions/` e para os trechos de `app/codigos/`.
+- [ ] Testes automatizados para as funções de `lib/` e para os trechos de `lib/codigos/`.
 - [ ] CI no GitHub Actions rodando lint, tipos e build a cada push.
 - [ ] Editar nós e arestas dos grafos, hoje fixos.
 - [ ] Capturas do README também no tema claro.

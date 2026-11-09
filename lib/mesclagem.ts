@@ -1,4 +1,4 @@
-import { NoMesclagem, ResultadoMesclagem } from "@/@types/mesclagem";
+import { NoMesclagem, ResultadoMesclagem } from "@/types/mesclagem";
 
 // ordenação por mesclagem (merge sort): divide a lista ao meio, ordena cada metade
 // recursivamente e junta as duas metades já ordenadas

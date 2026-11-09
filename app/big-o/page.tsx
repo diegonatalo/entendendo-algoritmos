@@ -1,10 +1,10 @@
 "use client";
 
-import { curvas, formatarPassos, formatarTempo } from "@/functions/bigO";
+import { curvas, formatarPassos, formatarTempo } from "@/lib/big-o";
 import { useState } from "react";
-import { GraficoRolavel } from "../components/ui";
-import { Explicacao } from "../components/explicacao";
-import { EXPLICACOES } from "../explicacoes";
+import { GraficoRolavel } from "../../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 const X_MAX = 20;
 const Y_MAX = 200;

@@ -1,12 +1,12 @@
 "use client";
 
-import { inputClass } from "../components/ui";
-import { custoInserir, custoLer, custoRemover } from "@/functions/estruturas";
-import { Operacao, ResultadoOperacao } from "@/@types/estruturas";
+import { inputClass } from "../../components/ui";
+import { custoInserir, custoLer, custoRemover } from "@/lib/estruturas";
+import { Operacao, ResultadoOperacao } from "@/types/estruturas";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 const MAX = 12;
 

@@ -1,4 +1,4 @@
-import { PassoOrdenacao, ResultadoOrdenacao } from "@/@types/ordenacao";
+import { PassoOrdenacao, ResultadoOrdenacao } from "@/types/ordenacao";
 
 function indiceDoMenor(arr: number[]): number {
   let indiceMenor = 0;

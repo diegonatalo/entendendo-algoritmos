@@ -1,15 +1,15 @@
 "use client";
 
-import { ControlesPassos } from "../components/ui";
+import { ControlesPassos } from "../../components/ui";
 import {
   coberturaGulosa,
   coberturaOtima,
-} from "@/functions/coberturaConjuntos";
-import { Conjuntos } from "@/@types/guloso";
+} from "@/lib/cobertura-conjuntos";
+import { Conjuntos } from "@/types/guloso";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 type Exemplo = {
   titulo: string;

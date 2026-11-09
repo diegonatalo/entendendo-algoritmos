@@ -1,6 +1,6 @@
 "use client";
 
-import { inputClass } from "../components/ui";
+import { inputClass } from "../../components/ui";
 import {
   buscar,
   criarTabela,
@@ -8,12 +8,12 @@ import {
   funcaoHash,
   inserir,
   redimensionar,
-} from "@/functions/tabelaHash";
-import { TabelaHash } from "@/@types/hash";
+} from "@/lib/tabela-hash";
+import { TabelaHash } from "@/types/hash";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
 
 const TAMANHO_INICIAL = 8;
 

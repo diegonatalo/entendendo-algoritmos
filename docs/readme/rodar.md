@@ -21,7 +21,7 @@ Nenhuma é obrigatória.
 
 | Variável | Descrição | Se não definir |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Endereço público do site, usado nos links absolutos de Open Graph, sitemap e robots. | Usa `https://entendendo-algoritmos.vercel.app` (`app/site.ts`). |
+| `NEXT_PUBLIC_SITE_URL` | Endereço público do site, usado nos links absolutos de Open Graph, sitemap e robots. | Usa `https://entendendo-algoritmos.vercel.app` (`lib/site.ts`). |
 
 ```ini
 NEXT_PUBLIC_SITE_URL=https://seu-dominio.com

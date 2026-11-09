@@ -3,7 +3,7 @@ import {
   PontoRegressao,
   ResultadoKnn,
   ResultadoRegressao,
-} from "@/@types/knn";
+} from "@/types/knn";
 
 export function distancia(
   a: { x: number; y: number },

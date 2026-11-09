@@ -1,12 +1,12 @@
 "use client";
 
-import { calendarioGuloso, formatarHora } from "@/functions/calendario";
-import { Aula } from "@/@types/calendario";
+import { calendarioGuloso, formatarHora } from "@/lib/calendario";
+import { Aula } from "@/types/calendario";
 import { useState } from "react";
-import { Explicacao } from "../components/explicacao";
-import { CODIGOS } from "../codigos";
-import { EXPLICACOES } from "../explicacoes";
-import { ControlesPassos, Legenda, Stat, botaoPrimario } from "../components/ui";
+import { Explicacao } from "../../components/explicacao";
+import { CODIGOS } from "../../lib/codigos";
+import { EXPLICACOES } from "../../lib/explicacoes";
+import { ControlesPassos, Legenda, Stat, botaoPrimario } from "../../components/ui";
 
 type Exemplo = {
   titulo: string;

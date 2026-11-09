@@ -2,7 +2,7 @@ import {
   Metodo,
   ResultadoRecomendacao,
   Usuario,
-} from "@/@types/recomendacao";
+} from "@/types/recomendacao";
 
 const media = (v: number[]) => v.reduce((s, x) => s + x, 0) / v.length;
 
