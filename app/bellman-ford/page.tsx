@@ -3,10 +3,10 @@
 import { bellmanFord, dijkstraSimples } from "@/lib/bellman-ford";
 import { Aresta } from "@/types/bellman-ford";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
-import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "../../components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
+import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "@/components/ui";
 
 const NOS = ["inicio", "a", "b", "fim"];
 const INICIO = "inicio";

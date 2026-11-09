@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { Sidebar } from "../components/sidebar";
-import { openGraphBase } from "../lib/metadata";
-import { DESCRICAO_DO_SITE, NOME_DO_SITE, SITE_URL } from "../lib/site";
+import { Sidebar } from "@/components/sidebar";
+import { openGraphBase } from "@/lib/metadata";
+import { DESCRICAO_DO_SITE, NOME_DO_SITE, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({

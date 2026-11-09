@@ -1,12 +1,12 @@
 "use client";
 
-import { lerNumeros, numerosAleatorios } from "../../lib/entrada";
-import { inputClass } from "../../components/ui";
+import { lerNumeros, numerosAleatorios } from "@/lib/entrada";
+import { inputClass } from "@/components/ui";
 import { ordenacaoSelecao } from "@/lib/ordenacao-selecao";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
 
 const celula =
   "flex h-10 min-w-10 items-center justify-center rounded-lg px-2 font-mono text-sm tabular-nums";

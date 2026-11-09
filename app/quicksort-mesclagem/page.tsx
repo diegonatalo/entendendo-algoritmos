@@ -1,6 +1,6 @@
 "use client";
 
-import { lerNumeros } from "../../lib/entrada";
+import { lerNumeros } from "@/lib/entrada";
 import { mesclagem } from "@/lib/mesclagem";
 import { quicksort } from "@/lib/quicksort";
 import {
@@ -10,10 +10,10 @@ import {
 } from "@/lib/geradores";
 import { NoMesclagem } from "@/types/mesclagem";
 import { useMemo, useState } from "react";
-import { Stat, botaoPrimario, inputClass } from "../../components/ui";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
+import { Stat, botaoPrimario, inputClass } from "@/components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
 
 const celula =
   "flex h-8 min-w-8 items-center justify-center rounded-md px-1.5 font-mono text-xs tabular-nums";

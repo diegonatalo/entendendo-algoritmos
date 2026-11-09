@@ -3,10 +3,10 @@
 import { dijkstra } from "@/lib/dijkstra";
 import { GrafoPonderado } from "@/types/dijkstra";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
-import { ControlesPassos, GraficoRolavel } from "../../components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
+import { ControlesPassos, GraficoRolavel } from "@/components/ui";
 
 // grafo do exemplo do livro (arestas dirigidas, com pesos)
 const GRAFO: GrafoPonderado = {

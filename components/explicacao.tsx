@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { BlocoCodigo } from "./bloco-codigo";
-import type { Bloco } from "../lib/explicacoes";
+import type { Bloco } from "@/lib/explicacoes";
 
 type Nivel = "simples" | "tecnica";
 

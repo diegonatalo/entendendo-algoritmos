@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { capitulos } from "../lib/capitulos";
+import { capitulos } from "@/lib/capitulos";
 
 export default function Home() {
   return (

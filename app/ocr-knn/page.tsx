@@ -7,10 +7,10 @@ import {
   reconhecerDigito,
 } from "@/lib/ocr";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
-import { Stat } from "../../components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
+import { Stat } from "@/components/ui";
 
 const VAZIO = Array(LARGURA * ALTURA).fill(0);
 

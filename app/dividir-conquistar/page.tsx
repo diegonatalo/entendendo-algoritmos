@@ -1,12 +1,12 @@
 "use client";
 
-import { lerNumeros } from "../../lib/entrada";
+import { lerNumeros } from "@/lib/entrada";
 import { euclides, somaRecursiva } from "@/lib/euclides";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
-import { ControlesPassos, Stat, botaoPrimario, inputClass } from "../../components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
+import { ControlesPassos, Stat, botaoPrimario, inputClass } from "@/components/ui";
 
 const MAX_MEDIDA = 2000;
 

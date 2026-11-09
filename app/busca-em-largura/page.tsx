@@ -3,10 +3,10 @@
 import { buscaEmLargura } from "@/lib/busca-em-largura";
 import { Grafo } from "@/types/grafo";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
-import { ControlesPassos, GraficoRolavel } from "../../components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
+import { ControlesPassos, GraficoRolavel } from "@/components/ui";
 
 // rede de amigos do exemplo do livro (arestas dirigidas)
 const GRAFO: Grafo = {

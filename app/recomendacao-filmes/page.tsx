@@ -3,9 +3,9 @@
 import { recomendar } from "@/lib/recomendacao";
 import { Metodo, Usuario } from "@/types/recomendacao";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
 
 const FILMES = ["Velocidade Máxima", "Noite de Risadas", "Cartas ao Vento", "Galáxia Zero", "A Casa Escura"];
 const FILME_NOVO = "Horizonte Azul";

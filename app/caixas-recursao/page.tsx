@@ -8,10 +8,10 @@ import {
 } from "@/lib/caixas";
 import { Caixa, PassoCaixa } from "@/types/caixas";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
-import { ControlesPassos, Legenda, Stat, botaoPrimario } from "../../components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
+import { ControlesPassos, Legenda, Stat, botaoPrimario } from "@/components/ui";
 
 const selectClass =
   "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";

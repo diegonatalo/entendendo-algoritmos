@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
-import { Capitulo, capitulos } from "../lib/capitulos";
+import { Capitulo, capitulos } from "@/lib/capitulos";
 import { BotaoTema } from "./botao-tema";
 
 // agrupa as páginas por capítulo, mantendo a ordem de capitulos.ts

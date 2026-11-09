@@ -4,10 +4,10 @@ import { rotaForcaBruta, rotaVizinhoMaisProximo } from "@/lib/caixeiro";
 import { Cidade, Rota } from "@/types/caixeiro";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
-import { Stat } from "../../components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
+import { Stat } from "@/components/ui";
 
 const CIDADES: Cidade[] = [
   { nome: "A", x: 30, y: 42 },

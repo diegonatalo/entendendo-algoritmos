@@ -1,13 +1,13 @@
 "use client";
 
-import { lerNumeros, numerosAleatorios } from "../../lib/entrada";
-import { inputClass } from "../../components/ui";
+import { lerNumeros, numerosAleatorios } from "@/lib/entrada";
+import { inputClass } from "@/components/ui";
 import { quicksort } from "@/lib/quicksort";
 import { EstrategiaPivo, NoQuicksort } from "@/types/quicksort";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
 
 const celula =
   "flex h-8 min-w-8 items-center justify-center rounded-md px-1.5 font-mono text-xs tabular-nums";

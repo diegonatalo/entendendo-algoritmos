@@ -3,10 +3,10 @@
 import { ordenacaoTopologica } from "@/lib/ordenacao-topologica";
 import { GrafoDependencias } from "@/types/topologica";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
-import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "../../components/ui";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
+import { ControlesPassos, GraficoRolavel, Legenda, Stat, botaoPrimario } from "@/components/ui";
 
 // "a: [b]" significa que a precisa acontecer antes de b
 const ROTINA: GrafoDependencias = {

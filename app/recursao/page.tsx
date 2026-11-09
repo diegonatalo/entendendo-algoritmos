@@ -1,11 +1,11 @@
 "use client";
 
-import { ControlesPassos, inputClass } from "../../components/ui";
+import { ControlesPassos, inputClass } from "@/components/ui";
 import { fatorial } from "@/lib/fatorial";
 import { useState } from "react";
-import { Explicacao } from "../../components/explicacao";
-import { CODIGOS } from "../../lib/codigos";
-import { EXPLICACOES } from "../../lib/explicacoes";
+import { Explicacao } from "@/components/explicacao";
+import { CODIGOS } from "@/lib/codigos";
+import { EXPLICACOES } from "@/lib/explicacoes";
 
 const corDoTipo = {
   empilha: "text-amber-400",

@@ -1,4 +1,4 @@
-import { metadataDaPagina } from "../../lib/metadata";
+import { metadataDaPagina } from "@/lib/metadata";
 
 export const metadata = metadataDaPagina("/big-o");
 
