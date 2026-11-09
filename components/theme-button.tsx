@@ -4,22 +4,22 @@ import { useSyncExternalStore } from "react";
 
 type Theme = "claro" | "escuro";
 
-// o tema vive no atributo data-theme do <html>, definido por um script antes da primeira pintura
+// o tema vive na classe dark do <html>, definido por um script antes da primeira pintura
 function subscribe(notice: () => void) {
   const observer = new MutationObserver(notice);
   observer.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["data-theme"],
+    attributeFilter: ["class"],
   });
   return () => observer.disconnect();
 }
 
 const readTheme = (): Theme =>
-  document.documentElement.dataset.theme === "light" ? "claro" : "escuro";
+  document.documentElement.classList.contains("dark") ? "escuro" : "claro";
 
 function toggle() {
   const created = readTheme() === "claro" ? "dark" : "light";
-  document.documentElement.dataset.theme = created;
+  document.documentElement.classList.toggle("dark", created === "dark");
   try {
     localStorage.setItem("entendendo-algoritmos:theme:v1", created);
   } catch {

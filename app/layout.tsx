@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// escolha salva ou, na falta dela, a preferência do sistema; sem JS fica o tema escuro
-const INITIAL_THEME = `try{var t=localStorage.getItem("entendendo-algoritmos:theme:v1");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.dataset.theme=t}catch(e){}`;
+// escolha salva ou, na falta dela, a preferência do sistema; sem JS fica o tema escuro (classe dark no <html>)
+const INITIAL_THEME = `try{var t=localStorage.getItem("entendendo-algoritmos:theme:v1");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.classList.toggle("dark",t==="dark")}catch(e){}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -36,11 +36,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // data-theme é definido pelo script abaixo antes da hidratação
+    // a classe dark é ajustada pelo script abaixo antes da hidratação
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Script id="tema-inicial" strategy="beforeInteractive">
