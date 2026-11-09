@@ -2,10 +2,12 @@ import type { MetadataRoute } from "next";
 import { chapters } from "@/lib/chapters";
 import { SITE_URL } from "@/lib/site";
 
-// a home e todas as páginas registradas em capitulos.ts; página nova entra sozinha
+// a home e todas as páginas registradas em chapters.ts; página nova entra sozinha
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    { url: new URL("/", SITE_URL).href },
-    ...chapters.map((c) => ({ url: new URL(c.href, SITE_URL).href })),
-  ];
+  const lastModified = new Date();
+  const routes = ["/", ...chapters.map((c) => c.href)];
+  return routes.map((route) => ({
+    url: new URL(route, SITE_URL).href,
+    lastModified,
+  }));
 }
