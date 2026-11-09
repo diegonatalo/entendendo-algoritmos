@@ -17,7 +17,7 @@ const groups: { number: number; pages: Chapter[] }[] = chapters.reduce(
   [] as { number: number; pages: Chapter[] }[],
 );
 
-function Mark({ onClick }: { onClick?: () => void }) {
+const Mark = ({ onClick }: { onClick?: () => void }) => {
   return (
     <Link
       href="/"
@@ -27,12 +27,12 @@ function Mark({ onClick }: { onClick?: () => void }) {
       <span className="text-emerald-400">{"</>"}</span> Entendendo Algoritmos
     </Link>
   );
-}
+};
 
 const foco =
   "focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-400";
 
-function List({ onNavigate }: { onNavigate?: () => void }) {
+const List = ({ onNavigate }: { onNavigate?: () => void }) => {
   const pathname = usePathname();
   const idPrefix = useId();
   const activeRef = useRef<HTMLAnchorElement>(null);
@@ -126,12 +126,12 @@ function List({ onNavigate }: { onNavigate?: () => void }) {
       </div>
     </nav>
   );
-}
+};
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function Sidebar() {
+export const Sidebar = () => {
   const pathname = usePathname();
   // guarda em qual página a gaveta foi aberta: ao navegar, ela fecha sozinha
   const [openedAt, setOpenedAt] = useState<string | null>(null);
@@ -246,4 +246,4 @@ export function Sidebar() {
       )}
     </>
   );
-}
+};

@@ -14,7 +14,7 @@ import { Stat } from "@/components/ui";
 
 const EMPTY = Array(WIDTH * HEIGHT).fill(0);
 
-function MiniGrid({ pixels }: { pixels: number[] }) {
+const MiniGrid = ({ pixels }: { pixels: number[] }) => {
   return (
     <div
       className="grid gap-px"
@@ -29,7 +29,7 @@ function MiniGrid({ pixels }: { pixels: number[] }) {
       ))}
     </div>
   );
-}
+};
 
 export default function OcrKnn() {
   const [pixels, setPixels] = useState<number[]>(digitModel(3));

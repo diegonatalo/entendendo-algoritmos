@@ -16,7 +16,7 @@ import { StepControls, Legend, Stat, primaryButton } from "@/components/ui";
 const selectClass =
   "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
-function BoxVisual({
+const BoxVisual = ({
   box,
   step,
   executed,
@@ -26,7 +26,7 @@ function BoxVisual({
   step: BoxStep;
   executed: boolean;
   foundAt: string | null;
-}) {
+}) => {
   const atStep = step.current === box.id;
   const atEnd = step.type === "didFind" && foundAt === box.id;
   const isOpen = executed && step.stack.includes(box.id);
@@ -75,7 +75,7 @@ function BoxVisual({
       )}
     </div>
   );
-}
+};
 
 export default function RecursionBoxes() {
   const [location, setLocation] = useState<string>("azul2p");

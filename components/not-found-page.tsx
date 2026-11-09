@@ -33,7 +33,7 @@ function similar(path: string) {
     .map(({ c }) => c);
 }
 
-export function NotFoundPage() {
+export const NotFoundPage = () => {
   const path = usePathname();
   const suggestions = similar(path);
 
@@ -97,4 +97,4 @@ export function NotFoundPage() {
       )}
     </main>
   );
-}
+};

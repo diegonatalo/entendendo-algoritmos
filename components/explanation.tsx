@@ -11,7 +11,7 @@ const LEVELS: { id: Level; label: string; description: string }[] = [
   { id: "technique", label: "Técnica", description: "Como funciona, custo e limites." },
 ];
 
-function Blocks({ blocks }: { blocks: Bloco[] }) {
+const Blocks = ({ blocks }: { blocks: Bloco[] }) => {
   return (
     <div className="flex flex-col gap-3 text-[15px] leading-relaxed text-zinc-300">
       {blocks.map((b, i) => {
@@ -45,11 +45,11 @@ function Blocks({ blocks }: { blocks: Bloco[] }) {
       })}
     </div>
   );
-}
+};
 
 // Começa recolhida, para a ferramenta da página continuar à vista. Escolher um nível abre
 // a explicação; tocar de novo no nível aberto recolhe.
-export function Explanation({
+export const Explanation = ({
   simple,
   technique,
   code,
@@ -57,7 +57,7 @@ export function Explanation({
   simple: Bloco[];
   technique: Bloco[];
   code?: string;
-}) {
+}) => {
   const [level, setLevel] = useState<Level | null>(null);
   const panelId = useId();
 
@@ -110,4 +110,4 @@ export function Explanation({
       {code && <CodeBlock code={code} title="Ver o código" />}
     </div>
   );
-}
+};

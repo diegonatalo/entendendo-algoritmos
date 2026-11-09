@@ -25,7 +25,7 @@ function factorial(n: number): number {
   return n <= 1 ? 1 : n * factorial(n - 1);
 }
 
-function MapView({
+const MapView = ({
   cities,
   route,
   color,
@@ -35,7 +35,7 @@ function MapView({
   route: Route;
   color: string;
   title: string;
-}) {
+}) => {
   const points = route.order.map((i) => cities[i]);
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
@@ -89,7 +89,7 @@ function MapView({
       </p>
     </div>
   );
-}
+};
 
 export default function TravelingSalesman() {
   const [n, setN] = useState(7);

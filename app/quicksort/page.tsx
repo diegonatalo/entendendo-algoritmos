@@ -151,13 +151,13 @@ export default function Quicksort() {
   );
 }
 
-function Tree({
+const Tree = ({
   node,
   side,
 }: {
   node: QuicksortNode;
   side?: "smaller" | "larger";
-}) {
+}) => {
   if (node.list.length === 0) {
     return <div className="px-2 py-1 text-xs text-zinc-600">∅</div>;
   }
@@ -198,9 +198,9 @@ function Tree({
       )}
     </div>
   );
-}
+};
 
-function Stat({
+const Stat = ({
   label,
   value,
   tone,
@@ -208,7 +208,7 @@ function Stat({
   label: string;
   value: string;
   tone: string;
-}) {
+}) => {
   return (
     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
       <div className="text-xs uppercase tracking-wider text-zinc-500">
@@ -217,13 +217,13 @@ function Stat({
       <div className={`mt-1 text-2xl font-semibold ${tone}`}>{value}</div>
     </div>
   );
-}
+};
 
-function Legend({ color, text }: { color: string; text: string }) {
+const Legend = ({ color, text }: { color: string; text: string }) => {
   return (
     <span className="flex items-center gap-1.5">
       <span className={`h-3 w-3 rounded ${color}`} />
       {text}
     </span>
   );
-}
+};

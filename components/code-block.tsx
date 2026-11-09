@@ -3,13 +3,13 @@
 import { useState } from "react";
 
 // Mostra o código de um algoritmo, recolhido por padrão. Comentários (//) ficam em destaque.
-export function CodeBlock({
+export const CodeBlock = ({
   code,
   title = "Ver o código",
 }: {
   code: string;
   title?: string;
-}) {
+}) => {
   const [state, setState] = useState<"idle" | "copied" | "error">("idle");
 
   async function copy() {
@@ -78,4 +78,4 @@ export function CodeBlock({
       </div>
     </details>
   );
-}
+};

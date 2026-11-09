@@ -26,7 +26,7 @@ const INPUTS = [
 
 const fmt = (n: number) => n.toLocaleString("pt-BR");
 
-function Tree({ node }: { node: MergeNode }) {
+const Tree = ({ node }: { node: MergeNode }) => {
   const leaf = node.left === undefined;
   return (
     <div className="flex flex-col items-center gap-2 px-1.5">
@@ -54,7 +54,7 @@ function Tree({ node }: { node: MergeNode }) {
       )}
     </div>
   );
-}
+};
 
 export default function QuicksortMergeSort() {
   const [n, setN] = useState(100);

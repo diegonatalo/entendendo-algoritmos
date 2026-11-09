@@ -173,11 +173,11 @@ export default function SelectionSort() {
   );
 }
 
-function Legend({ color, text }: { color: string; text: string }) {
+const Legend = ({ color, text }: { color: string; text: string }) => {
   return (
     <span className="flex items-center gap-1.5">
       <span className={`h-3 w-3 rounded ${color}`} />
       {text}
     </span>
   );
-}
+};

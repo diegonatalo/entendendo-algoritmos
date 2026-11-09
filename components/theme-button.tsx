@@ -27,7 +27,7 @@ function toggle() {
   }
 }
 
-export function ThemeButton({ compact = false }: { compact?: boolean }) {
+export const ThemeButton = ({ compact = false }: { compact?: boolean }) => {
   const theme = useSyncExternalStore(subscribe, readTheme, () => "escuro" as Theme);
   const destination = theme === "claro" ? "escuro" : "claro";
 
@@ -64,4 +64,4 @@ export function ThemeButton({ compact = false }: { compact?: boolean }) {
       {!compact && <span>Tema {destination}</span>}
     </button>
   );
-}
+};
