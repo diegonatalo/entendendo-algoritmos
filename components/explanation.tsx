@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { CodeBlock } from "./code-block";
-import type { Bloco } from "@/lib/explanations";
+import type { Block } from "@/lib/explanations";
 
 type Level = "simple" | "technique";
 
@@ -11,7 +11,7 @@ const LEVELS: { id: Level; label: string; description: string }[] = [
   { id: "technique", label: "Técnica", description: "Como funciona, custo e limites." },
 ];
 
-const Blocks = ({ blocks }: { blocks: Bloco[] }) => {
+const Blocks = ({ blocks }: { blocks: Block[] }) => {
   return (
     <div className="flex flex-col gap-3 text-[15px] leading-relaxed text-zinc-300">
       {blocks.map((b, i) => {
@@ -54,8 +54,8 @@ export const Explanation = ({
   technique,
   code,
 }: {
-  simple: Bloco[];
-  technique: Bloco[];
+  simple: Block[];
+  technique: Block[];
   code?: string;
 }) => {
   const [level, setLevel] = useState<Level | null>(null);

@@ -7,7 +7,7 @@ import {
 // tabela[i][j] compara as letras a[i] e b[j]
 //  - subcadeia (letras consecutivas): letras iguais = diagonal + 1; diferentes = 0
 //  - subsequência (letras em ordem, podem ter buracos): iguais = diagonal + 1;
-//    diferentes = o maior entre a célula de cima e a da esquerda
+//    diferentes = o maior entre a célula de above e a da esquerda
 export function commonSubstring(
   a: string,
   b: string,
@@ -35,10 +35,10 @@ export function commonSubstring(
         value = 0;
         description = `"${a[i]}" ≠ "${b[j]}": a sequência é interrompida, vale 0`;
       } else {
-        const cima = cell(i - 1, j);
+        const above = cell(i - 1, j);
         const left = cell(i, j - 1);
-        value = Math.max(cima, left);
-        description = `"${a[i]}" ≠ "${b[j]}": maior entre cima (${cima}) e esquerda (${left}) = ${value}`;
+        value = Math.max(above, left);
+        description = `"${a[i]}" ≠ "${b[j]}": maior entre above (${above}) e esquerda (${left}) = ${value}`;
       }
 
       table[i][j] = value;

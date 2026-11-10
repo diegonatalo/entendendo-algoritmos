@@ -11,7 +11,7 @@ export const KEY_LOCATIONS: { id: string; label: string }[] = [
 
 // monta o conjunto de caixas; a chave fica na caixa indicada (ou em nenhuma)
 export function createBoxes(keyLocation: string | null): Box {
-  const com = (id: string, items: string[]) =>
+  const withKey = (id: string, items: string[]) =>
     id === keyLocation ? [...items, TARGET] : items;
 
   return {
@@ -24,7 +24,7 @@ export function createBoxes(keyLocation: string | null): Box {
         name: "Caixa azul",
         items: ["livro"],
         boxes: [
-          { id: "azul1", name: "Caixa azul 1", items: com("azul1", ["cabo"]), boxes: [] },
+          { id: "azul1", name: "Caixa azul 1", items: withKey("azul1", ["cabo"]), boxes: [] },
           {
             id: "azul2",
             name: "Caixa azul 2",
@@ -33,7 +33,7 @@ export function createBoxes(keyLocation: string | null): Box {
               {
                 id: "azul2p",
                 name: "Caixa pequena",
-                items: com("azul2p", ["moeda"]),
+                items: withKey("azul2p", ["moeda"]),
                 boxes: [],
               },
             ],
@@ -48,7 +48,7 @@ export function createBoxes(keyLocation: string | null): Box {
           {
             id: "vermelha1",
             name: "Caixa vermelha 1",
-            items: com("vermelha1", ["jogo"]),
+            items: withKey("vermelha1", ["jogo"]),
             boxes: [],
           },
         ],
@@ -84,7 +84,7 @@ export function searchKey(root: Box): BoxesResult {
   function lookup(box: Box): string | null {
     stack.push(box.id);
     register(
-      "abre",
+      "opens",
       box.id,
       box.boxes.length > 0
         ? `Abre "${box.name}": ${box.boxes.length} ${box.boxes.length === 1 ? "caixa" : "caixas"} dentro. Procura a chave nos itens`
@@ -105,7 +105,7 @@ export function searchKey(root: Box): BoxesResult {
     stack.pop();
     const parent = stack.length > 0 ? names.get(stack[stack.length - 1]) : null;
     register(
-      "volta",
+      "returns",
       parent ? stack[stack.length - 1] : box.id,
       parent
         ? `Nada em "${box.name}": fecha e volta para "${parent}"`

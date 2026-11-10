@@ -12,7 +12,7 @@ import { EXPLANATIONS_CH09 } from "./ch09";
 import { EXPLANATIONS_CH10 } from "./ch10";
 import { EXPLANATIONS_CH11 } from "./ch11";
 
-export type { Block as Bloco, Explanation as Explicacao } from "./blocks";
+export type { Block, Explanation } from "./blocks";
 
 export const EXPLANATIONS = {
   ...EXPLANATIONS_CH01,

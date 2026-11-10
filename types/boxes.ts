@@ -6,7 +6,7 @@ export type Box = {
 };
 
 export type BoxStep = {
-  type: "abre" | "didFind" | "volta";
+  type: "opens" | "didFind" | "returns";
   current: string;
   stack: string[];
   scannedItems: string[];

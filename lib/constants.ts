@@ -14,12 +14,12 @@ export function crossingPoint(linearMs: number, logMs: number): number | null {
     if (linearLoses(n)) {
       // a busca em passos de 2% só delimita o cruzamento; refina entre o último tamanho
       // em que o linear ainda ganhava e este, para achar o menor n exato
-      let baixo = Math.max(2, Math.floor(n / 1.02));
+      let low = Math.max(2, Math.floor(n / 1.02));
       let high = Math.ceil(n);
-      while (baixo < high) {
-        const middle = Math.floor((baixo + high) / 2);
+      while (low < high) {
+        const middle = Math.floor((low + high) / 2);
         if (linearLoses(middle)) high = middle;
-        else baixo = middle + 1;
+        else low = middle + 1;
       }
       return high;
     }
