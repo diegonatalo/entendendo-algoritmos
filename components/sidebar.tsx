@@ -150,9 +150,9 @@ export const Sidebar = () => {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    const focaveis = () =>
+    const focusables = () =>
       drawer ? Array.from(drawer.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)) : [];
-    (drawer?.querySelector<HTMLElement>('[aria-label="Fechar menu"]') ?? focaveis()[0])?.focus();
+    (drawer?.querySelector<HTMLElement>('[aria-label="Fechar menu"]') ?? focusables()[0])?.focus();
 
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -162,7 +162,7 @@ export const Sidebar = () => {
       if (e.key !== "Tab") return;
 
       // mantém o foco do teclado dentro da gaveta
-      const items = focaveis();
+      const items = focusables();
       if (items.length === 0) return;
       const first = items[0];
       const last = items[items.length - 1];

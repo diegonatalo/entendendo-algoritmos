@@ -2,7 +2,9 @@
 
 import { useSyncExternalStore } from "react";
 
-type Theme = "claro" | "escuro";
+type Theme = "light" | "dark";
+
+const LABEL: Record<Theme, string> = { light: "claro", dark: "escuro" };
 
 // o tema vive na classe dark do <html>, definido por um script antes da primeira pintura
 function subscribe(notice: () => void) {
@@ -15,10 +17,10 @@ function subscribe(notice: () => void) {
 }
 
 const readTheme = (): Theme =>
-  document.documentElement.classList.contains("dark") ? "escuro" : "claro";
+  document.documentElement.classList.contains("dark") ? "dark" : "light";
 
 function toggle() {
-  const created = readTheme() === "claro" ? "dark" : "light";
+  const created = readTheme() === "light" ? "dark" : "light";
   document.documentElement.classList.toggle("dark", created === "dark");
   try {
     localStorage.setItem("entendendo-algoritmos:theme:v1", created);
@@ -28,8 +30,8 @@ function toggle() {
 }
 
 export const ThemeButton = ({ compact = false }: { compact?: boolean }) => {
-  const theme = useSyncExternalStore(subscribe, readTheme, () => "escuro" as Theme);
-  const destination = theme === "claro" ? "escuro" : "claro";
+  const theme = useSyncExternalStore(subscribe, readTheme, () => "dark" as Theme);
+  const destination = LABEL[theme === "light" ? "dark" : "light"];
 
   return (
     <button
@@ -52,7 +54,7 @@ export const ThemeButton = ({ compact = false }: { compact?: boolean }) => {
         strokeLinejoin="round"
         aria-hidden
       >
-        {theme === "claro" ? (
+        {theme === "light" ? (
           <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
         ) : (
           <>
