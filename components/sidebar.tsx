@@ -6,7 +6,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Chapter, chapters } from "@/lib/chapters";
 import { ThemeButton } from "./theme-button";
 
-// agrupa as páginas por capítulo, mantendo a ordem de capitulos.ts
+// agrupa as páginas por capítulo, mantendo a ordem de chapters.ts
 const groups: { number: number; pages: Chapter[] }[] = chapters.reduce(
   (acc, page) => {
     const last = acc[acc.length - 1];
@@ -29,7 +29,7 @@ const Mark = ({ onClick }: { onClick?: () => void }) => {
   );
 };
 
-const foco =
+const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-400";
 
 const List = ({ onNavigate }: { onNavigate?: () => void }) => {
@@ -48,7 +48,7 @@ const List = ({ onNavigate }: { onNavigate?: () => void }) => {
   }, [pathname]);
 
   const itemClass = (active: boolean) =>
-    `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${foco} ${
+    `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${focusRing} ${
       active
         ? "bg-zinc-800 text-zinc-50"
         : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
@@ -83,7 +83,7 @@ const List = ({ onNavigate }: { onNavigate?: () => void }) => {
                   !isActive &&
                   setManuallyOpened((m) => ({ ...m, [group.number]: !isOpen }))
                 }
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-medium uppercase tracking-wider transition-colors ${foco} ${
+                className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-medium uppercase tracking-wider transition-colors ${focusRing} ${
                   isActive
                     ? "cursor-default text-emerald-400"
                     : "cursor-pointer text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
@@ -91,7 +91,7 @@ const List = ({ onNavigate }: { onNavigate?: () => void }) => {
               >
                 <span>Capítulo {group.number}</span>
                 <span className="flex items-center gap-2">
-                  <span className="font-mono text-[10px] normal-case tracking-normal text-zinc-400">
+                  <span aria-hidden className="font-mono text-[10px] normal-case tracking-normal text-zinc-400">
                     {group.pages.length}
                   </span>
                   <span aria-hidden className="w-3 text-center">
@@ -161,7 +161,7 @@ export const Sidebar = () => {
       }
       if (e.key !== "Tab") return;
 
-      // mantém o foco do teclado dentro da gaveta
+      // mantém o focusRing do teclado dentro da gaveta
       const items = focusables();
       if (items.length === 0) return;
       const first = items[0];
@@ -208,7 +208,7 @@ export const Sidebar = () => {
             aria-haspopup="dialog"
             aria-expanded={isOpen}
             onClick={() => setOpenedAt(pathname)}
-            className={`cursor-pointer rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-600 ${foco}`}
+            className={`cursor-pointer rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-600 ${focusRing}`}
           >
             ☰ Capítulos
           </button>
@@ -235,7 +235,7 @@ export const Sidebar = () => {
                 type="button"
                 aria-label="Fechar menu"
                 onClick={close}
-                className={`cursor-pointer rounded-md px-1.5 text-zinc-400 hover:text-zinc-100 ${foco}`}
+                className={`cursor-pointer rounded-md px-1.5 text-zinc-400 hover:text-zinc-100 ${focusRing}`}
               >
                 ✕
               </button>
