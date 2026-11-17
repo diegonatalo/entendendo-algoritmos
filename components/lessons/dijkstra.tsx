@@ -6,7 +6,8 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { Legend, ScrollableChart, Stat, StepControls } from "@/components/ui";
+import { Legend, Stat, StepControls } from "@/components/ui";
+import { GraphView, type GraphEdge } from "@/components/graph-view";
 
 // grafo do exemplo do livro (arestas dirigidas, com pesos)
 const GRAPH: WeightedGraph = {
@@ -140,98 +141,29 @@ export const Dijkstra = () => {
               <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} goToEnd={false} />
             </div>
 
-            <ScrollableChart minWidthValue={480}>
-            <svg
-              viewBox="0 0 480 300"
-              className="mx-auto w-full max-w-xl"
-              role="img"
-              aria-label="Grafo ponderado do exemplo"
-            >
-              <defs>
-                <marker
-                  id="seta-d"
-                  viewBox="0 0 10 10"
-                  refX="9"
-                  refY="5"
-                  markerWidth="7"
-                  markerHeight="7"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M0,0 L10,5 L0,10 z" className="fill-zinc-500" />
-                </marker>
-                <marker
-                  id="seta-d-ok"
-                  viewBox="0 0 10 10"
-                  refX="9"
-                  refY="5"
-                  markerWidth="7"
-                  markerHeight="7"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M0,0 L10,5 L0,10 z" className="fill-emerald-400" />
-                </marker>
-              </defs>
-
-              {names.flatMap((from) =>
-                Object.entries(GRAPH[from]).map(([to, weight]) => {
-                  const a = POSITIONS[from];
-                  const b = POSITIONS[to];
-                  const dx = b.x - a.x;
-                  const dy = b.y - a.y;
-                  const d = Math.hypot(dx, dy);
-                  const ok = edgeOnPath(from, to);
-                  // rótulo deslocado para o lado da aresta
-                  const lx = (a.x + b.x) / 2 + (dy / d) * 14;
-                  const ly = (a.y + b.y) / 2 - (dx / d) * 14;
-                  return (
-                    <g key={`${from}-${to}`}>
-                      <line
-                        x1={a.x + (dx / d) * RADIUS}
-                        y1={a.y + (dy / d) * RADIUS}
-                        x2={b.x - (dx / d) * (RADIUS + 2)}
-                        y2={b.y - (dy / d) * (RADIUS + 2)}
-                        strokeWidth={ok ? 3 : 1.5}
-                        className={ok ? "stroke-emerald-400" : "stroke-zinc-600"}
-                        markerEnd={`url(#${ok ? "seta-d-ok" : "seta-d"})`}
-                      />
-                      <text
-                        x={lx}
-                        y={ly}
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        fontSize={13}
-                        className={`font-mono font-semibold ${ok ? "fill-emerald-300" : "fill-zinc-400"}`}
-                      >
-                        {weight}
-                      </text>
-                    </g>
-                  );
-                }),
+            <GraphView
+              label="Grafo ponderado do exemplo"
+              width={480}
+              height={300}
+              radius={RADIUS}
+              positions={POSITIONS}
+              nodeFontSize={12}
+              nodes={names.map((name) => ({
+                name,
+                className: nodeStyle(name),
+                textClassName: nodeText(name),
+              }))}
+              edges={names.flatMap((from) =>
+                Object.entries(GRAPH[from]).map(
+                  ([to, weight]): GraphEdge => ({
+                    from,
+                    to,
+                    label: weight,
+                    tone: edgeOnPath(from, to) ? "path" : "idle",
+                  }),
+                ),
               )}
-
-              {names.map((name) => (
-                <g key={name}>
-                  <circle
-                    cx={POSITIONS[name].x}
-                    cy={POSITIONS[name].y}
-                    r={RADIUS}
-                    strokeWidth={2}
-                    className={`transition-colors ${nodeStyle(name)}`}
-                  />
-                  <text
-                    x={POSITIONS[name].x}
-                    y={POSITIONS[name].y}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize={12}
-                    className={`font-mono ${nodeText(name)}`}
-                  >
-                    {name}
-                  </text>
-                </g>
-              ))}
-            </svg>
-            </ScrollableChart>
+            />
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">

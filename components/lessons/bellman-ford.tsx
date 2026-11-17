@@ -6,7 +6,8 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { StepControls, ScrollableChart, Legend, Stat, primaryButton } from "@/components/ui";
+import { StepControls, Legend, Stat, primaryButton } from "@/components/ui";
+import { GraphView, type GraphEdge } from "@/components/graph-view";
 
 const NODES = ["inicio", "a", "b", "fim"];
 const START = "inicio";
@@ -153,100 +154,41 @@ export const BellmanFord = () => {
               Passo {currentStep + 1} de {bf.steps.length}
             </p>
 
-            <ScrollableChart minWidthValue={480}>
-            <svg viewBox="0 0 480 300" className="mx-auto w-full max-w-xl" role="img" aria-label="Grafo com pesos negativos">
-              <defs>
-                {[
-                  ["seta-bf", "fill-zinc-500"],
-                  ["seta-bf-ok", "fill-emerald-400"],
-                  ["seta-bf-at", "fill-amber-400"],
-                ].map(([id, cssClass]) => (
-                  <marker key={id} id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                    <path d="M0,0 L10,5 L0,10 z" className={cssClass} />
-                  </marker>
-                ))}
-              </defs>
-
-              {edges.map((edge) => {
-                const { from, to, weight } = edge;
-                const a = POSITIONS[from];
-                const b = POSITIONS[to];
-                const dx = b.x - a.x;
-                const dy = b.y - a.y;
-                const d = Math.hypot(dx, dy);
-                // arestas em sentidos opostos ficam lado a lado
-                const opposite = edges.some((o) => o.from === to && o.to === from);
-                const deviation = opposite ? 9 : 0;
-                const ox = (dy / d) * deviation;
-                const oy = (-dx / d) * deviation;
-                const ok = onPath(from, to);
-                const current = sameEdge(step.edge, edge);
-                const color = current ? "stroke-amber-400" : ok ? "stroke-emerald-400" : "stroke-zinc-600";
-                const marker = current ? "seta-bf-at" : ok ? "seta-bf-ok" : "seta-bf";
-                const lx = (a.x + b.x) / 2 + (dy / d) * (opposite ? 24 : 15);
-                const ly = (a.y + b.y) / 2 - (dx / d) * (opposite ? 24 : 15);
-                return (
-                  <g key={`${from}-${to}`}>
-                    <line
-                      x1={a.x + (dx / d) * RADIUS + ox}
-                      y1={a.y + (dy / d) * RADIUS + oy}
-                      x2={b.x - (dx / d) * (RADIUS + 2) + ox}
-                      y2={b.y - (dy / d) * (RADIUS + 2) + oy}
-                      strokeWidth={current || ok ? 3 : 1.5}
-                      className={color}
-                      markerEnd={`url(#${marker})`}
-                    />
-                    <text
-                      x={lx}
-                      y={ly}
-                      textAnchor="middle"
-                      dominantBaseline="central"
-                      fontSize={13}
-                      className={`font-mono font-semibold ${weight < 0 ? "fill-red-400" : "fill-zinc-400"}`}
-                    >
-                      {weight}
-                    </text>
-                  </g>
-                );
+            <GraphView
+              label="Grafo com pesos negativos"
+              width={480}
+              height={300}
+              radius={RADIUS}
+              positions={POSITIONS}
+              nodes={NODES.map((name) => {
+                const inPath = Boolean(showPath && bf.path?.includes(name));
+                return {
+                  name,
+                  className: inPath
+                    ? "fill-emerald-500 stroke-emerald-300"
+                    : "fill-zinc-800 stroke-zinc-600",
+                  textClassName: inPath ? "fill-emerald-950" : "fill-zinc-100",
+                  value: {
+                    text: fmt(step.costs[name]),
+                    className: inPath ? "fill-emerald-950" : "fill-amber-400",
+                  },
+                };
               })}
-
-              {NODES.map((name) => (
-                <g key={name}>
-                  <circle
-                    cx={POSITIONS[name].x}
-                    cy={POSITIONS[name].y}
-                    r={RADIUS}
-                    strokeWidth={2}
-                    className={`transition-colors ${
-                      showPath && bf.path?.includes(name)
-                        ? "fill-emerald-500 stroke-emerald-300"
-                        : "fill-zinc-800 stroke-zinc-600"
-                    }`}
-                  />
-                  <text
-                    x={POSITIONS[name].x}
-                    y={POSITIONS[name].y - 5}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize={11}
-                    className={`font-mono ${showPath && bf.path?.includes(name) ? "fill-emerald-950" : "fill-zinc-100"}`}
-                  >
-                    {name}
-                  </text>
-                  <text
-                    x={POSITIONS[name].x}
-                    y={POSITIONS[name].y + 9}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize={10}
-                    className={`font-mono font-semibold ${showPath && bf.path?.includes(name) ? "fill-emerald-950" : "fill-amber-400"}`}
-                  >
-                    {fmt(step.costs[name])}
-                  </text>
-                </g>
-              ))}
-            </svg>
-            </ScrollableChart>
+              edges={edges.map(
+                (edge): GraphEdge => ({
+                  from: edge.from,
+                  to: edge.to,
+                  label: edge.weight,
+                  tone: sameEdge(step.edge, edge)
+                    ? "current"
+                    : onPath(edge.from, edge.to)
+                      ? "path"
+                      : "idle",
+                  labelClassName:
+                    edge.weight < 0 ? "fill-red-400" : "fill-zinc-400",
+                }),
+              )}
+            />
             <p className="text-xs text-zinc-500">
               O número dentro de cada nó é o melhor custo conhecido até ali.
             </p>

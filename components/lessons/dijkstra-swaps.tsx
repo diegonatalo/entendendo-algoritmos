@@ -6,7 +6,8 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { StepControls, ScrollableChart, Legend, Stat, primaryButton } from "@/components/ui";
+import { StepControls, Legend, Stat, primaryButton } from "@/components/ui";
+import { GraphView, type GraphEdge } from "@/components/graph-view";
 
 // cada aresta é uma troca: o peso é o dinheiro a pagar além do item entregue
 const SWAPS: WeightedGraph = {
@@ -150,92 +151,38 @@ export const DijkstraSwaps = () => {
               <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} />
             </div>
 
-            <ScrollableChart minWidthValue={560}>
-            <svg viewBox="0 0 560 300" className="mx-auto w-full max-w-2xl" role="img" aria-label="Grafo de trocas do livro até o piano">
-              <defs>
-                {[
-                  ["seta-tr", "fill-zinc-500"],
-                  ["seta-tr-ok", "fill-emerald-400"],
-                ].map(([id, cssClass]) => (
-                  <marker key={id} id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                    <path d="M0,0 L10,5 L0,10 z" className={cssClass} />
-                  </marker>
-                ))}
-              </defs>
-
-              {names.flatMap((from) =>
-                Object.entries(graph[from]).map(([to, weight]) => {
-                  const a = POSITIONS[from];
-                  const b = POSITIONS[to];
-                  const dx = b.x - a.x;
-                  const dy = b.y - a.y;
-                  const d = Math.hypot(dx, dy);
-                  const opposite = graph[to]?.[from] !== undefined;
-                  const deviation = opposite ? 8 : 0;
-                  const ox = (dy / d) * deviation;
-                  const oy = (-dx / d) * deviation;
-                  const ok = edgeOnPath(from, to);
-                  const lx = a.x + dx * 0.4 + (dy / d) * (opposite ? 20 : 12) ;
-                  const ly = a.y + dy * 0.4 - (dx / d) * (opposite ? 20 : 12);
-                  return (
-                    <g key={`${from}-${to}`}>
-                      <line
-                        x1={a.x + (dx / d) * RADIUS + ox}
-                        y1={a.y + (dy / d) * RADIUS + oy}
-                        x2={b.x - (dx / d) * (RADIUS + 2) + ox}
-                        y2={b.y - (dy / d) * (RADIUS + 2) + oy}
-                        strokeWidth={ok ? 3 : 1.5}
-                        className={ok ? "stroke-emerald-400" : "stroke-zinc-600"}
-                        markerEnd={`url(#${ok ? "seta-tr-ok" : "seta-tr"})`}
-                      />
-                      <text
-                        x={lx}
-                        y={ly}
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        fontSize={12}
-                        className={`font-mono font-semibold ${ok ? "fill-emerald-300" : "fill-zinc-400"}`}
-                      >
-                        {weight}
-                      </text>
-                    </g>
-                  );
-                }),
+            <GraphView
+              label="Grafo de trocas do livro até o piano"
+              width={560}
+              height={300}
+              radius={RADIUS}
+              positions={POSITIONS}
+              className="mx-auto w-full max-w-2xl"
+              edgeFontSize={12}
+              labelAt={0.4}
+              nodes={names.map((name) => {
+                const dark = onPath(name) || step.current === name;
+                return {
+                  name,
+                  className: nodeStyle(name),
+                  textClassName: dark ? "fill-black" : "fill-zinc-100",
+                  value: {
+                    text: fmt(step.costs[name]),
+                    className: dark ? "fill-black" : "fill-amber-400",
+                  },
+                };
+              })}
+              edges={names.flatMap((from) =>
+                Object.entries(graph[from]).map(
+                  ([to, weight]): GraphEdge => ({
+                    from,
+                    to,
+                    label: weight,
+                    tone: edgeOnPath(from, to) ? "path" : "idle",
+                  }),
+                ),
               )}
-
-              {names.map((name) => (
-                <g key={name}>
-                  <circle
-                    cx={POSITIONS[name].x}
-                    cy={POSITIONS[name].y}
-                    r={RADIUS}
-                    strokeWidth={2}
-                    className={`transition-colors ${nodeStyle(name)}`}
-                  />
-                  <text
-                    x={POSITIONS[name].x}
-                    y={POSITIONS[name].y - 5}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize={11}
-                    className={onPath(name) || step.current === name ? "fill-black" : "fill-zinc-100"}
-                  >
-                    {name}
-                  </text>
-                  <text
-                    x={POSITIONS[name].x}
-                    y={POSITIONS[name].y + 9}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize={10}
-                    className={`font-mono font-semibold ${onPath(name) || step.current === name ? "fill-black" : "fill-amber-400"}`}
-                  >
-                    {fmt(step.costs[name])}
-                  </text>
-                </g>
-              ))}
-            </svg>
-            </ScrollableChart>
+            />
             <p className="text-xs text-zinc-500">
               O número em cada seta é o dinheiro pago naquela troca; o valor
               dentro de cada item é o menor custo conhecido para chegar nele.

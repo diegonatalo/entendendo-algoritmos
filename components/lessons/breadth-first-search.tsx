@@ -6,7 +6,8 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { Legend, ScrollableChart, Stat, StepControls, inputClass } from "@/components/ui";
+import { Legend, Stat, StepControls, inputClass } from "@/components/ui";
+import { GraphView, type GraphEdge } from "@/components/graph-view";
 
 // rede de amigos do exemplo do livro (arestas dirigidas)
 const GRAPH: Graph = {
@@ -172,84 +173,27 @@ export const BreadthFirstSearch = () => {
               <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} goToEnd={false} />
             </div>
 
-            <ScrollableChart minWidthValue={470}>
-            <svg
-              viewBox="0 0 470 390"
-              className="mx-auto w-full max-w-xl"
-              role="img"
-              aria-label="Grafo da rede de amigos"
-            >
-              <defs>
-                <marker
-                  id="seta"
-                  viewBox="0 0 10 10"
-                  refX="9"
-                  refY="5"
-                  markerWidth="7"
-                  markerHeight="7"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M0,0 L10,5 L0,10 z" className="fill-zinc-500" />
-                </marker>
-                <marker
-                  id="seta-ok"
-                  viewBox="0 0 10 10"
-                  refX="9"
-                  refY="5"
-                  markerWidth="7"
-                  markerHeight="7"
-                  orient="auto-start-reverse"
-                >
-                  <path d="M0,0 L10,5 L0,10 z" className="fill-emerald-400" />
-                </marker>
-              </defs>
-
-              {names.flatMap((from) =>
-                GRAPH[from].map((to) => {
-                  const a = POSITIONS[from];
-                  const b = POSITIONS[to];
-                  const dx = b.x - a.x;
-                  const dy = b.y - a.y;
-                  const d = Math.hypot(dx, dy);
-                  const ok = edgeOnPath(from, to);
-                  return (
-                    <line
-                      key={`${from}-${to}`}
-                      x1={a.x + (dx / d) * RADIUS}
-                      y1={a.y + (dy / d) * RADIUS}
-                      x2={b.x - (dx / d) * (RADIUS + 2)}
-                      y2={b.y - (dy / d) * (RADIUS + 2)}
-                      strokeWidth={ok ? 3 : 1.5}
-                      className={ok ? "stroke-emerald-400" : "stroke-zinc-600"}
-                      markerEnd={`url(#${ok ? "seta-ok" : "seta"})`}
-                    />
-                  );
-                }),
+            <GraphView
+              label="Grafo da rede de amigos"
+              width={470}
+              height={390}
+              radius={RADIUS}
+              positions={POSITIONS}
+              nodes={names.map((name) => ({
+                name,
+                className: nodeStyle(name),
+                textClassName: nodeText(name),
+              }))}
+              edges={names.flatMap((from) =>
+                GRAPH[from].map(
+                  (to): GraphEdge => ({
+                    from,
+                    to,
+                    tone: edgeOnPath(from, to) ? "path" : "idle",
+                  }),
+                ),
               )}
-
-              {names.map((name) => (
-                <g key={name}>
-                  <circle
-                    cx={POSITIONS[name].x}
-                    cy={POSITIONS[name].y}
-                    r={RADIUS}
-                    strokeWidth={2}
-                    className={`transition-colors ${nodeStyle(name)}`}
-                  />
-                  <text
-                    x={POSITIONS[name].x}
-                    y={POSITIONS[name].y}
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize={11}
-                    className={`font-mono ${nodeText(name)}`}
-                  >
-                    {name}
-                  </text>
-                </g>
-              ))}
-            </svg>
-            </ScrollableChart>
+            />
 
             <div className="grid gap-3 sm:grid-cols-2">
               <List title="Fila (próximo à esquerda)" items={step.queue} />
