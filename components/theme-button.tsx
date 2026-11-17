@@ -1,36 +1,13 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
-
-type Theme = "light" | "dark";
+import { useTheme } from "@/hooks/use-theme";
+import { THEME_KEY } from "@/lib/storage-keys";
+import type { Theme } from "@/lib/theme";
 
 const LABEL: Record<Theme, string> = { light: "claro", dark: "escuro" };
 
-// o tema vive na classe dark do <html>, definido por um script antes da primeira pintura
-function subscribe(notice: () => void) {
-  const observer = new MutationObserver(notice);
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["class"],
-  });
-  return () => observer.disconnect();
-}
-
-const readTheme = (): Theme =>
-  document.documentElement.classList.contains("dark") ? "dark" : "light";
-
-function toggle() {
-  const created = readTheme() === "light" ? "dark" : "light";
-  document.documentElement.classList.toggle("dark", created === "dark");
-  try {
-    localStorage.setItem("entendendo-algoritmos:theme:v1", created);
-  } catch {
-    // sem armazenamento (modo privado): o tema vale só até recarregar
-  }
-}
-
 export const ThemeButton = ({ compact = false }: { compact?: boolean }) => {
-  const theme = useSyncExternalStore(subscribe, readTheme, () => "dark" as Theme);
+  const { theme, toggle } = useTheme(THEME_KEY);
   const destination = LABEL[theme === "light" ? "dark" : "light"];
 
   return (

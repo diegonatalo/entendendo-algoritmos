@@ -5,6 +5,8 @@ import { Sidebar } from "@/components/sidebar";
 import { openGraphBase } from "@/lib/metadata";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
+import { THEME_KEY } from "@/lib/storage-keys";
+import { themeScript } from "@/lib/theme";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +18,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// escolha salva ou, na falta dela, a preferência do sistema; sem JS fica o tema escuro (classe dark no <html>)
-const INITIAL_THEME = `try{var t=localStorage.getItem("entendendo-algoritmos:theme:v1");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"}document.documentElement.classList.toggle("dark",t==="dark")}catch(e){}`;
+// sem JS fica o tema escuro (classe dark no <html>); com JS, themeScript aplica a escolha salva ou o sistema
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -44,7 +45,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Script id="tema-inicial" strategy="beforeInteractive">
-          {INITIAL_THEME}
+          {themeScript(THEME_KEY)}
         </Script>
         <a
           href="#conteudo"
