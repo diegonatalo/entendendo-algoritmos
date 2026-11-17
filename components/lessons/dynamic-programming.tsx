@@ -1,6 +1,6 @@
 "use client";
 
-import { StepControls } from "@/components/ui";
+import { Stat, StepControls } from "@/components/ui";
 import { knapsack, greedyKnapsack } from "@/lib/knapsack";
 import { KnapsackItem } from "@/types/knapsack";
 import { useState } from "react";
@@ -228,24 +228,5 @@ export const DynamicProgramming = () => {
         </section>
       )}
     </main>
-  );
-};
-
-const Stat = ({
-  label,
-  value,
-  tone,
-}: {
-  label: string;
-  value: string;
-  tone: string;
-}) => {
-  return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-      <div className="text-xs uppercase tracking-wider text-zinc-500">
-        {label}
-      </div>
-      <div className={`mt-1 text-2xl font-semibold ${tone}`}>{value}</div>
-    </div>
   );
 };

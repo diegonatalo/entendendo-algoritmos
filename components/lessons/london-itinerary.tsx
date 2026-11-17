@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { StepControls, Stat, primaryButton } from "@/components/ui";
+import { Stat, StepControls, inputClass, primaryButton } from "@/components/ui";
 
 // a tabela trabalha em meios dias, para que todos os tempos sejam números inteiros
 const ATTRACTIONS: KnapsackItem[] = [
@@ -20,9 +20,6 @@ const ATTRACTIONS: KnapsackItem[] = [
 const EXTRA: KnapsackItem = { name: "Torre de Londres", weight: 2, value: 10 };
 
 const DAY_OPTIONS = [1, 1.5, 2, 2.5, 3];
-
-const selectClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
 const days = (halfDays: number) => {
   const d = halfDays / 2;
@@ -90,7 +87,7 @@ export const LondonItinerary = () => {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Tempo disponível
             <select
-              className={selectClass}
+              className={inputClass}
               value={totalDays}
               onChange={(e) => {
                 setTotalDays(Number(e.target.value));

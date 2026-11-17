@@ -1,7 +1,7 @@
 "use client";
 
 import { readNumbers, randomNumbers } from "@/lib/input";
-import { inputClass } from "@/components/ui";
+import { Legend, inputClass } from "@/components/ui";
 import { selectionSort } from "@/lib/selection-sort";
 import { useState } from "react";
 import { Explanation } from "@/components/explanation";
@@ -170,14 +170,5 @@ export const SelectionSort = () => {
         </section>
       )}
     </main>
-  );
-};
-
-const Legend = ({ color, text }: { color: string; text: string }) => {
-  return (
-    <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${color}`} />
-      {text}
-    </span>
   );
 };

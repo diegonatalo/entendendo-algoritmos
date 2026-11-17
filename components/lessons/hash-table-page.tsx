@@ -1,6 +1,6 @@
 "use client";
 
-import { inputClass } from "@/components/ui";
+import { Stat, inputClass, primaryButton } from "@/components/ui";
 import {
   search,
   createTable,
@@ -19,9 +19,6 @@ const INITIAL_SIZE = 8;
 
 const secondaryButton =
   "cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100";
-
-const primaryButton =
-  "cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600";
 
 const EXAMPLE: [string, string][] = [
   ["maca", "R$ 0,67"],
@@ -276,24 +273,5 @@ export const HashTablePage = () => {
         </ol>
       </section>
     </main>
-  );
-};
-
-const Stat = ({
-  label,
-  value,
-  tone,
-}: {
-  label: string;
-  value: string;
-  tone: string;
-}) => {
-  return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-      <div className="text-xs uppercase tracking-wider text-zinc-500">
-        {label}
-      </div>
-      <div className={`mt-1 text-2xl font-semibold ${tone}`}>{value}</div>
-    </div>
   );
 };

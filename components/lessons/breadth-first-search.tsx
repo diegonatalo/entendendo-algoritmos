@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { StepControls, ScrollableChart } from "@/components/ui";
+import { Legend, ScrollableChart, Stat, StepControls, inputClass } from "@/components/ui";
 
 // rede de amigos do exemplo do livro (arestas dirigidas)
 const GRAPH: Graph = {
@@ -33,9 +33,6 @@ const POSITIONS: Record<string, { x: number; y: number }> = {
 
 const RADIUS = 26;
 const names = Object.keys(GRAPH);
-
-const selectClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
 
 const colorOfType = {
   start: "text-zinc-300",
@@ -105,7 +102,7 @@ export const BreadthFirstSearch = () => {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Começar em
             <select
-              className={selectClass}
+              className={inputClass}
               value={start}
               onChange={(e) => setStart(e.target.value)}
             >
@@ -117,7 +114,7 @@ export const BreadthFirstSearch = () => {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Procurar por
             <select
-              className={selectClass}
+              className={inputClass}
               value={target}
               onChange={(e) => setTarget(e.target.value)}
             >
@@ -304,39 +301,5 @@ const List = ({ title, items }: { title: string; items: string[] }) => {
         )}
       </div>
     </div>
-  );
-};
-
-const Stat = ({
-  label,
-  value,
-  tone,
-  small: small,
-}: {
-  label: string;
-  value: string;
-  tone: string;
-  small?: boolean;
-}) => {
-  return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-      <div className="text-xs uppercase tracking-wider text-zinc-500">
-        {label}
-      </div>
-      <div
-        className={`mt-1 font-semibold ${small ? "text-base leading-8" : "text-2xl"} ${tone}`}
-      >
-        {value}
-      </div>
-    </div>
-  );
-};
-
-const Legend = ({ color, text }: { color: string; text: string }) => {
-  return (
-    <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${color}`} />
-      {text}
-    </span>
   );
 };

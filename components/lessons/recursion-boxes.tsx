@@ -11,10 +11,7 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { StepControls, Legend, Stat, primaryButton } from "@/components/ui";
-
-const selectClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
+import { Legend, Stat, StepControls, inputClass, primaryButton } from "@/components/ui";
 
 const BoxVisual = ({
   box,
@@ -113,7 +110,7 @@ export const RecursionBoxes = () => {
         <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
           Onde está a chave?
           <select
-            className={selectClass}
+            className={inputClass}
             value={location}
             onChange={(e) => {
               setLocation(e.target.value);

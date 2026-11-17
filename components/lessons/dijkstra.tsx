@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { StepControls, ScrollableChart } from "@/components/ui";
+import { Legend, ScrollableChart, Stat, StepControls } from "@/components/ui";
 
 // grafo do exemplo do livro (arestas dirigidas, com pesos)
 const GRAPH: WeightedGraph = {
@@ -287,39 +287,5 @@ export const Dijkstra = () => {
         </section>
       )}
     </main>
-  );
-};
-
-const Stat = ({
-  label,
-  value,
-  tone,
-  small: small,
-}: {
-  label: string;
-  value: string;
-  tone: string;
-  small?: boolean;
-}) => {
-  return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-      <div className="text-xs uppercase tracking-wider text-zinc-500">
-        {label}
-      </div>
-      <div
-        className={`mt-1 font-semibold ${small ? "text-base leading-8" : "text-2xl"} ${tone}`}
-      >
-        {value}
-      </div>
-    </div>
-  );
-};
-
-const Legend = ({ color, text }: { color: string; text: string }) => {
-  return (
-    <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${color}`} />
-      {text}
-    </span>
   );
 };
