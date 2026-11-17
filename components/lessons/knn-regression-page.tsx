@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Explanation } from "@/components/explanation";
 import { CODES } from "@/lib/codes";
 import { EXPLANATIONS } from "@/lib/explanations";
-import { ScrollableChart } from "@/components/ui";
+import { KnnControls, KnnPlot, plotX, plotY } from "@/components/knn-plot";
 
 // x = movimento na rua, y = temperatura (0 a 100); valor = pães vendidos no dia
 const POINTS: RegressionPoint[] = (
@@ -24,11 +24,6 @@ const POINTS: RegressionPoint[] = (
 const MIN_VALUE = Math.min(...POINTS.map((p) => p.value));
 const MAX_VALUE = Math.max(...POINTS.map((p) => p.value));
 
-const OFFSET_X = 15;
-const BASE_Y = 105;
-const px = (x: number) => OFFSET_X + x;
-const py = (y: number) => BASE_Y - y;
-
 // quanto maior o valor, mais intensa a cor do ponto
 const opacity = (value: number) =>
   0.35 + 0.65 * ((value - MIN_VALUE) / (MAX_VALUE - MIN_VALUE));
@@ -38,20 +33,6 @@ export const KnnRegressionPage = () => {
   const [k, setK] = useState(3);
 
   const result = created ? knnRegression(POINTS, created, k) : null;
-  const radius = result
-    ? result.neighbors[result.neighbors.length - 1].distance
-    : 0;
-
-  function handleClick(e: React.MouseEvent<SVGSVGElement>) {
-    const svg = e.currentTarget;
-    const point = svg.createSVGPoint();
-    point.x = e.clientX;
-    point.y = e.clientY;
-    const location = point.matrixTransform(svg.getScreenCTM()!.inverse());
-    const x = Math.min(100, Math.max(0, location.x - OFFSET_X));
-    const y = Math.min(100, Math.max(0, BASE_Y - location.y));
-    setCreated({ x: Math.round(x), y: Math.round(y) });
-  }
 
   return (
     <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
@@ -73,42 +54,18 @@ export const KnnRegressionPage = () => {
       </header>
 
       <section className="fade-up flex flex-col gap-6">
-        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-          <label className="flex items-center justify-between text-sm text-zinc-300">
-            <span>Número de vizinhos (k)</span>
-            <span className="font-mono text-lg text-emerald-400">{k}</span>
-          </label>
-          <input
-            type="range"
-            min={1}
-            max={9}
-            step={1}
-            value={k}
-            onChange={(e) => setK(Number(e.target.value))}
-            className="w-full accent-emerald-500"
-            aria-label="Número de vizinhos (k)"
-          />
-          <div className="flex gap-2">
-            <button
-              className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
-              onClick={() =>
-                setCreated({
-                  x: Math.round(Math.random() * 100),
-                  y: Math.round(Math.random() * 100),
-                })
-              }
-            >
-              Sortear dia
-            </button>
-            <button
-              className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
-              disabled={!created}
-              onClick={() => setCreated(null)}
-            >
-              Limpar
-            </button>
-          </div>
-        </div>
+        <KnnControls
+          k={k}
+          onKChange={setK}
+          randomLabel="Sortear dia"
+          onRandom={() =>
+            setCreated({
+              x: Math.round(Math.random() * 100),
+              y: Math.round(Math.random() * 100),
+            })
+          }
+          onClear={created ? () => setCreated(null) : undefined}
+        />
 
         <p className="text-xs text-zinc-500">
           Os números dentro dos pontos são os pães vendidos; cores mais fortes
@@ -116,87 +73,15 @@ export const KnnRegressionPage = () => {
         </p>
 
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <ScrollableChart minWidthValue={420}>
-          <svg
-            viewBox="0 0 120 115"
-            className="mx-auto w-full max-w-xl cursor-crosshair"
-            role="img"
-            aria-label="Gráfico de dias da padaria por movimento e temperatura. Clique para colocar um dia novo."
-            onClick={handleClick}
+          <KnnPlot
+            label="Gráfico de dias da padaria por movimento e temperatura. Clique para colocar um dia novo."
+            minWidth={420}
+            xLabel="movimento na rua"
+            yLabel="temperatura"
+            created={created}
+            neighbors={result?.neighbors.map((n) => n.point) ?? []}
+            onPick={setCreated}
           >
-            <rect
-              x={OFFSET_X}
-              y={5}
-              width={100}
-              height={100}
-              rx={2}
-              className="fill-zinc-950 stroke-zinc-700"
-              strokeWidth={0.5}
-            />
-            {[25, 50, 75].map((g) => (
-              <g key={g}>
-                <line
-                  x1={px(g)}
-                  x2={px(g)}
-                  y1={5}
-                  y2={105}
-                  className="stroke-zinc-800"
-                  strokeWidth={0.3}
-                />
-                <line
-                  x1={OFFSET_X}
-                  x2={115}
-                  y1={py(g)}
-                  y2={py(g)}
-                  className="stroke-zinc-800"
-                  strokeWidth={0.3}
-                />
-              </g>
-            ))}
-            <text
-              x={65}
-              y={113}
-              textAnchor="middle"
-              fontSize={4}
-              className="fill-zinc-500"
-            >
-              movimento na rua →
-            </text>
-            <text
-              x={5}
-              y={55}
-              textAnchor="middle"
-              fontSize={4}
-              transform="rotate(-90 5 55)"
-              className="fill-zinc-500"
-            >
-              temperatura →
-            </text>
-
-            {created && result && (
-              <>
-                <circle
-                  cx={px(created.x)}
-                  cy={py(created.y)}
-                  r={radius}
-                  className="fill-zinc-100/5 stroke-zinc-500"
-                  strokeWidth={0.4}
-                  strokeDasharray="2 2"
-                />
-                {result.neighbors.map(({ point }, i) => (
-                  <line
-                    key={i}
-                    x1={px(created.x)}
-                    y1={py(created.y)}
-                    x2={px(point.x)}
-                    y2={py(point.y)}
-                    className="stroke-zinc-400"
-                    strokeWidth={0.5}
-                  />
-                ))}
-              </>
-            )}
-
             {POINTS.map((p, i) => {
               const neighbor = result?.neighbors.some((v) => v.point === p);
               return (
@@ -205,16 +90,16 @@ export const KnnRegressionPage = () => {
                   opacity={result && !neighbor ? 0.4 : 1}
                 >
                   <circle
-                    cx={px(p.x)}
-                    cy={py(p.y)}
+                    cx={plotX(p.x)}
+                    cy={plotY(p.y)}
                     r={4.2}
                     className={`fill-amber-500 ${neighbor ? "stroke-zinc-100" : "stroke-transparent"}`}
                     fillOpacity={opacity(p.value)}
                     strokeWidth={0.8}
                   />
                   <text
-                    x={px(p.x)}
-                    y={py(p.y)}
+                    x={plotX(p.x)}
+                    y={plotY(p.y)}
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize={3.2}
@@ -230,15 +115,15 @@ export const KnnRegressionPage = () => {
             {created && result && (
               <g pointerEvents="none">
                 <circle
-                  cx={px(created.x)}
-                  cy={py(created.y)}
+                  cx={plotX(created.x)}
+                  cy={plotY(created.y)}
                   r={5}
                   className="fill-emerald-500 stroke-zinc-100"
                   strokeWidth={1}
                 />
                 <text
-                  x={px(created.x)}
-                  y={py(created.y)}
+                  x={plotX(created.x)}
+                  y={plotY(created.y)}
                   textAnchor="middle"
                   dominantBaseline="central"
                   fontSize={3.6}
@@ -248,8 +133,7 @@ export const KnnRegressionPage = () => {
                 </text>
               </g>
             )}
-          </svg>
-          </ScrollableChart>
+          </KnnPlot>
         </div>
 
         {result && created ? (
