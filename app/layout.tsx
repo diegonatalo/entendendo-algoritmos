@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { Sidebar } from "@/components/sidebar";
 import { openGraphBase } from "@/lib/metadata";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -53,8 +52,7 @@ export default function RootLayout({
         >
           Pular para o conteúdo
         </a>
-        <Sidebar />
-        <div className="flex flex-1 flex-col lg:pl-64">{children}</div>
+        {children}
       </body>
     </html>
   );

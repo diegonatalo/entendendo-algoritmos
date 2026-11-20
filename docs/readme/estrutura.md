@@ -1,6 +1,7 @@
 ```text
 app/
-├── <rota>/page.tsx      uma pasta por página (busca-binaria, quicksort, dijkstra…)
+├── page.tsx             landing (/)
+├── app/<rota>/page.tsx  uma pasta por página, em /app (busca-binaria, quicksort, dijkstra…)
 ├── og/[slug]/route.tsx  imagem de compartilhamento (1200×630) de cada página, gerada no build
 ├── sitemap.ts           sitemap.xml: a home e as páginas de lib/chapters.ts
 ├── robots.ts            robots.txt: libera tudo e aponta para o sitemap

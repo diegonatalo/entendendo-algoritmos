@@ -234,7 +234,7 @@ export const TravelingSalesman = () => {
           solução. A saída recomendada é usar uma aproximação: o vizinho mais
           próximo aqui e a escolha gulosa das estações na página do{" "}
           <Link
-            href="/algoritmo-guloso"
+            href="/app/algoritmo-guloso"
             className="text-emerald-400 underline-offset-2 hover:underline"
           >
             algoritmo guloso

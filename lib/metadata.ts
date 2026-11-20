@@ -37,7 +37,8 @@ export function pageMetadata(href: string): Metadata {
       `${page.title} · ${SITE_NAME}`,
       page.description,
       href,
-      `/og${href}`,
+      // As imagens continuam em /og/<capítulo>, sem o prefixo /app.
+      `/og${href.replace(/^\/app/, "")}`,
     ),
   };
 }

@@ -67,7 +67,7 @@ export const NotFoundPage = () => {
             Voltar ao início
           </Link>
           <Link
-            href="/busca-binaria"
+            href="/app/busca-binaria"
             className="rounded-xl border border-zinc-700 px-5 py-2.5 text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-emerald-400"
           >
             Ver a busca binária
