@@ -2,13 +2,13 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const nav = vi.hoisted(() => ({ pathname: "/busca-binaria" }));
+const nav = vi.hoisted(() => ({ pathname: "/app/busca-binaria" }));
 vi.mock("next/navigation", () => ({ usePathname: () => nav.pathname }));
 
 import { Sidebar } from "./sidebar";
 
 beforeEach(() => {
-  nav.pathname = "/busca-binaria";
+  nav.pathname = "/app/busca-binaria";
   Element.prototype.scrollIntoView = vi.fn();
   document.body.style.overflow = "";
 });
@@ -70,7 +70,7 @@ describe("Sidebar: gaveta do celular", () => {
   it("navegar para outra página fecha a gaveta", async () => {
     const { rerender } = render(<Sidebar />);
     await openDrawer();
-    nav.pathname = "/big-o";
+    nav.pathname = "/app/big-o";
     rerender(<Sidebar />);
     expect(screen.queryByRole("dialog")).toBeNull();
   });

@@ -6,7 +6,7 @@ import { SITE_NAME } from "@/lib/site";
 // /og/busca-binaria, /og/quicksort… e /og/start para a página inicial.
 
 export function generateStaticParams() {
-  return [{ slug: "start" }, ...chapters.map((c) => ({ slug: c.href.slice(1) }))];
+  return [{ slug: "start" }, ...chapters.map((c) => ({ slug: c.href.replace(/^\/app\//, "") }))];
 }
 
 export async function GET(
@@ -14,7 +14,7 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
-  const page = chapters.find((c) => c.href === `/${slug}`);
+  const page = chapters.find((c) => c.href === `/app/${slug}`);
   if (!page && slug !== "start") return new Response("Not found", { status: 404 });
 
   const label = page ? `CAPÍTULO ${page.number}` : "VISUALIZAÇÕES INTERATIVAS";

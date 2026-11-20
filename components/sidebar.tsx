@@ -57,11 +57,11 @@ const List = ({ onNavigate }: { onNavigate?: () => void }) => {
   return (
     <nav aria-label="Capítulos" className="flex flex-col gap-1">
       <Link
-        href="/"
+        href="/app"
         onClick={onNavigate}
-        aria-current={pathname === "/" ? "page" : undefined}
-        ref={pathname === "/" ? activeRef : undefined}
-        className={itemClass(pathname === "/")}
+        aria-current={pathname === "/app" ? "page" : undefined}
+        ref={pathname === "/app" ? activeRef : undefined}
+        className={itemClass(pathname === "/app")}
       >
         Início
       </Link>

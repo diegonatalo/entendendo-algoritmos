@@ -13,13 +13,13 @@ const TOPICS: Topic[] = [
     title: "Árvores",
     summary:
       "Uma árvore de busca binária guarda os itens de forma que cada comparação descarta metade dos que sobram, como a busca binária, mas sem o custo de inserir no meio de um array. Bancos de dados costumam usar variações, como as árvores B.",
-    connection: { text: "Busca binária e Arrays e listas", href: "/busca-binaria" },
+    connection: { text: "Busca binária e Arrays e listas", href: "/app/busca-binaria" },
   },
   {
     title: "Índices invertidos",
     summary:
       "Uma tabela hash que liga cada palavra às páginas em que ela aparece. É a ideia básica por trás de um mecanismo de busca: em vez de ler todas as páginas, consulta-se a palavra.",
-    connection: { text: "Tabelas hash", href: "/tabela-hash" },
+    connection: { text: "Tabelas hash", href: "/app/tabela-hash" },
   },
   {
     title: "Transformada de Fourier",
@@ -31,25 +31,25 @@ const TOPICS: Topic[] = [
     title: "Algoritmos paralelos",
     summary:
       "Dividir o trabalho entre vários processadores. Quase sempre é mais difícil do que parece: o ganho raramente é proporcional ao número de núcleos, e dividir e juntar o trabalho também tem custo.",
-    connection: { text: "Quicksort", href: "/quicksort" },
+    connection: { text: "Quicksort", href: "/app/quicksort" },
   },
   {
     title: "MapReduce",
     summary:
       "Um modelo para distribuir cálculos em muitas máquinas. A função map transforma cada item de forma independente e a função reduce junta os resultados, por exemplo para contar palavras em milhões de documentos.",
-    connection: { text: "Dividir para conquistar", href: "/dividir-conquistar" },
+    connection: { text: "Dividir para conquistar", href: "/app/dividir-conquistar" },
   },
   {
     title: "Filtros de Bloom e HyperLogLog",
     summary:
       "Estruturas probabilísticas que trocam um pouco de precisão por muito menos memória. Um filtro de Bloom pode dar falsos positivos (diz que viu algo que não viu), mas nunca falsos negativos. O HyperLogLog estima quantos itens distintos existem.",
-    connection: { text: "Tabelas hash", href: "/tabela-hash" },
+    connection: { text: "Tabelas hash", href: "/app/tabela-hash" },
   },
   {
     title: "Funções SHA e hash sensível à localidade",
     summary:
       "O SHA é uma família de funções hash seguras: dá para comparar arquivos ou verificar senhas sem guardar o conteúdo original. Já o hash sensível à localidade faz o contrário: entradas parecidas geram hashes parecidos, útil para detectar documentos semelhantes.",
-    connection: { text: "Tabelas hash", href: "/tabela-hash" },
+    connection: { text: "Tabelas hash", href: "/app/tabela-hash" },
   },
   {
     title: "Troca de chaves Diffie-Hellman",
@@ -61,7 +61,7 @@ const TOPICS: Topic[] = [
     title: "Programação linear",
     summary:
       "Maximiza (ou minimiza) um objetivo sujeito a restrições, como obter o maior lucro com recursos limitados. O algoritmo Simplex resolve esse tipo de problema, e os algoritmos de grafos do livro são casos particulares dele.",
-    connection: { text: "Algoritmo de Dijkstra", href: "/dijkstra" },
+    connection: { text: "Algoritmo de Dijkstra", href: "/app/dijkstra" },
   },
 ];
 
