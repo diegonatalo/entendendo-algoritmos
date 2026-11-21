@@ -7,7 +7,7 @@ import {
   PERKS,
   STEPS,
   chapterCount,
-  featuredChapters,
+  tableOfContents,
 } from "@/lib/landing";
 import { SOURCE_URL } from "@/lib/site";
 
@@ -67,55 +67,83 @@ export const LandingPage = () => (
 
     <main id="conteudo" className="flex flex-1 flex-col gap-20 pb-20">
       <section
-        className={`${SECTION} fade-up grid items-center gap-10 pt-16 lg:grid-cols-[1fr_22rem]`}
+        className="fade-up bg-[radial-gradient(circle,rgb(113_113_122/0.22)_1px,transparent_1px)] [background-size:22px_22px]"
         aria-labelledby="titulo"
       >
-        <div className="flex flex-col gap-5">
-          <p className="text-sm font-medium uppercase tracking-wider text-emerald-400">
-            {HERO.kicker}
-          </p>
-          <h1
-            id="titulo"
-            className="max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl"
-          >
-            {HERO.title}
-          </h1>
-          <p className="max-w-2xl text-lg text-zinc-400">{HERO.subtitle}</p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/app" className={CTA}>
-              Começar pelos capítulos
-            </Link>
-            <Link
-              href="/app/busca-binaria"
-              className="inline-flex items-center rounded-full border border-zinc-700 px-5 py-2.5 text-sm font-semibold transition hover:border-emerald-500/60"
+        <div
+          className={`${SECTION} grid items-center gap-10 py-16 lg:grid-cols-[1fr_22rem]`}
+        >
+          <div className="flex flex-col gap-5">
+            <p className="text-sm font-medium uppercase tracking-wider text-emerald-400">
+              {HERO.kicker}
+            </p>
+            <h1
+              id="titulo"
+              className="max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl"
             >
-              Abrir a busca binária
-            </Link>
+              {HERO.title}
+            </h1>
+            <p className="max-w-2xl text-lg text-zinc-400">{HERO.subtitle}</p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/app" className={CTA}>
+                Começar pelos capítulos
+              </Link>
+              <Link
+                href="/app/busca-binaria"
+                className="inline-flex items-center rounded-full border border-zinc-700 px-5 py-2.5 text-sm font-semibold transition hover:border-emerald-500/60"
+              >
+                Abrir a busca binária
+              </Link>
+            </div>
           </div>
+          <SearchPreview />
         </div>
-        <SearchPreview />
       </section>
 
-      <section className={SECTION} aria-labelledby="titulo-destaques">
-        <h2 id="titulo-destaques" className={H2}>
-          Para começar
+      <section className={SECTION} aria-labelledby="titulo-sumario">
+        <h2 id="titulo-sumario" className={H2}>
+          Sumário
         </h2>
-        <ul className="mt-6 grid gap-4 md:grid-cols-3">
-          {featuredChapters().map((c) => (
-            <li key={c.href}>
-              <Link
-                href={c.href}
-                className={`${CARD} group flex h-full flex-col gap-2 transition-all hover:-translate-y-0.5 hover:border-emerald-500/50`}
-              >
-                <span className="text-xs font-medium uppercase tracking-wider text-emerald-400">
-                  Capítulo {c.number}
-                </span>
-                <h3 className="text-xl font-semibold">{c.title}</h3>
-                <p className="text-sm text-zinc-400">{c.description}</p>
-              </Link>
+        <p className="mt-2 text-zinc-400">
+          Os {chapterCount()} capítulos do livro, com uma visualização para cada
+          assunto.
+        </p>
+        <ol className="mt-8 grid gap-x-12 font-mono text-sm md:grid-cols-2">
+          {tableOfContents().map((entry) => (
+            <li
+              key={entry.number}
+              className="border-b border-dashed border-zinc-800 py-4"
+            >
+              <p className="text-xs uppercase tracking-wider text-emerald-400">
+                Capítulo {entry.number}
+              </p>
+              <ul className="mt-2 space-y-1">
+                {entry.pages.map((page) => (
+                  <li key={page.href}>
+                    <Link
+                      href={page.href}
+                      className="group flex items-baseline gap-2 hover:text-emerald-400"
+                    >
+                      <span className="font-sans font-medium">
+                        {page.title}
+                      </span>
+                      <span
+                        className="flex-1 border-b border-dotted border-zinc-700 group-hover:border-emerald-500/60"
+                        aria-hidden="true"
+                      />
+                      <span
+                        className="text-zinc-500 group-hover:text-emerald-400"
+                        aria-hidden="true"
+                      >
+                        →
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
 
       <section className={SECTION} aria-labelledby="titulo-como">
