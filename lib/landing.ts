@@ -23,11 +23,18 @@ export const PERKS: Step[] = [
   { title: "Sem cadastro", text: "Abre no navegador, no computador ou no celular." },
 ];
 
-/** Páginas mostradas na landing. */
-export const FEATURED_HREFS = ["/app/busca-binaria", "/app/quicksort", "/app/dijkstra"];
-
-export const featuredChapters = (): Chapter[] =>
-  FEATURED_HREFS.map((href) => chapters.find((c) => c.href === href)).filter((c): c is Chapter => Boolean(c));
-
 /** Quantos capítulos do livro têm visualização. */
 export const chapterCount = () => new Set(chapters.map((c) => c.number)).size;
+
+export type TocEntry = { number: number; pages: Chapter[] };
+
+/** Sumário: as páginas agrupadas pelo capítulo do livro, na ordem de `lib/chapters.ts`. */
+export const tableOfContents = (): TocEntry[] => {
+  const entries: TocEntry[] = [];
+  for (const page of chapters) {
+    const last = entries.at(-1);
+    if (last && last.number === page.number) last.pages.push(page);
+    else entries.push({ number: page.number, pages: [page] });
+  }
+  return entries;
+};
