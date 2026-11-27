@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Inter, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import { openGraphBase } from "@/lib/metadata";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -7,13 +7,19 @@ import "./globals.css";
 import { THEME_KEY } from "@/lib/storage-keys";
 import { themeScript } from "@/lib/theme";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// texto em Inter, títulos em Bricolage Grotesque e código/números em JetBrains Mono
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
@@ -40,7 +46,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
+      className={`${inter.variable} ${bricolage.variable} ${jetbrainsMono.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Script id="tema-inicial" strategy="beforeInteractive">
@@ -48,7 +54,7 @@ export default function RootLayout({
         </Script>
         <a
           href="#conteudo"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-emerald-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-emerald-950"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-full focus:bg-emerald-400 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-emerald-950"
         >
           Pular para o conteúdo
         </a>

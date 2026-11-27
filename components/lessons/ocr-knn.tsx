@@ -40,10 +40,10 @@ export const OcrKnn = () => {
   const maxVotes = result ? Math.max(...result.votes) : 1;
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">OCR com KNN</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">OCR com KNN</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           OCR é reconhecer caracteres em imagens. O livro mostra que o KNN
           resolve isso: cada imagem vira uma lista de características (aqui,
           os 35 pixels de uma grade 5 × 7) e o dígito é o mais comum entre as
@@ -58,7 +58,7 @@ export const OcrKnn = () => {
       </header>
 
       <section className="fade-up grid gap-6 md:grid-cols-[auto_1fr]">
-        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+        <div className="flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
           <div className="text-sm text-zinc-300">Clique nos quadrados para desenhar</div>
           <div
             className="mx-auto grid gap-1"
@@ -81,7 +81,7 @@ export const OcrKnn = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="text-xs uppercase tracking-wider text-zinc-500">
+            <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
               Começar de um dígito
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -89,7 +89,7 @@ export const OcrKnn = () => {
                 <button
                   key={d}
                   onClick={() => setPixels(digitModel(d))}
-                  className="h-8 w-8 cursor-pointer rounded-lg border border-zinc-700 font-mono text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
+                  className="h-9 w-9 cursor-pointer rounded-full border border-zinc-700 font-mono text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
                 >
                   {d}
                 </button>
@@ -106,7 +106,7 @@ export const OcrKnn = () => {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             <span className="flex items-center justify-between">
               Número de vizinhos (k)
-              <span className="font-mono text-lg text-emerald-400">{k}</span>
+              <span className="font-display text-2xl font-bold tracking-tight text-emerald-400">{k}</span>
             </span>
             <input
               type="range"
@@ -114,7 +114,7 @@ export const OcrKnn = () => {
               max={9}
               value={k}
               onChange={(e) => setK(Number(e.target.value))}
-              className="w-full accent-emerald-500"
+              className="w-full accent-emerald-400"
             />
           </label>
         </div>
@@ -135,8 +135,8 @@ export const OcrKnn = () => {
                 />
               </div>
 
-              <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-                <div className="text-xs uppercase tracking-wider text-zinc-500">
+              <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
+                <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                   Votação entre os {k} vizinhos
                 </div>
                 {result.votes.map((v, d) =>
@@ -155,8 +155,8 @@ export const OcrKnn = () => {
                 )}
               </div>
 
-              <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-                <div className="text-xs uppercase tracking-wider text-zinc-500">
+              <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
+                <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                   Vizinhos mais próximos
                 </div>
                 <ol className="flex flex-wrap gap-3">
@@ -169,7 +169,7 @@ export const OcrKnn = () => {
                       <span className="font-mono text-xs text-zinc-300">
                         {v.example.digit}
                       </span>
-                      <span className="font-mono text-[10px] text-zinc-600">
+                      <span className="font-mono text-[10px] text-zinc-500">
                         dist. {v.distance}
                       </span>
                     </li>

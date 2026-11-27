@@ -24,9 +24,9 @@ describe("ErrorScreen", () => {
     expect(retry).toHaveBeenCalledOnce();
   });
 
-  it("leva de volta para o início", () => {
+  it("leva de volta para os capítulos", () => {
     render(<ErrorScreen error={new Error("falhou")} retry={() => {}} />);
     const hrefs = screen.getAllByRole("link").map((link) => link.getAttribute("href"));
-    expect(hrefs).toContain("/");
+    expect(hrefs).toContain("/app");
   });
 });

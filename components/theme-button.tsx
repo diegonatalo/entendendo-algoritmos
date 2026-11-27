@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/hooks/use-theme";
+import { cn } from "@/lib/cn";
 import { THEME_KEY } from "@/lib/storage-keys";
 import type { Theme } from "@/lib/theme";
 
@@ -16,9 +17,10 @@ export const ThemeButton = ({ compact = false }: { compact?: boolean }) => {
       onClick={toggle}
       aria-label={`Mudar para o tema ${destination}`}
       title={`Tema ${destination}`}
-      className={`flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-800 text-sm text-zinc-300 transition-colors hover:border-zinc-600 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-emerald-400 ${
-        compact ? "h-10 w-10 justify-center" : "px-3 py-2"
-      }`}
+      className={cn(
+        "flex min-h-11 shrink-0 cursor-pointer items-center gap-2 rounded-full border border-zinc-700 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400",
+        compact ? "w-11 justify-center" : "px-4",
+      )}
     >
       <svg
         viewBox="0 0 24 24"
@@ -26,17 +28,17 @@ export const ThemeButton = ({ compact = false }: { compact?: boolean }) => {
         height="18"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden
       >
         {theme === "light" ? (
-          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" />
         ) : (
           <>
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            <circle cx="12" cy="12" r="4.2" />
+            <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M5.2 18.8l1.6-1.6M17.2 6.8l1.6-1.6" />
           </>
         )}
       </svg>

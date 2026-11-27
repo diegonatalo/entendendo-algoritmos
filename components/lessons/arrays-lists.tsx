@@ -98,12 +98,12 @@ export const ArraysLists = () => {
         : "bg-zinc-800 text-zinc-200";
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">
           Arrays e listas encadeadas
         </h1>
-        <p className="text-zinc-400">
+        <p className="max-w-3xl text-lg text-zinc-400">
           Em um array os itens ficam lado a lado na memória; em uma lista
           encadeada cada nó aponta para o próximo e pode estar em qualquer
           lugar. Cada estrutura é boa em uma coisa: experimente ler, inserir e
@@ -117,7 +117,7 @@ export const ArraysLists = () => {
       </header>
 
       <form
-        className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+        className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
         onSubmit={(e) => e.preventDefault()}
       >
         <div className="grid gap-4 sm:grid-cols-2">
@@ -166,7 +166,7 @@ export const ArraysLists = () => {
           </button>
           <button
             type="button"
-            className="cursor-pointer rounded-xl px-4 py-2.5 text-sm text-zinc-500 hover:text-zinc-300"
+            className="min-h-11 cursor-pointer rounded-full px-4 text-sm text-zinc-400 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-violet-400"
             onClick={() => {
               setValues([10, 20, 30, 40, 50]);
               setLast(null);
@@ -190,7 +190,7 @@ export const ArraysLists = () => {
           </span>
         </div>
 
-        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
           <div className="flex items-baseline justify-between">
             <h2 className="font-semibold">Array</h2>
             {last && (
@@ -202,7 +202,7 @@ export const ArraysLists = () => {
           </div>
           <div className="flex flex-wrap">
             {values.length === 0 && (
-              <span className="text-sm text-zinc-600">vazio</span>
+              <span className="text-sm text-zinc-500">vazio</span>
             )}
             {values.map((v, i) => (
               <div key={i} className="flex flex-col items-center">
@@ -211,7 +211,7 @@ export const ArraysLists = () => {
                 >
                   {v}
                 </div>
-                <span className="mt-1 font-mono text-[10px] text-zinc-600">
+                <span className="mt-1 font-mono text-[10px] text-zinc-500">
                   {i}
                 </span>
               </div>
@@ -224,7 +224,7 @@ export const ArraysLists = () => {
           )}
         </div>
 
-        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
           <div className="flex items-baseline justify-between">
             <h2 className="font-semibold">Lista encadeada</h2>
             {last && (
@@ -242,10 +242,10 @@ export const ArraysLists = () => {
                 >
                   {v}
                 </div>
-                <span className="px-1.5 text-zinc-600">→</span>
+                <span className="px-1.5 text-zinc-500">→</span>
               </div>
             ))}
-            <span className="font-mono text-xs text-zinc-600">null</span>
+            <span className="font-mono text-xs text-zinc-500">null</span>
           </div>
           {last && (
             <p className="text-sm text-zinc-400">
@@ -254,9 +254,9 @@ export const ArraysLists = () => {
           )}
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+        <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900">
           <table className="w-full text-left text-sm">
-            <thead className="bg-zinc-900/60 text-xs uppercase tracking-wider text-zinc-500">
+            <thead className="bg-zinc-950/60 font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Operação</th>
                 <th className="px-4 py-3 font-medium">Array</th>

@@ -48,12 +48,12 @@ export const Knn = () => {
   const result = created ? knn(POINTS, created, k) : null;
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">
           K-vizinhos mais próximos
         </h1>
-        <p className="text-zinc-400">
+        <p className="max-w-3xl text-lg text-zinc-400">
           Para classificar um item novo, o KNN olha os k itens mais parecidos e
           escolhe a categoria que mais aparece entre eles. Aqui, frutas são
           pontos em um plano: tamanho e vermelhidão. Clique no gráfico para
@@ -93,7 +93,7 @@ export const Knn = () => {
           </span>
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
           <KnnPlot
             label="Gráfico de frutas por tamanho e vermelhidão. Clique para colocar uma fruta nova."
             minWidth={340}
@@ -147,7 +147,7 @@ export const Knn = () => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <div className="text-xs uppercase tracking-wider text-zinc-500">
+              <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                 Votação entre os {k} vizinhos
               </div>
               {(Object.keys(NAME) as Category[]).map((c) => (

@@ -53,10 +53,10 @@ export const DivideAndConquer = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-12 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dividir para conquistar</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-12 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Dividir para conquistar</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           Uma técnica recursiva para resolver problemas: (1) descubra o caso
           base mais simples; (2) reduza o problema até ele virar o caso base.
           O quicksort usa essa técnica. Aqui estão os dois exemplos que o livro
@@ -71,7 +71,7 @@ export const DivideAndConquer = () => {
 
       <section className="fade-up flex flex-col gap-6">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold">1. O terreno e o algoritmo de Euclides</h2>
+          <h2 className="text-2xl font-bold">1. O terreno e o algoritmo de Euclides</h2>
           <p className="text-sm text-zinc-400">
             Divida um terreno retangular em quadrados iguais, os maiores
             possíveis. Caso base: quando um lado divide o outro, o terreno já é
@@ -82,7 +82,7 @@ export const DivideAndConquer = () => {
         </div>
 
         <form
-          className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+          className="flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
           onSubmit={handleTerrain}
         >
           <div className="grid gap-4 sm:grid-cols-2">
@@ -135,7 +135,7 @@ export const DivideAndConquer = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+            <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-sm font-medium text-amber-400">{step.description}</p>
                 <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} />
@@ -174,7 +174,7 @@ export const DivideAndConquer = () => {
 
       <section className="fade-up flex flex-col gap-6">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold">2. Soma recursiva de uma lista</h2>
+          <h2 className="text-2xl font-bold">2. Soma recursiva de uma lista</h2>
           <p className="text-sm text-zinc-400">
             Caso base: a lista vazia soma 0. Caso recursivo: o primeiro item
             mais a soma do resto. A recursão desce até a lista vazia e depois os
@@ -183,7 +183,7 @@ export const DivideAndConquer = () => {
         </div>
 
         <form
-          className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+          className="flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
           onSubmit={handleList}
         >
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
@@ -201,7 +201,7 @@ export const DivideAndConquer = () => {
           </button>
         </form>
 
-        <ol className="flex flex-col gap-1.5 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 font-mono text-sm">
+        <ol className="flex flex-col gap-1.5 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4 font-mono text-sm">
           {calls.map((c) => {
             const [first, ...remainder] = c.list;
             const base = c.list.length === 0;

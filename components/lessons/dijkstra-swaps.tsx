@@ -72,10 +72,10 @@ export const DijkstraSwaps = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dijkstra: trocando um livro por um piano</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Dijkstra: trocando um livro por um piano</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           O segundo exemplo do capítulo 7: você quer trocar um livro por um
           piano, passando por uma série de trocas, e cada troca exige pagar
           uma diferença em dinheiro. O caminho mais barato no grafo é a série
@@ -89,7 +89,7 @@ export const DijkstraSwaps = () => {
         />
       </header>
 
-      <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <div className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <label className="flex cursor-pointer items-start gap-3 text-sm text-zinc-300">
           <input
             type="checkbox"
@@ -99,7 +99,7 @@ export const DijkstraSwaps = () => {
               setExecuted(false);
               setCurrentStep(0);
             }}
-            className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-500"
+            className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-400"
           />
           <span>
             Criar um ciclo: permitir trocar o baixo de volta por um LP (R$ 2).
@@ -145,7 +145,7 @@ export const DijkstraSwaps = () => {
             <Legend color="bg-emerald-500" text="Trocas escolhidas" />
           </div>
 
-          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className={`text-sm font-medium ${colorOfType[step.type]}`}>{step.description}</p>
               <StepControls currentStep={currentStep} total={result.steps.length} onChange={setCurrentStep} />
@@ -190,7 +190,7 @@ export const DijkstraSwaps = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="text-xs uppercase tracking-wider text-zinc-500">
+                <thead className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                   <tr>
                     <th className="py-2 pr-4 font-medium">Item</th>
                     <th className="py-2 pr-4 font-medium">Custo</th>

@@ -55,10 +55,10 @@ export const BellmanFord = () => {
   };
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Bellman-Ford</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Bellman-Ford</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           O Dijkstra assume que, ao processar um nó, o custo dele já é o
           menor possível. Com pesos negativos (um desconto, um reembolso) isso
           deixa de ser verdade. O Bellman-Ford não faz essa suposição: relaxa
@@ -72,7 +72,7 @@ export const BellmanFord = () => {
         />
       </header>
 
-      <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <div className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <label className="flex cursor-pointer items-start gap-3 text-sm text-zinc-300">
           <input
             type="checkbox"
@@ -82,7 +82,7 @@ export const BellmanFord = () => {
               setExecuted(false);
               setCurrentStep(0);
             }}
-            className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-500"
+            className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-400"
           />
           <span>
             Adicionar a aresta a → b (peso 1). Com b → a (−2), o ciclo a → b →
@@ -128,7 +128,7 @@ export const BellmanFord = () => {
           </div>
 
           {!bf.negativeCycle && dj.totalCost !== null && dj.totalCost !== bf.costs[END] && (
-            <p className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+            <p className="rounded-2xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">
               O Dijkstra errou: tratou o custo de &quot;a&quot; como final ao processá-lo e nunca
               reviu esse valor, então perdeu o caminho inicio → b → a → fim, mais barato
               por causa da aresta negativa.
@@ -141,7 +141,7 @@ export const BellmanFord = () => {
             <Legend color="bg-red-400" text="Peso negativo" />
           </div>
 
-          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p
                 className={`text-sm font-medium ${step.improved ? "text-emerald-400" : "text-zinc-300"}`}

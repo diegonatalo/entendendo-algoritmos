@@ -90,10 +90,10 @@ export const RecursionBoxes = () => {
   };
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Caixas dentro de caixas</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Caixas dentro de caixas</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           O exemplo clássico de recursão: procurar uma chave em uma caixa que
           contém outras caixas, que contêm outras. Em vez de controlar a
           lista de caixas por conta própria, a função se chama para cada
@@ -106,7 +106,7 @@ export const RecursionBoxes = () => {
         />
       </header>
 
-      <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <div className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
           Onde está a chave?
           <select
@@ -171,7 +171,7 @@ export const RecursionBoxes = () => {
           <Legend color="bg-emerald-500" text="Achou" />
         </div>
 
-        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
           {executed && (
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p
@@ -192,16 +192,16 @@ export const RecursionBoxes = () => {
 
           {executed && (
             <div className="flex flex-col gap-2">
-              <div className="text-xs uppercase tracking-wider text-zinc-500">
+              <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                 Pilha de chamadas (a última é a caixa em uso)
               </div>
               <div className="flex flex-wrap items-center gap-1.5">
                 {step.stack.length === 0 ? (
-                  <span className="text-xs text-zinc-600">vazia</span>
+                  <span className="text-xs text-zinc-500">vazia</span>
                 ) : (
                   step.stack.map((id, i) => (
                     <span key={id} className="flex items-center gap-1.5">
-                      {i > 0 && <span className="text-zinc-600">→</span>}
+                      {i > 0 && <span className="text-zinc-500">→</span>}
                       <span
                         className={`rounded-lg px-2.5 py-1.5 text-xs ${
                           i === step.stack.length - 1

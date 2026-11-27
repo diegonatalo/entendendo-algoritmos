@@ -3,34 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
-import { Chapter, chapters } from "@/lib/chapters";
-import { ThemeButton } from "./theme-button";
+import { Logo } from "@/components/logo";
+import { ThemeButton } from "@/components/theme-button";
+import { chapterGroups } from "@/lib/chapters";
+import { cn } from "@/lib/cn";
 
-// agrupa as páginas por capítulo, mantendo a ordem de chapters.ts
-const groups: { number: number; pages: Chapter[] }[] = chapters.reduce(
-  (acc, page) => {
-    const last = acc[acc.length - 1];
-    if (last && last.number === page.number) last.pages.push(page);
-    else acc.push({ number: page.number, pages: [page] });
-    return acc;
-  },
-  [] as { number: number; pages: Chapter[] }[],
-);
-
-const Mark = ({ onClick }: { onClick?: () => void }) => {
-  return (
-    <Link
-      href="/"
-      onClick={onClick}
-      className="shrink-0 whitespace-nowrap rounded-md font-semibold tracking-tight"
-    >
-      <span className="text-emerald-400">{"</>"}</span> Entendendo Algoritmos
-    </Link>
-  );
-};
+const groups = chapterGroups();
 
 const focusRing =
-  "focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-400";
+  "focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-violet-400";
 
 const List = ({ onNavigate }: { onNavigate?: () => void }) => {
   const pathname = usePathname();
@@ -48,11 +29,13 @@ const List = ({ onNavigate }: { onNavigate?: () => void }) => {
   }, [pathname]);
 
   const itemClass = (active: boolean) =>
-    `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${focusRing} ${
+    cn(
+      "flex min-h-10 items-center gap-2.5 rounded-xl px-3 text-sm transition-colors",
+      focusRing,
       active
-        ? "bg-zinc-800 text-zinc-50"
-        : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
-    }`;
+        ? "bg-emerald-400/10 font-semibold text-zinc-50 before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-sm before:bg-emerald-400"
+        : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-50",
+    );
 
   return (
     <nav aria-label="Capítulos" className="flex flex-col gap-1">
@@ -63,7 +46,7 @@ const List = ({ onNavigate }: { onNavigate?: () => void }) => {
         ref={pathname === "/app" ? activeRef : undefined}
         className={itemClass(pathname === "/app")}
       >
-        Início
+        Todos os capítulos
       </Link>
 
       <div className="mt-3 flex flex-col gap-0.5">
@@ -83,25 +66,28 @@ const List = ({ onNavigate }: { onNavigate?: () => void }) => {
                   !isActive &&
                   setManuallyOpened((m) => ({ ...m, [group.number]: !isOpen }))
                 }
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-medium uppercase tracking-wider transition-colors ${focusRing} ${
+                className={cn(
+                  "flex min-h-10 w-full items-center gap-2.5 rounded-xl px-3 text-left text-[13px] transition-colors",
+                  focusRing,
                   isActive
-                    ? "cursor-default text-emerald-400"
-                    : "cursor-pointer text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100"
-                }`}
+                    ? "cursor-default font-semibold text-zinc-50"
+                    : cn("cursor-pointer hover:bg-zinc-900 hover:text-zinc-50", isOpen ? "font-semibold text-zinc-50" : "text-zinc-400"),
+                )}
               >
-                <span>Capítulo {group.number}</span>
-                <span className="flex items-center gap-2">
-                  <span aria-hidden className="font-mono text-[10px] normal-case tracking-normal text-zinc-400">
-                    {group.pages.length}
-                  </span>
-                  <span aria-hidden className="w-3 text-center">
-                    {isOpen ? "▾" : "▸"}
-                  </span>
+                <span aria-hidden className={cn("w-5 font-mono text-xs", isOpen ? "text-emerald-400" : "text-zinc-500")}>
+                  {String(group.number).padStart(2, "0")}
+                </span>
+                <span className="flex-1">
+                  <span className="sr-only">Capítulo {group.number}: </span>
+                  {group.name}
+                </span>
+                <span aria-hidden className="font-mono text-[11px] text-zinc-500">
+                  {group.pages.length}
                 </span>
               </button>
 
               {isOpen && (
-                <ul id={listId} className="mb-1 ml-3 flex flex-col gap-0.5 border-l border-zinc-800 pl-2">
+                <ul id={listId} className="mb-1.5 ml-[22px] flex flex-col gap-0.5 border-l border-zinc-800 pl-2.5">
                   {group.pages.map((page) => {
                     const active = pathname === page.href;
                     return (
@@ -186,19 +172,17 @@ export const Sidebar = () => {
   return (
     <>
       {/* telas largas: barra lateral fixa */}
-      <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 flex-col gap-6 overflow-y-auto border-r border-zinc-800/80 bg-zinc-950/80 p-4 backdrop-blur lg:flex">
-        <div className="px-3 pt-1">
-          <Mark />
-        </div>
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-72 flex-col gap-6 overflow-y-auto border-r border-zinc-800 bg-zinc-950 px-3.5 py-5 lg:flex">
+        <Logo size={26} className="px-2.5 pt-1" />
         <List />
-        <div className="mt-auto px-1">
+        <div className="mt-auto border-t border-zinc-800 px-1 pt-4">
           <ThemeButton />
         </div>
       </aside>
 
       {/* celular e tablet: barra superior com menu em gaveta */}
-      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-zinc-800/80 bg-zinc-950/80 px-4 py-3 backdrop-blur lg:hidden">
-        <Mark />
+      <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-zinc-800 bg-zinc-950/85 px-4 py-3 backdrop-blur lg:hidden">
+        <Logo size={24} className="min-w-0 text-base" />
         <div className="flex items-center gap-2">
           <ThemeButton compact />
           <button
@@ -208,9 +192,15 @@ export const Sidebar = () => {
             aria-haspopup="dialog"
             aria-expanded={isOpen}
             onClick={() => setOpenedAt(pathname)}
-            className={`cursor-pointer rounded-lg border border-zinc-800 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-600 ${focusRing}`}
+            className={cn(
+              "flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-zinc-700 px-4 text-sm text-zinc-300 hover:border-zinc-500 hover:text-zinc-50",
+              focusRing,
+            )}
           >
-            ☰ Capítulos
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+              <path d="M4 7h16M4 12h16M4 17h10" />
+            </svg>
+            <span className="max-[380px]:sr-only">Capítulos</span>
           </button>
         </div>
       </header>
@@ -220,22 +210,25 @@ export const Sidebar = () => {
           <div
             aria-hidden
             onClick={close}
-            className="absolute inset-0 bg-black/60"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           />
           <div
             ref={drawerRef}
             role="dialog"
             aria-modal="true"
             aria-label="Menu de capítulos"
-            className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col gap-6 overflow-y-auto border-r border-zinc-800 bg-zinc-950 p-4"
+            className="absolute inset-y-0 left-0 flex w-80 max-w-[88vw] flex-col gap-6 overflow-y-auto border-r border-zinc-800 bg-zinc-950 px-3.5 py-5"
           >
-            <div className="flex items-center justify-between px-3 pt-1">
-              <Mark onClick={close} />
+            <div className="flex items-center justify-between gap-2 px-2.5 pt-1">
+              <Logo size={24} onClick={close} className="min-w-0 text-base" />
               <button
                 type="button"
                 aria-label="Fechar menu"
                 onClick={close}
-                className={`cursor-pointer rounded-md px-1.5 text-zinc-400 hover:text-zinc-100 ${focusRing}`}
+                className={cn(
+                  "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full text-zinc-400 hover:bg-zinc-900 hover:text-zinc-50",
+                  focusRing,
+                )}
               >
                 ✕
               </button>

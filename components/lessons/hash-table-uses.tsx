@@ -53,10 +53,10 @@ export const HashTableUses = () => {
   const timeWithoutCache = accesses.length * MISS_COST_MS;
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-14 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Usos da tabela hash</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-14 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Usos da tabela hash</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           Além de guardar pares chave → valor, a tabela hash resolve, em tempo
           O(1), dois problemas práticos que o livro destaca: saber se algo já
           foi visto (duplicatas) e guardar respostas para não repetir um
@@ -71,7 +71,7 @@ export const HashTableUses = () => {
 
       <section className="fade-up flex flex-col gap-6">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold">1. Detectar duplicatas: a votação</h2>
+          <h2 className="text-2xl font-bold">1. Detectar duplicatas: a votação</h2>
           <p className="text-sm text-zinc-400">
             Cada pessoa só pode votar uma vez. Antes de aceitar um voto, o
             sistema precisa saber se o nome já votou. Em uma lista, é preciso
@@ -80,7 +80,7 @@ export const HashTableUses = () => {
         </div>
 
         <form
-          className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+          className="flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
           onSubmit={(e) => {
             e.preventDefault();
             const name = e.currentTarget.userName.value.trim();
@@ -112,7 +112,7 @@ export const HashTableUses = () => {
             </button>
             <button
               type="button"
-              className="cursor-pointer rounded-xl px-4 py-2 text-sm text-zinc-500 hover:text-zinc-300"
+              className="min-h-11 cursor-pointer rounded-full px-4 text-sm text-zinc-400 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-violet-400"
               onClick={() => {
                 setVoters([]);
                 setVotes([]);
@@ -156,7 +156,7 @@ export const HashTableUses = () => {
 
       <section className="fade-up flex flex-col gap-6">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold">2. Guardar respostas: o cache</h2>
+          <h2 className="text-2xl font-bold">2. Guardar respostas: o cache</h2>
           <p className="text-sm text-zinc-400">
             Gerar uma página no servidor é caro. O cache é uma tabela hash cuja
             chave é o endereço da página e cujo valor é a página pronta: se já
@@ -166,7 +166,7 @@ export const HashTableUses = () => {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+        <div className="flex flex-col gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
           <div className="text-sm text-zinc-300">Acessar uma página</div>
           <div className="flex flex-wrap gap-2">
             {PAGES.map((p) => (
@@ -175,7 +175,7 @@ export const HashTableUses = () => {
               </button>
             ))}
             <button
-              className="cursor-pointer rounded-xl px-4 py-2 text-sm text-zinc-500 hover:text-zinc-300"
+              className="min-h-11 cursor-pointer rounded-full px-4 text-sm text-zinc-400 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-violet-400"
               onClick={() => {
                 setCache([]);
                 setAccesses([]);
@@ -196,13 +196,13 @@ export const HashTableUses = () => {
           <Stat label="Tempo sem cache" value={`${timeWithoutCache} ms`} tone="text-amber-400" />
         </div>
 
-        <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="text-xs uppercase tracking-wider text-zinc-500">
+        <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
+          <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
             Guardado no cache
           </div>
           <div className="flex min-h-9 flex-wrap gap-1.5">
             {cache.length === 0 ? (
-              <span className="text-xs text-zinc-600">vazio</span>
+              <span className="text-xs text-zinc-500">vazio</span>
             ) : (
               cache.map((url) => (
                 <span key={url} className="rounded-lg bg-zinc-800 px-2.5 py-1.5 font-mono text-xs text-zinc-300">

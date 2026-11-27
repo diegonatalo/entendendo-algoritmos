@@ -69,12 +69,12 @@ export const Dijkstra = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">
           Algoritmo de Dijkstra
         </h1>
-        <p className="text-zinc-400">
+        <p className="max-w-3xl text-lg text-zinc-400">
           Encontra o caminho de menor custo em um grafo com pesos nas arestas.
           A cada passo, escolhe o nó mais barato ainda não processado e
           atualiza o custo dos vizinhos. Não funciona com pesos negativos.
@@ -92,7 +92,7 @@ export const Dijkstra = () => {
 
       <div className="fade-up">
         <button
-          className="w-full cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600"
+          className="w-full inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full bg-emerald-400 px-6 font-semibold text-emerald-950 transition hover:-translate-y-0.5 hover:bg-emerald-300 hover:shadow-[0_14px_34px_-12px_rgb(52_211_153/0.6)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 active:translate-y-0 active:bg-emerald-500"
           onClick={() => {
             setResult(dijkstra(GRAPH, START, END));
             setCurrentStep(0);
@@ -133,7 +133,7 @@ export const Dijkstra = () => {
             <Legend color="bg-emerald-500" text="Caminho final" />
           </div>
 
-          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className={`text-sm font-medium ${colorOfType[step.type]}`}>
                 {step.description}
@@ -167,7 +167,7 @@ export const Dijkstra = () => {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
-                <thead className="text-xs uppercase tracking-wider text-zinc-500">
+                <thead className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                   <tr>
                     <th className="py-2 pr-4 font-medium">Nó</th>
                     <th className="py-2 pr-4 font-medium">Custo</th>
@@ -180,7 +180,7 @@ export const Dijkstra = () => {
                     <tr key={name} className="border-t border-zinc-800">
                       <td className="py-2 pr-4 text-zinc-300">{name}</td>
                       <td
-                        className={`py-2 pr-4 ${step.costs[name] === Infinity ? "text-zinc-600" : "text-amber-400"}`}
+                        className={`py-2 pr-4 ${step.costs[name] === Infinity ? "text-zinc-500" : "text-amber-400"}`}
                       >
                         {format(step.costs[name])}
                       </td>

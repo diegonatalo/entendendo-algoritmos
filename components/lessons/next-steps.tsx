@@ -67,10 +67,10 @@ const TOPICS: Topic[] = [
 
 export const NextSteps = () => {
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Próximos passos</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Próximos passos</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           O último capítulo do livro apresenta, de forma rápida, assuntos para
           estudar depois de dominar o básico. Aqui vai um resumo de cada um,
           sem demonstração interativa: são pontos de partida, não explicações
@@ -86,7 +86,7 @@ export const NextSteps = () => {
         {TOPICS.map((t) => (
           <article
             key={t.title}
-            className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+            className="flex flex-col gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
           >
             <h2 className="text-lg font-semibold">{t.title}</h2>
             <p className="text-sm leading-relaxed text-zinc-400">{t.summary}</p>
