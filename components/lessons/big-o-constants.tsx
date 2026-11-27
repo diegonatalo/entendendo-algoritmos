@@ -46,10 +46,10 @@ export const BigOConstants = () => {
   const winner = tLinear < tLog ? "linear" : "log";
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Constantes escondidas</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Constantes escondidas</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           A notação Big O descarta a constante: O(n) significa &quot;n vezes algum
           tempo fixo&quot;. Quase sempre isso basta, mas às vezes a constante
           decide quem vence. Imagine uma busca simples que gasta 1 ms por item
@@ -63,7 +63,7 @@ export const BigOConstants = () => {
         />
       </header>
 
-      <section className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <section className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             Tempo por passo da busca simples, O(n) (ms)
@@ -91,7 +91,7 @@ export const BigOConstants = () => {
         <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
           <span className="flex items-center justify-between">
             Tamanho da lista
-            <span className="font-mono text-lg text-emerald-400">{fmtN(n)}</span>
+            <span className="font-display text-2xl font-bold tracking-tight text-emerald-400">{fmtN(n)}</span>
           </span>
           <input
             type="range"
@@ -99,7 +99,7 @@ export const BigOConstants = () => {
             max={10}
             value={exponent}
             onChange={(e) => setExponent(Number(e.target.value))}
-            className="w-full accent-emerald-500"
+            className="w-full accent-emerald-400"
           />
           <span className="text-xs text-zinc-500">de 10 até 10 bilhões de itens</span>
         </label>
@@ -125,13 +125,13 @@ export const BigOConstants = () => {
           />
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 text-sm text-zinc-400">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4 text-sm text-zinc-400">
           {crossing === null
             ? "Com essas constantes, a busca binária nunca chega a compensar na faixa testada."
             : `A busca binária só passa a compensar a partir de cerca de ${fmtN(crossing)} itens. Abaixo disso, a constante maior pesa mais que o crescimento mais lento.`}
         </div>
 
-        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
           <div className="flex flex-wrap gap-4 text-xs">
             <span className="flex items-center gap-1.5 text-sky-400">
               <span className="h-0.5 w-4 rounded bg-sky-400" /> Busca simples

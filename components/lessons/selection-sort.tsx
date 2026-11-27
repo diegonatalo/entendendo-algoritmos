@@ -37,12 +37,12 @@ export const SelectionSort = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">
           Ordenação por seleção
         </h1>
-        <p className="text-zinc-400">
+        <p className="max-w-3xl text-lg text-zinc-400">
           A cada rodada, o algoritmo percorre os itens que sobraram, encontra o
           menor e o move para a lista ordenada. Custo: O(n²).
         </p>
@@ -54,7 +54,7 @@ export const SelectionSort = () => {
       </header>
 
       <form
-        className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+        className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
         onSubmit={handleSubmit}
       >
         <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
@@ -72,13 +72,13 @@ export const SelectionSort = () => {
           <button
             type="button"
             onClick={() => setText(randomNumbers(10))}
-            className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
+            className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full border border-zinc-700 px-5 text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
           >
             Gerar aleatório
           </button>
           <button
             type="submit"
-            className="flex-1 cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600"
+            className="flex-1 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full bg-emerald-400 px-6 font-semibold text-emerald-950 transition hover:-translate-y-0.5 hover:bg-emerald-300 hover:shadow-[0_14px_34px_-12px_rgb(52_211_153/0.6)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 active:translate-y-0 active:bg-emerald-500"
           >
             Ordenar
           </button>
@@ -89,7 +89,7 @@ export const SelectionSort = () => {
         <section className="fade-up flex flex-col gap-6">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-              <div className="text-xs uppercase tracking-wider text-zinc-500">
+              <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                 Rodadas
               </div>
               <div className="mt-1 text-2xl font-semibold text-amber-400">
@@ -97,7 +97,7 @@ export const SelectionSort = () => {
               </div>
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-              <div className="text-xs uppercase tracking-wider text-zinc-500">
+              <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                 Comparações
               </div>
               <div className="mt-1 text-2xl font-semibold text-zinc-100">
@@ -116,7 +116,7 @@ export const SelectionSort = () => {
             {result.steps.map((step) => (
               <li
                 key={step.round}
-                className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
+                className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4"
               >
                 <div className="flex items-center gap-2 text-sm">
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800 text-xs font-semibold">
@@ -157,7 +157,7 @@ export const SelectionSort = () => {
             ))}
           </ol>
 
-          <div className="flex flex-col gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+          <div className="flex flex-col gap-3 rounded-2xl bg-emerald-400/10 p-4">
             <div className="text-sm text-zinc-300">Resultado final</div>
             <div className="flex flex-wrap gap-1.5">
               {result.isSorted.map((n, i) => (

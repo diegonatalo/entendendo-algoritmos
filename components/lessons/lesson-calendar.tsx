@@ -75,10 +75,10 @@ export const LessonCalendar = () => {
   const order = executed ? result.sortedItems : example.lessons;
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Calendário de aulas</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Calendário de aulas</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           O problema que apresenta o algoritmo guloso: escolha a aula que
           termina primeiro, depois a próxima que começa depois dela, e repita.
           Aqui a estratégia gulosa chega à resposta ótima, mas só porque este
@@ -91,7 +91,7 @@ export const LessonCalendar = () => {
         />
       </header>
 
-      <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <div className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <div className="flex flex-wrap gap-2">
           {EXAMPLES.map((e, i) => (
             <button
@@ -151,7 +151,7 @@ export const LessonCalendar = () => {
           <Legend color="bg-zinc-800" text="Recusada ou ainda não examinada" />
         </div>
 
-        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
           {executed && (
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p
@@ -173,7 +173,7 @@ export const LessonCalendar = () => {
                 className="absolute top-0 bottom-0 border-l border-zinc-800"
                 style={{ left: `${pos(hour)}%` }}
               >
-                <span className="absolute -top-0 -translate-x-1/2 font-mono text-[10px] text-zinc-600">
+                <span className="absolute -top-0 -translate-x-1/2 font-mono text-[10px] text-zinc-500">
                   {hour}h
                 </span>
               </div>

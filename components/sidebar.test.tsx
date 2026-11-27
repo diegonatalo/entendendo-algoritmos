@@ -16,7 +16,7 @@ beforeEach(() => {
 const openDrawer = () => userEvent.click(screen.getByRole("button", { name: "Abrir menu de capítulos" }));
 const drawer = () => screen.getByRole("dialog", { name: "Menu de capítulos" });
 const fixed = () => screen.getAllByRole("navigation", { name: "Capítulos" })[0];
-const chapterButton = (n: number) => within(fixed()).getByRole("button", { name: `Capítulo ${n}` });
+const chapterButton = (n: number) => within(fixed()).getByRole("button", { name: new RegExp(`^Capítulo ${n}:`) });
 
 describe("Sidebar: capítulos", () => {
   it("o capítulo da página atual fica aberto e a página marcada", () => {

@@ -35,12 +35,12 @@ export const KnnRegressionPage = () => {
   const result = created ? knnRegression(POINTS, created, k) : null;
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">
           KNN: regressão
         </h1>
-        <p className="text-zinc-400">
+        <p className="max-w-3xl text-lg text-zinc-400">
           Além de classificar, o KNN também prevê números. Cada ponto é um dia
           da padaria, descrito por movimento na rua e temperatura, com o número
           de pães vendidos. Clique em um dia novo: a previsão é a média dos
@@ -72,7 +72,7 @@ export const KnnRegressionPage = () => {
           indicam mais pães.
         </p>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
           <KnnPlot
             label="Gráfico de dias da padaria por movimento e temperatura. Clique para colocar um dia novo."
             minWidth={420}

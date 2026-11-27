@@ -1,25 +1,46 @@
 import { ImageResponse } from "next/og";
-import { chapters } from "@/lib/chapters";
+import { ogCard, ogSlugs, ogTitleSize } from "@/lib/og";
+import { OG_FONT_FAMILY, ogFonts } from "@/lib/og-font";
 import { SITE_NAME } from "@/lib/site";
 
 // Cartão de compartilhamento (1200×630) de cada página, gerado no build:
 // /og/busca-binaria, /og/quicksort… e /og/start para a página inicial.
+// Cores da identidade: tinta, esmeralda como marca-texto e violeta para os ponteiros.
+
+const INK = "#0c0c10";
+const SURFACE = "#131319";
+const LINE = "#3a3a46";
+const TEXT = "#f3f2ee";
+const MUTED = "#b8b7c0";
+const FAINT = "#8c8b96";
+const EMERALD = "#34d399";
+const VIOLET = "#a496ff";
+
+// a busca binária no rodapé do cartão: três posições já descartadas, o meio aceso
+const STRIP = [3, 8, 12, 17, 23, 29, 31, 37, 42];
+const DISCARDED = 3;
+const MIDDLE = 5;
 
 export function generateStaticParams() {
-  return [{ slug: "start" }, ...chapters.map((c) => ({ slug: c.href.replace(/^\/app\//, "") }))];
+  return ogSlugs().map((slug) => ({ slug }));
 }
 
-export async function GET(
-  _: Request,
-  { params }: { params: Promise<{ slug: string }> },
-) {
+export async function GET(_: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const page = chapters.find((c) => c.href === `/app/${slug}`);
-  if (!page && slug !== "start") return new Response("Not found", { status: 404 });
+  const card = ogCard(slug);
+  if (!card) return new Response("Not found", { status: 404 });
 
-  const label = page ? `CAPÍTULO ${page.number}` : "VISUALIZAÇÕES INTERATIVAS";
-  const title = page ? page.title : "Veja os algoritmos acontecendo";
-  const description = page ? page.description : "Visualizações interativas, passo a passo.";
+  const fullTitle = `${card.title}${card.marked ?? ""}${card.titleEnd ?? ""}`;
+  const size = ogTitleSize(fullTitle);
+  // cada palavra vira um bloco para o título quebrar linha; o trecho marcado fica junto
+  const plain = (text: string) => text.split(" ").filter(Boolean).map((w) => ({ text: w, marked: false, tight: false }));
+  const words = [
+    ...plain(card.title),
+    // a pontuação logo depois do trecho marcado fica colada nele, fora do marca-texto
+    ...(card.marked ? [{ text: card.marked, marked: true, tight: Boolean(card.titleEnd?.match(/^[,.;:]/)) }] : []),
+    ...plain(card.titleEnd ?? ""),
+  ];
+  const fonts = await ogFonts();
 
   return new ImageResponse(
     (
@@ -30,57 +51,112 @@ export async function GET(
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: 72,
-          color: "#fafafa",
-          backgroundColor: "#09090b",
-          backgroundImage:
-            "radial-gradient(circle at 12% 0%, rgba(16,185,129,0.35), rgba(9,9,11,0) 55%), radial-gradient(circle at 100% 100%, rgba(56,189,248,0.22), rgba(9,9,11,0) 50%)",
+          padding: "60px 72px",
+          fontFamily: fonts.length > 0 ? OG_FONT_FAMILY : undefined,
+          color: TEXT,
+          backgroundColor: INK,
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.08) 1.5px, transparent 1.6px)",
+          backgroundSize: "28px 28px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", fontSize: 34, fontWeight: 600 }}>
-          <span style={{ color: "#34d399", marginRight: 14 }}>{"</>"}</span>
-          {SITE_NAME}
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 30, letterSpacing: 4, color: "#34d399", marginBottom: 20 }}>
-            {label}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", fontSize: 32, fontWeight: 700, letterSpacing: -1 }}>
+            <div style={{ display: "flex", alignItems: "center", marginRight: 18 }}>
+              <div style={{ width: 13, height: 22, border: `3px solid ${FAINT}`, borderRadius: 5 }} />
+              <div style={{ width: 13, height: 44, backgroundColor: EMERALD, borderRadius: 5, margin: "0 5px" }} />
+              <div style={{ width: 13, height: 22, border: `3px solid ${FAINT}`, borderRadius: 5 }} />
+            </div>
+            {SITE_NAME}
           </div>
           <div
             style={{
-              fontSize: title.length <= 18 ? 104 : title.length <= 24 ? 88 : 76,
-              lineHeight: 1.05,
-              fontWeight: 700,
-              letterSpacing: -3,
+              display: "flex",
+              padding: "10px 22px",
+              fontSize: 22,
+              color: MUTED,
+              border: `1px solid ${LINE}`,
+              borderRadius: 999,
+              backgroundColor: SURFACE,
             }}
           >
-            {title}
-          </div>
-          <div style={{ fontSize: 34, lineHeight: 1.35, color: "#a1a1aa", marginTop: 28, maxWidth: 980 }}>
-            {description}
+            Passo a passo · Simples e Técnica · Código
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 14 }}>
-          {["Passo a passo", "Simples e Técnica", "Código de cada algoritmo"].map((t) => (
-            <div
-              key={t}
-              style={{
-                display: "flex",
-                padding: "10px 22px",
-                fontSize: 24,
-                color: "#d4d4d8",
-                border: "1px solid #27272a",
-                borderRadius: 999,
-                backgroundColor: "rgba(24,24,27,0.75)",
-              }}
-            >
-              {t}
-            </div>
-          ))}
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ fontSize: 24, letterSpacing: 3, color: EMERALD, marginBottom: 22 }}>{card.label}</div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              fontSize: size,
+              lineHeight: 1,
+              fontWeight: 800,
+              letterSpacing: -size * 0.04,
+              maxWidth: 1056,
+            }}
+          >
+            {words.map((word, i) =>
+              word.marked ? (
+                <span
+                  key={i}
+                  style={{
+                    backgroundColor: EMERALD,
+                    color: INK,
+                    padding: "0 14px",
+                    borderRadius: 14,
+                    marginRight: word.tight ? 4 : size * 0.22,
+                  }}
+                >
+                  {word.text}
+                </span>
+              ) : (
+                <span key={i} style={{ marginRight: size * 0.22 }}>
+                  {word.text}
+                </span>
+              ),
+            )}
+          </div>
+          <div style={{ fontSize: 30, lineHeight: 1.35, color: MUTED, marginTop: 24, maxWidth: 940 }}>
+            {card.description}
+          </div>
+        </div>
+
+        <div style={{ display: "flex", alignItems: "flex-start" }}>
+          {STRIP.map((n, i) => {
+            const out = i < DISCARDED;
+            const middle = i === MIDDLE;
+            return (
+              <div key={n} style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: 10 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 62,
+                    height: 54,
+                    borderRadius: 12,
+                    fontSize: 24,
+                    fontWeight: middle ? 800 : 500,
+                    color: middle ? INK : out ? FAINT : TEXT,
+                    backgroundColor: middle ? EMERALD : out ? "transparent" : "#1c1c24",
+                    border: `1.5px solid ${middle ? EMERALD : out ? "#25252f" : LINE}`,
+                    opacity: out ? 0.45 : 1,
+                    textDecoration: out ? "line-through" : "none",
+                    marginTop: middle ? -8 : 0,
+                  }}
+                >
+                  {n}
+                </div>
+                <div style={{ display: "flex", height: 26, fontSize: 18, fontWeight: 700, color: VIOLET, marginTop: 8 }}>
+                  {middle ? "meio" : i === DISCARDED ? "início" : i === STRIP.length - 1 ? "fim" : ""}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     ),
-    { width: 1200, height: 630 },
+    { width: 1200, height: 630, fonts: fonts.length > 0 ? fonts : undefined },
   );
 }

@@ -1,8 +1,10 @@
+import { cn } from "@/lib/cn";
+
 export const Stat = ({
   label,
   value,
   tone,
-  small: small,
+  small,
 }: {
   label: string;
   value: string;
@@ -10,12 +12,14 @@ export const Stat = ({
   small?: boolean;
 }) => {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-      <div className="text-xs uppercase tracking-wider text-zinc-500">
-        {label}
-      </div>
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+      <div className="text-sm text-zinc-500">{label}</div>
       <div
-        className={`mt-1 font-semibold ${small ? "text-base leading-8" : "text-2xl"} ${tone}`}
+        className={cn(
+          "mt-1 font-display font-bold tracking-tight",
+          small ? "text-base leading-8" : "text-3xl",
+          tone,
+        )}
       >
         {value}
       </div>
@@ -25,8 +29,8 @@ export const Stat = ({
 
 export const Legend = ({ color, text }: { color: string; text: string }) => {
   return (
-    <span className="flex items-center gap-1.5">
-      <span className={`h-3 w-3 rounded ${color}`} />
+    <span className="flex items-center gap-2">
+      <span className={cn("h-3.5 w-3.5 rounded", color)} />
       {text}
     </span>
   );
@@ -47,7 +51,7 @@ export const ScrollableChart = ({
         tabIndex={0}
         role="region"
         aria-label="Gráfico, use as setas para rolar"
-        className="overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-emerald-400"
+        className="overflow-x-auto rounded-lg focus-visible:outline-2 focus-visible:outline-violet-400"
       >
         <div style={{ minWidth: minWidthValue }}>{children}</div>
       </div>
@@ -59,10 +63,14 @@ export const ScrollableChart = ({
 };
 
 export const navigationButton =
-  "cursor-pointer whitespace-nowrap rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-zinc-700 disabled:hover:text-zinc-300";
+  "inline-flex min-h-11 cursor-pointer items-center justify-center whitespace-nowrap rounded-full border border-zinc-700 px-5 text-sm font-medium text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-zinc-700 disabled:hover:text-zinc-300";
 
 export const primaryButton =
-  "cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600";
+  "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full bg-emerald-400 px-6 font-semibold text-emerald-950 transition hover:-translate-y-0.5 hover:bg-emerald-300 hover:shadow-[0_14px_34px_-12px_rgb(52_211_153/0.6)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 active:translate-y-0 active:bg-emerald-500";
+
+/** Botão de contorno, para a ação secundária ao lado do `primaryButton`. */
+export const secondaryButton =
+  "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full border border-zinc-700 px-6 font-semibold text-zinc-100 transition-colors hover:border-zinc-500 hover:bg-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400";
 
 export const StepControls = ({
   currentStep,
@@ -106,6 +114,6 @@ export const StepControls = ({
 };
 
 export const inputClass =
-  "w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30";
+  "w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/20";
 
 export const inputMono = inputClass.replace("text-zinc-100", "font-mono text-zinc-100");

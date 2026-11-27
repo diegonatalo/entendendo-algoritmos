@@ -1,3 +1,5 @@
+import { cn } from "@/lib/cn";
+
 type ArrayProps = {
   arr: number[];
   middle: number;
@@ -7,22 +9,21 @@ type ArrayProps = {
 export const ArrayVisual = ({ arr, middle, target }: ArrayProps) => {
   return (
     <div className="flex flex-wrap gap-1.5">
-      {arr.map((item) => {
-        const style =
-          item === middle
-            ? item === target
-              ? "bg-emerald-500 text-emerald-950 font-semibold ring-2 ring-emerald-300"
-              : "bg-amber-500 text-amber-950 font-semibold ring-2 ring-amber-300"
-            : "bg-zinc-800 text-zinc-400";
-        return (
-          <div
-            key={item}
-            className={`flex h-10 min-w-10 items-center justify-center rounded-lg px-2 font-mono text-sm tabular-nums transition-colors ${style}`}
-          >
-            {item}
-          </div>
-        );
-      })}
+      {arr.map((item) => (
+        <div
+          key={item}
+          className={cn(
+            "flex h-11 min-w-11 items-center justify-center rounded-[10px] border px-2 font-mono text-sm tabular-nums transition-all",
+            item !== middle && "border-zinc-700 bg-zinc-900 text-zinc-300",
+            item === middle &&
+              item === target &&
+              "-translate-y-1 border-emerald-400 bg-emerald-400 font-semibold text-emerald-950 shadow-[0_12px_30px_-12px_rgb(52_211_153/0.7)]",
+            item === middle && item !== target && "border-amber-400 bg-amber-400 font-semibold text-amber-950",
+          )}
+        >
+          {item}
+        </div>
+      ))}
     </div>
   );
 };

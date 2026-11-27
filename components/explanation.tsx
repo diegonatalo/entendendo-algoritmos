@@ -1,7 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
-import { CodeBlock } from "./code-block";
+import { CodeBlock } from "@/components/code-block";
+import { cn } from "@/lib/cn";
 import type { Block } from "@/lib/explanations";
 
 type Level = "simple" | "technique";
@@ -17,7 +18,7 @@ const Blocks = ({ blocks }: { blocks: Block[] }) => {
       {blocks.map((b, i) => {
         if (b.type === "title") {
           return (
-            <h3 key={i} className="mt-2 text-sm font-semibold uppercase tracking-wider text-emerald-400">
+            <h3 key={i} className="mt-2 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-emerald-400">
               {b.text}
             </h3>
           );
@@ -35,7 +36,7 @@ const Blocks = ({ blocks }: { blocks: Block[] }) => {
           return (
             <p
               key={i}
-              className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 px-4 py-3 text-sm text-zinc-200"
+              className="rounded-xl bg-emerald-400/10 px-4 py-3 text-sm text-zinc-100"
             >
               {b.text}
             </p>
@@ -67,9 +68,9 @@ export const Explanation = ({
     <div className="mt-2 flex flex-col gap-3">
       <section
         aria-label="Explicação do algoritmo"
-        className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-3 sm:p-4"
+        className="flex flex-col gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-2.5 sm:p-3"
       >
-        <div role="group" aria-label="Nível da explicação" className="flex gap-1 rounded-xl bg-zinc-900 p-1">
+        <div role="group" aria-label="Nível da explicação" className="flex gap-1 rounded-full border border-zinc-800 bg-zinc-950 p-1">
           {LEVELS.map((n) => {
             const active = level === n.id;
             return (
@@ -79,11 +80,10 @@ export const Explanation = ({
                 aria-expanded={active}
                 aria-controls={panelId}
                 onClick={() => setLevel(active ? null : n.id)}
-                className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-emerald-400 ${
-                  active
-                    ? "border-emerald-500 bg-emerald-500 text-emerald-950"
-                    : "border-zinc-700 text-zinc-200 hover:border-zinc-500 hover:bg-zinc-800 hover:text-zinc-50"
-                }`}
+                className={cn(
+                  "flex min-h-11 flex-1 cursor-pointer items-center justify-center gap-2 rounded-full px-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400",
+                  active ? "bg-emerald-400 text-emerald-950" : "text-zinc-400 hover:bg-zinc-900 hover:text-zinc-50",
+                )}
               >
                 <span>{n.label}</span>
                 <span aria-hidden className={`text-xs transition-transform ${active ? "rotate-90" : ""}`}>
@@ -94,14 +94,14 @@ export const Explanation = ({
           })}
         </div>
   
-        <p className="px-1 text-xs text-zinc-400">
+        <p className="px-3 text-xs text-zinc-400">
           {current
             ? `${current.description} Toque em ${current.label} de novo para recolher.`
             : "Explicação do algoritmo: escolha um nível para ler."}
         </p>
   
         {current && (
-          <div id={panelId} role="region" aria-label={`Explicação ${current.label.toLowerCase()}`} className="flex flex-col gap-4 pt-1">
+          <div id={panelId} role="region" aria-label={`Explicação ${current.label.toLowerCase()}`} className="flex flex-col gap-4 px-3 pb-3 pt-1">
             <Blocks blocks={level === "simple" ? simple : technique} />
           </div>
         )}

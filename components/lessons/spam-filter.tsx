@@ -45,10 +45,10 @@ export const SpamFilter = () => {
   const spam = result ? result.spamProbability >= 0.5 : false;
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Filtro de spam: Naive Bayes</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Filtro de spam: Naive Bayes</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           O livro apresenta o Naive Bayes como um classificador simples e
           eficaz, usado em filtros de spam. Ele conta quantas vezes cada
           palavra aparece em mensagens de spam e em mensagens normais e, para
@@ -63,11 +63,11 @@ export const SpamFilter = () => {
         />
       </header>
 
-      <section className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <section className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
           Mensagem a classificar
           <textarea
-            className="min-h-24 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30"
+            className="min-h-24 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none transition-colors focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/20"
             value={text}
             onChange={(e) => setText(e.target.value)}
             maxLength={300}
@@ -78,7 +78,7 @@ export const SpamFilter = () => {
             <button
               key={e}
               onClick={() => setText(e)}
-              className="cursor-pointer rounded-xl border border-zinc-700 px-3 py-2.5 text-xs text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
+              className="min-h-11 cursor-pointer rounded-full border border-zinc-700 px-4 text-xs text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
             >
               {e}
             </button>
@@ -120,9 +120,9 @@ export const SpamFilter = () => {
             </p>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+          <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900">
             <table className="w-full text-left text-sm">
-              <thead className="bg-zinc-900/60 text-xs uppercase tracking-wider text-zinc-500">
+              <thead className="bg-zinc-950/60 font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                 <tr>
                   <th className="px-4 py-3 font-medium">Palavra</th>
                   <th className="px-4 py-3 text-right font-medium">P(palavra | spam)</th>
@@ -149,7 +149,7 @@ export const SpamFilter = () => {
                           </td>
                         </>
                       ) : (
-                        <td colSpan={3} className="px-4 py-2.5 font-sans text-xs text-zinc-600">
+                        <td colSpan={3} className="px-4 py-2.5 font-sans text-xs text-zinc-500">
                           nunca vista no treino: ignorada
                         </td>
                       )}
@@ -174,7 +174,7 @@ export const SpamFilter = () => {
           {[true, false].map((isSpam) => (
             <div
               key={String(isSpam)}
-              className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
+              className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4"
             >
               <div className={`text-xs font-medium uppercase tracking-wider ${isSpam ? "text-red-400" : "text-emerald-400"}`}>
                 {isSpam ? "Spam" : "Normal"}

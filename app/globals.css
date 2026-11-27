@@ -2,19 +2,69 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ── identidade ────────────────────────────────────────────────────────────────
+   Fundo de tinta (escuro) ou papel (claro), esmeralda como marca-texto do que o
+   algoritmo está olhando e violeta como segunda cor (ponteiros, arestas em teste).
+   As páginas usam a escala zinc do Tailwind pensando no escuro (950 = fundo,
+   50 = texto forte); aqui a escala vira a paleta de tinta e, no tema claro, é
+   espelhada para o papel, então as mesmas classes servem aos dois temas. */
 @theme inline {
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+@theme {
+  --color-zinc-50: #fafaf7;
+  --color-zinc-100: #f3f2ee;
+  --color-zinc-200: #e6e5ea;
+  --color-zinc-300: #d4d3da;
+  --color-zinc-400: #b8b7c0;
+  --color-zinc-500: #8c8b96;
+  --color-zinc-600: #5c5b66;
+  --color-zinc-700: #3a3a46;
+  --color-zinc-800: #25252f;
+  --color-zinc-900: #131319;
+  --color-zinc-950: #0c0c10;
+
+  --animate-marquee: marquee 70s linear infinite;
+  --animate-blink: blink 1.6s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 
 body {
-  background-color: #09090b;
-  background-image:
-    radial-gradient(60rem 30rem at 50% -10rem, rgb(16 185 129 / 0.12), transparent),
-    radial-gradient(40rem 20rem at 100% 0, rgb(99 102 241 / 0.08), transparent);
-  background-repeat: no-repeat;
-  color: #fafafa;
+  background-color: var(--color-zinc-950);
+  color: var(--color-zinc-100);
   font-family: var(--font-sans);
+}
+
+::selection {
+  background-color: rgb(52 211 153 / 0.35);
+}
+
+/* títulos de todas as páginas (lições incluídas) na fonte de display */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
 }
 
 @keyframes fade-up {
@@ -32,63 +82,92 @@ body {
   animation: fade-up 0.4s ease-out both;
 }
 
+/* trecho destacado como se fosse com marca-texto */
+.marker {
+  background: linear-gradient(104deg, transparent 2%, var(--color-emerald-400) 4%, var(--color-emerald-400) 96%, transparent 98%);
+  color: var(--color-emerald-950);
+  padding: 0 0.14em;
+  margin: 0 -0.04em;
+  border-radius: 0.18em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* papel quadriculado em pontos, atrás do hero e das páginas de aviso */
+.dot-grid {
+  background-image: radial-gradient(rgb(255 255 255 / 0.07) 1.2px, transparent 1.3px);
+  background-size: 24px 24px;
+}
+
+/* número em contorno (sumário e lista de capítulos) */
+.outline-number {
+  color: transparent;
+  -webkit-text-stroke: 1.4px var(--color-zinc-500);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .fade-up {
+  .fade-up,
+  .animate-marquee,
+  .animate-blink {
     animation: none;
   }
 }
 
 /* ── tema claro ──────────────────────────────────────────────────────────────
-   As páginas foram escritas com a escala zinc do Tailwind pensando no escuro
-   (950 = fundo, 50 = texto forte). No tema claro a escala é espelhada aqui, então
-   as mesmas classes servem aos dois temas. O que não dá para espelhar (texto
+   A escala zinc é espelhada para o papel. O que não dá para espelhar (texto
    colorido claro, que precisa escurecer, e preenchimentos escuros de nós e
    legendas) é tratado nas regras abaixo, por propriedade. */
 html:not(.dark) {
   color-scheme: light;
-  --color-zinc-50: #09090b;
-  --color-zinc-100: #18181b;
-  --color-zinc-200: #27272a;
-  --color-zinc-300: #3f3f46;
-  --color-zinc-400: #52525b;
-  --color-zinc-500: #63636b;
-  --color-zinc-600: #a1a1aa;
-  --color-zinc-700: #d4d4d8;
-  --color-zinc-800: #e4e4e7;
+  --color-zinc-50: #121216;
+  --color-zinc-100: #18171d;
+  --color-zinc-200: #24232b;
+  --color-zinc-300: #33323b;
+  --color-zinc-400: #45444e;
+  --color-zinc-500: #67666f;
+  --color-zinc-600: #a3a29b;
+  --color-zinc-700: #c8c7bf;
+  --color-zinc-800: #e2e1da;
   --color-zinc-900: #ffffff;
-  --color-zinc-950: #fafafa;
+  --color-zinc-950: #f6f6f2;
 }
 
-html:not(.dark) body {
-  background-color: #fafafa;
-  background-image:
-    radial-gradient(60rem 30rem at 50% -10rem, rgb(16 185 129 / 0.1), transparent),
-    radial-gradient(40rem 20rem at 100% 0, rgb(99 102 241 / 0.07), transparent);
-  color: #18181b;
+html:not(.dark) .dot-grid {
+  background-image: radial-gradient(rgb(0 0 0 / 0.09) 1.2px, transparent 1.3px);
+}
+
+html:not(.dark) ::selection {
+  background-color: rgb(16 185 129 / 0.25);
 }
 
 /* texto colorido: tons claros viram tons escuros para ter contraste no fundo claro */
 html:not(.dark) .text-emerald-100 { color: #064e3b; }
 html:not(.dark) .text-emerald-200 { color: #065f46; }
 html:not(.dark) .text-emerald-300,
-html:not(.dark) .hover\:text-emerald-300:hover { color: #047857; }
+html:not(.dark) .hover\:text-emerald-300:hover,
+html:not(.dark) .hover\:text-emerald-400:hover,
+html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #047857; }
 html:not(.dark) .text-emerald-400 { color: #047857; }
 html:not(.dark) .text-amber-200 { color: #92400e; }
 html:not(.dark) .text-amber-300 { color: #b45309; }
 html:not(.dark) .text-amber-400 { color: #b45309; }
 html:not(.dark) .text-red-200 { color: #991b1b; }
 html:not(.dark) .text-red-300 { color: #b91c1c; }
-html:not(.dark) .text-red-400 { color: #dc2626; }
-html:not(.dark) .text-rose-400 { color: #e11d48; }
+html:not(.dark) .text-red-400 { color: #b91c1c; }
+html:not(.dark) .text-rose-300 { color: #be123c; }
+html:not(.dark) .text-rose-400 { color: #be123c; }
 html:not(.dark) .text-sky-100 { color: #0c4a6e; }
 html:not(.dark) .text-sky-400 { color: #0369a1; }
-html:not(.dark) .text-violet-400 { color: #6d28d9; }
+html:not(.dark) .text-violet-300,
+html:not(.dark) .text-violet-400 { color: #5b21b6; }
 
 /* texto dentro de SVG (fill) e setas */
 html:not(.dark) .fill-emerald-300,
 html:not(.dark) .fill-emerald-400 { fill: #047857; }
 html:not(.dark) .fill-amber-400 { fill: #b45309; }
 html:not(.dark) .fill-red-400 { fill: #dc2626; }
+html:not(.dark) .fill-violet-300,
+html:not(.dark) .fill-violet-400 { fill: #5b21b6; }
 html:not(.dark) .stroke-emerald-300,
 html:not(.dark) .stroke-emerald-400 { stroke: #059669; }
 html:not(.dark) .stroke-amber-300,
@@ -103,7 +182,3 @@ html:not(.dark) .bg-violet-950 { background-color: #ede9fe; }
 html:not(.dark) .fill-violet-950 { fill: #ede9fe; }
 html:not(.dark) .bg-red-950 { background-color: #fee2e2; }
 html:not(.dark) .fill-red-950 { fill: #fee2e2; }
-
-/* título da home: o gradiente claro some no fundo branco */
-html:not(.dark) .from-emerald-400 { --tw-gradient-from: #059669; }
-html:not(.dark) .to-sky-400 { --tw-gradient-to: #0284c7; }

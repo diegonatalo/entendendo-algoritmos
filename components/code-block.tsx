@@ -24,8 +24,8 @@ export const CodeBlock = ({
   }
 
   return (
-    <details className="group rounded-xl border border-zinc-800 bg-zinc-900/60">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-4 py-3 text-sm font-medium text-zinc-300 transition-colors hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-400 [&::-webkit-details-marker]:hidden">
+    <details className="group rounded-2xl border border-zinc-800 bg-zinc-900">
+      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 rounded-2xl px-4 text-sm font-medium text-zinc-300 transition-colors hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-violet-400 [&::-webkit-details-marker]:hidden">
         <span className="flex items-center gap-2">
           <span className="font-mono text-emerald-400">{"{ }"}</span>
           {title}
@@ -43,7 +43,7 @@ export const CodeBlock = ({
           <button
             type="button"
             onClick={copy}
-            className="cursor-pointer rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-emerald-400"
+            className="min-h-9 cursor-pointer rounded-full border border-zinc-700 bg-zinc-950 px-4 text-xs text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-violet-400"
           >
             {state === "copied"
               ? "Copiado!"
@@ -54,7 +54,7 @@ export const CodeBlock = ({
         </div>
         <pre
           tabIndex={0}
-          className="overflow-x-auto px-4 pb-4 pt-2 font-mono text-[13px] leading-relaxed text-zinc-200 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-400"
+          className="overflow-x-auto px-4 pb-4 pt-2 font-mono text-[13px] leading-relaxed text-zinc-200 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-violet-400"
         >
           <code>
             {code.split("\n").map((line, i, all) => {

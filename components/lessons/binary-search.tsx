@@ -23,10 +23,10 @@ export const BinarySearch = () => {
   const found = result !== null && result.index !== -1;
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Busca binária</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Busca binária</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           Em um array ordenado de 1 até N, o algoritmo olha para o elemento do
           meio e descarta metade das opções a cada tentativa.
         </p>
@@ -38,7 +38,7 @@ export const BinarySearch = () => {
       </header>
 
       <form
-        className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+        className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
         onSubmit={(e) => {
           e.preventDefault();
           const size = Number(e.currentTarget.size.value);
@@ -73,7 +73,7 @@ export const BinarySearch = () => {
           </label>
         </div>
         <button
-          className="cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600"
+          className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full bg-emerald-400 px-6 font-semibold text-emerald-950 transition hover:-translate-y-0.5 hover:bg-emerald-300 hover:shadow-[0_14px_34px_-12px_rgb(52_211_153/0.6)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 active:translate-y-0 active:bg-emerald-500"
           type="submit"
         >
           Buscar
@@ -110,7 +110,7 @@ export const BinarySearch = () => {
             {result.steps.map((item) => (
               <li
                 key={item.attempt}
-                className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
+                className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4"
               >
                 <div className="flex items-center gap-2 text-sm">
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-800 text-xs font-semibold">

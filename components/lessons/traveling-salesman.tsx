@@ -38,7 +38,7 @@ const MapView = ({
 }) => {
   const points = route.order.map((i) => cities[i]);
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+    <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
       <div className="flex items-baseline justify-between">
         <h2 className="font-semibold">{title}</h2>
         <span className="font-mono text-sm text-zinc-300">
@@ -67,7 +67,7 @@ const MapView = ({
               cx={c.x}
               cy={c.y}
               r={4.2}
-              className={i === 0 ? "fill-zinc-100" : "fill-zinc-800"}
+              className={i === 0 ? "fill-[#f3f2ee]" : "fill-zinc-800"}
               stroke={color}
               strokeWidth={0.8}
             />
@@ -77,7 +77,7 @@ const MapView = ({
               textAnchor="middle"
               dominantBaseline="central"
               fontSize={4.5}
-              className={`font-mono font-semibold ${i === 0 ? "fill-zinc-950" : "fill-zinc-100"}`}
+              className={`font-mono font-semibold ${i === 0 ? "fill-[#0c0c10]" : "fill-zinc-100"}`}
             >
               {c.name}
             </text>
@@ -106,10 +106,10 @@ export const TravelingSalesman = () => {
   const excess = (greedyResult.totalLength / optimal.totalLength - 1) * 100;
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Caixeiro-viajante</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Caixeiro-viajante</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           Visitar todas as cidades e voltar ao início pelo caminho mais curto. É
           um problema NP-completo: não se conhece algoritmo rápido que garanta
           a melhor rota. A força bruta testa todas as ordens, cuja quantidade
@@ -122,10 +122,10 @@ export const TravelingSalesman = () => {
         />
       </header>
 
-      <section className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <section className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <label className="flex items-center justify-between text-sm text-zinc-300">
           <span>Número de cidades</span>
-          <span className="font-mono text-lg text-emerald-400">{n}</span>
+          <span className="font-display text-2xl font-bold tracking-tight text-emerald-400">{n}</span>
         </label>
         <input
           type="range"
@@ -133,7 +133,7 @@ export const TravelingSalesman = () => {
           max={CITIES.length}
           value={n}
           onChange={(e) => setN(Number(e.target.value))}
-          className="w-full accent-emerald-500"
+          className="w-full accent-emerald-400"
           aria-label="Número de cidades"
         />
       </section>
@@ -174,7 +174,7 @@ export const TravelingSalesman = () => {
           />
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 text-sm text-zinc-400">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4 text-sm text-zinc-400">
           Com {n} cidades há {factorial(n - 1).toLocaleString("pt-BR")} rotas
           para testar ((n − 1)!). Com 10 cidades seriam{" "}
           {factorial(9).toLocaleString("pt-BR")}; com 15, mais de 87 bilhões.
@@ -187,7 +187,7 @@ export const TravelingSalesman = () => {
 
       <section className="fade-up flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold">Como reconhecer um problema NP-completo</h2>
+          <h2 className="text-2xl font-bold">Como reconhecer um problema NP-completo</h2>
           <p className="text-sm text-zinc-400">
             Provar que um problema é NP-completo é difícil, mas o livro dá
             pistas práticas para suspeitar. São regras de bolso, não provas.
@@ -219,7 +219,7 @@ export const TravelingSalesman = () => {
           ].map((hint, i) => (
             <li
               key={hint.title}
-              className="flex flex-col gap-1.5 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
+              className="flex flex-col gap-1.5 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4"
             >
               <span className="font-mono text-xs text-emerald-400">Pista {i + 1}</span>
               <h3 className="text-sm font-semibold text-zinc-100">{hint.title}</h3>
@@ -228,7 +228,7 @@ export const TravelingSalesman = () => {
           ))}
         </ol>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4 text-sm text-zinc-400">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4 text-sm text-zinc-400">
           <span className="text-zinc-200">E agora?</span> Para um problema
           NP-completo não se conhece um algoritmo rápido que garanta a melhor
           solução. A saída recomendada é usar uma aproximação: o vizinho mais

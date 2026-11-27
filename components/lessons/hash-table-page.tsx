@@ -107,10 +107,10 @@ export const HashTablePage = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Tabelas hash</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Tabelas hash</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           Uma função hash transforma a chave em um número, que indica o balde
           onde o valor fica guardado. Busca, inserção e remoção levam O(1) no
           caso médio. Quando duas chaves caem no mesmo balde, há uma colisão e
@@ -128,7 +128,7 @@ export const HashTablePage = () => {
 
       <div className="fade-up grid gap-4 md:grid-cols-2">
         <form
-          className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+          className="flex flex-col gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
           onSubmit={handleInsert}
         >
           <h2 className="text-sm font-medium text-zinc-300">Inserir</h2>
@@ -151,7 +151,7 @@ export const HashTablePage = () => {
         </form>
 
         <form
-          className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+          className="flex flex-col gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
           onSubmit={handleLookup}
         >
           <h2 className="text-sm font-medium text-zinc-300">Buscar</h2>
@@ -244,11 +244,11 @@ export const HashTablePage = () => {
                 </span>
                 <div className="flex flex-wrap items-center gap-2">
                   {bucket.length === 0 ? (
-                    <span className="text-xs text-zinc-600">vazio</span>
+                    <span className="text-xs text-zinc-500">vazio</span>
                   ) : (
                     bucket.map((input, j) => (
                       <div key={input.key} className="flex items-center gap-2">
-                        {j > 0 && <span className="text-zinc-600">→</span>}
+                        {j > 0 && <span className="text-zinc-500">→</span>}
                         <span
                           className={`rounded-lg px-3 py-1.5 font-mono text-xs ${
                             active && input.key === highlight?.key

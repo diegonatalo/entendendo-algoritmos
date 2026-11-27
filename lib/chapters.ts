@@ -187,3 +187,45 @@ export const chapters: Chapter[] = [
     description: "Um resumo dos assuntos que o livro sugere estudar depois.",
   },
 ];
+
+/** Nome curto do assunto de cada capítulo, ao lado do número. */
+export const CHAPTER_NAMES: Record<number, string> = {
+  1: "Busca e Big O",
+  2: "Arrays e ordenação",
+  3: "Recursão",
+  4: "Dividir para conquistar",
+  5: "Tabelas hash",
+  6: "Grafos e largura",
+  7: "Grafos com pesos",
+  8: "Algoritmos gulosos",
+  9: "Programação dinâmica",
+  10: "K-vizinhos",
+  11: "Próximos passos",
+};
+
+export type ChapterGroup = { number: number; name: string; pages: Chapter[] };
+
+/** As páginas agrupadas pelo capítulo do livro, na ordem de `chapters`. */
+export const chapterGroups = (): ChapterGroup[] => {
+  const groups: ChapterGroup[] = [];
+  for (const page of chapters) {
+    const last = groups.at(-1);
+    if (last && last.number === page.number) last.pages.push(page);
+    else groups.push({ number: page.number, name: CHAPTER_NAMES[page.number] ?? "", pages: [page] });
+  }
+  return groups;
+};
+
+/** Código da página no sumário: capítulo e posição dentro dele, como "4.2". */
+export const pageCode = (page: Chapter): string => {
+  const group = chapterGroups().find((g) => g.number === page.number);
+  const position = group ? group.pages.indexOf(page) + 1 : 0;
+  return `${page.number}.${position}`;
+};
+
+/** Página anterior e seguinte na ordem do livro, para a navegação no fim de cada lição. */
+export const neighbors = (href: string): { previous?: Chapter; next?: Chapter } => {
+  const index = chapters.findIndex((c) => c.href === href);
+  if (index === -1) return {};
+  return { previous: chapters[index - 1], next: chapters[index + 1] };
+};

@@ -53,10 +53,10 @@ export const LondonItinerary = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Programação dinâmica: roteiro em Londres</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Programação dinâmica: roteiro em Londres</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           O outro exemplo de programação dinâmica do capítulo 9: você tem poucos
           dias em Londres e muitas atrações. Cada uma leva um tempo e tem uma
           nota. Quais visitar para somar a maior nota? É a mesma mochila de
@@ -71,7 +71,7 @@ export const LondonItinerary = () => {
         />
       </header>
 
-      <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <div className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <ul className="grid gap-2 sm:grid-cols-3">
           {items.map((item) => (
             <li key={item.name} className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm">
@@ -109,7 +109,7 @@ export const LondonItinerary = () => {
                 setWithExtra(e.target.checked);
                 reset();
               }}
-              className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-500"
+              className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-400"
             />
             <span>
               Adicionar a Torre de Londres (1 dia, nota 10). Atração e nota
@@ -142,7 +142,7 @@ export const LondonItinerary = () => {
             <Stat label="Célula" value={`${currentStep + 1} / ${total}`} tone="text-zinc-100" />
           </div>
 
-          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className={`text-sm font-medium ${step.usedItem ? "text-amber-400" : "text-zinc-300"}`}>
                 {step.description}
@@ -188,7 +188,7 @@ export const LondonItinerary = () => {
                                   ? "bg-amber-500 font-semibold text-amber-950"
                                   : filled
                                     ? "bg-zinc-800 text-zinc-200"
-                                    : "bg-zinc-900 text-zinc-600"
+                                    : "bg-zinc-900 text-zinc-500"
                             }`}
                           >
                             {filled ? dp.table[i][j] : "·"}
@@ -203,7 +203,7 @@ export const LondonItinerary = () => {
           </div>
 
           {final && (
-            <div className="flex flex-col gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 text-sm">
+            <div className="flex flex-col gap-2 rounded-2xl bg-emerald-400/10 p-4 text-sm">
               <div className="font-medium text-zinc-200">Roteiro: {chosenNames.join(" + ")}</div>
               <div className="text-zinc-400">
                 Nota total {dp.totalValue} em {days(timeUsed)}.

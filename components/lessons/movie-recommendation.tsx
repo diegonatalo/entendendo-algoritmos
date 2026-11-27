@@ -55,10 +55,10 @@ export const MovieRecommendation = () => {
   }));
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">KNN: recomendação de filmes</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">KNN: recomendação de filmes</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           O livro usa o KNN para recomendar filmes: cada pessoa vira um ponto
           cujas coordenadas são as notas que deu, e quem tem gostos parecidos
           fica por perto. Para prever a nota de um filme que você ainda não viu,
@@ -73,9 +73,9 @@ export const MovieRecommendation = () => {
       </header>
 
       <section className="fade-up flex flex-col gap-4">
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+        <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900">
           <table className="w-full text-left text-sm">
-            <thead className="bg-zinc-900/60 text-xs uppercase tracking-wider text-zinc-500">
+            <thead className="bg-zinc-950/60 font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Pessoa</th>
                 {MOVIES.map((f) => (
@@ -113,7 +113,7 @@ export const MovieRecommendation = () => {
       </section>
 
       <section className="fade-up flex flex-col gap-6">
-        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+        <div className="flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
           <div className="flex flex-wrap gap-2">
             {(Object.keys(METHODS) as Method[]).map((m) => (
               <button
@@ -133,7 +133,7 @@ export const MovieRecommendation = () => {
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
             <span className="flex items-center justify-between">
               Número de vizinhos (k)
-              <span className="font-mono text-lg text-emerald-400">{k}</span>
+              <span className="font-display text-2xl font-bold tracking-tight text-emerald-400">{k}</span>
             </span>
             <input
               type="range"
@@ -141,13 +141,13 @@ export const MovieRecommendation = () => {
               max={OTHERS.length}
               value={k}
               onChange={(e) => setK(Number(e.target.value))}
-              className="w-full accent-emerald-500"
+              className="w-full accent-emerald-400"
             />
           </label>
         </div>
 
-        <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="text-xs uppercase tracking-wider text-zinc-500">
+        <div className="flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
+          <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
             Mais parecidos com você ({METHODS[method].unit})
           </div>
           <ol className="flex flex-col gap-1 text-sm">
@@ -184,9 +184,9 @@ export const MovieRecommendation = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+        <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900">
           <table className="w-full text-left text-sm">
-            <thead className="bg-zinc-900/60 text-xs uppercase tracking-wider text-zinc-500">
+            <thead className="bg-zinc-950/60 font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Método (k = {k})</th>
                 <th className="px-4 py-3 font-medium">Vizinhos</th>

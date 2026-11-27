@@ -90,10 +90,10 @@ export const QuicksortMergeSort = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-14 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Quicksort × mesclagem</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-14 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Quicksort × mesclagem</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           A ordenação por mesclagem (merge sort) também divide para conquistar:
           parte a lista ao meio, ordena cada metade e junta as duas já
           ordenadas. Ela é O(n log n) sempre, enquanto o quicksort é O(n log n)
@@ -108,12 +108,12 @@ export const QuicksortMergeSort = () => {
       </header>
 
       <section className="fade-up flex flex-col gap-6">
-        <h2 className="text-xl font-semibold">Comparações em três tipos de entrada</h2>
+        <h2 className="text-2xl font-bold">Comparações em três tipos de entrada</h2>
 
-        <div className="flex flex-col gap-3 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+        <div className="flex flex-col gap-3 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
           <label className="flex items-center justify-between text-sm text-zinc-300">
             <span>Tamanho da lista (n)</span>
-            <span className="font-mono text-lg text-emerald-400">{n}</span>
+            <span className="font-display text-2xl font-bold tracking-tight text-emerald-400">{n}</span>
           </label>
           <input
             type="range"
@@ -122,14 +122,14 @@ export const QuicksortMergeSort = () => {
             step={4}
             value={n}
             onChange={(e) => setN(Number(e.target.value))}
-            className="w-full accent-emerald-500"
+            className="w-full accent-emerald-400"
             aria-label="Tamanho da lista (n)"
           />
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+        <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900">
           <table className="w-full text-left text-sm">
-            <thead className="bg-zinc-900/60 text-xs uppercase tracking-wider text-zinc-500">
+            <thead className="bg-zinc-950/60 font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
               <tr>
                 <th className="px-4 py-3 font-medium">Entrada</th>
                 <th className="px-4 py-3 text-right font-medium">Quicksort (pivô no meio)</th>
@@ -184,7 +184,7 @@ export const QuicksortMergeSort = () => {
 
       <section className="fade-up flex flex-col gap-6">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold">A mesclagem passo a passo</h2>
+          <h2 className="text-2xl font-bold">A mesclagem passo a passo</h2>
           <p className="text-sm text-zinc-400">
             A árvore desce dividindo as listas ao meio até sobrar um elemento
             (caso base). Depois sobe juntando: as listas em verde são o
@@ -193,7 +193,7 @@ export const QuicksortMergeSort = () => {
         </div>
 
         <form
-          className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+          className="flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
           onSubmit={handleSubmit}
         >
           <label className="flex flex-col gap-1.5 text-sm text-zinc-300">
@@ -209,7 +209,7 @@ export const QuicksortMergeSort = () => {
           <div className="flex gap-3">
             <button
               type="button"
-              className="cursor-pointer rounded-xl border border-zinc-700 px-4 py-2.5 text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
+              className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full border border-zinc-700 px-5 text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
               onClick={() => {
                 const randomValue = Array.from({ length: 10 }, () => Math.floor(Math.random() * 99 + 1));
                 setText(randomValue.join(", "));
@@ -231,7 +231,7 @@ export const QuicksortMergeSort = () => {
           <Stat label="Itens" value={String(list.length)} tone="text-zinc-100" />
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900 bg-zinc-950/60 p-4">
           <div className="flex w-max min-w-full justify-center">
             <Tree node={result.root} />
           </div>

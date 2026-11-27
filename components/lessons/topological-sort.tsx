@@ -68,10 +68,10 @@ export const TopologicalSort = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Ordenação topológica</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Ordenação topológica</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           Quando as tarefas dependem umas das outras, uma ordenação topológica
           é uma ordem em que cada tarefa vem depois de todas as suas
           dependências. O algoritmo repete: faça uma tarefa que não espera por
@@ -85,7 +85,7 @@ export const TopologicalSort = () => {
         />
       </header>
 
-      <div className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+      <div className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
         <label className="flex cursor-pointer items-start gap-3 text-sm text-zinc-300">
           <input
             type="checkbox"
@@ -95,7 +95,7 @@ export const TopologicalSort = () => {
               setExecuted(false);
               setCurrentStep(0);
             }}
-            className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-500"
+            className="mt-0.5 h-5 w-5 shrink-0 accent-emerald-400"
           />
           <span>
             Criar dependência circular: &quot;vestir&quot; passa a ser pré-requisito de
@@ -141,7 +141,7 @@ export const TopologicalSort = () => {
           <Legend color="bg-red-950 ring-1 ring-red-500" text="Presa em ciclo" />
         </div>
 
-        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
           {executed && (
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p
@@ -248,16 +248,16 @@ export const TopologicalSort = () => {
 
           {executed && (
             <div className="flex flex-col gap-2">
-              <div className="text-xs uppercase tracking-wider text-zinc-500">
+              <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
                 Ordem até agora
               </div>
               <div className="flex min-h-9 flex-wrap items-center gap-1.5">
                 {step.order.length === 0 ? (
-                  <span className="text-xs text-zinc-600">vazia</span>
+                  <span className="text-xs text-zinc-500">vazia</span>
                 ) : (
                   step.order.map((n, i) => (
                     <span key={n} className="flex items-center gap-1.5">
-                      {i > 0 && <span className="text-zinc-600">→</span>}
+                      {i > 0 && <span className="text-zinc-500">→</span>}
                       <span className="rounded-lg bg-zinc-800 px-2.5 py-1.5 text-xs text-zinc-200">
                         {n}
                       </span>

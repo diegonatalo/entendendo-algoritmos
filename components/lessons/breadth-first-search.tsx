@@ -76,10 +76,10 @@ export const BreadthFirstSearch = () => {
   }
 
   return (
-    <main id="conteudo" className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="fade-up flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Busca em largura</h1>
-        <p className="text-zinc-400">
+    <main id="conteudo" className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-5 pb-14 pt-5 sm:px-10">
+      <header className="fade-up flex flex-col gap-4">
+        <h1 className="text-5xl font-extrabold leading-[0.95] tracking-tighter text-balance sm:text-6xl">Busca em largura</h1>
+        <p className="max-w-3xl text-lg text-zinc-400">
           Em um grafo, a busca em largura usa uma fila para verificar primeiro
           os vizinhos diretos, depois os vizinhos dos vizinhos, e assim por
           diante. Assim encontra o caminho com menos arestas. Custo: O(V + E).
@@ -92,7 +92,7 @@ export const BreadthFirstSearch = () => {
       </header>
 
       <form
-        className="fade-up flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5"
+        className="fade-up flex flex-col gap-4 rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6"
         onSubmit={(e) => {
           e.preventDefault();
           setResult(breadthFirstSearch(GRAPH, start, target));
@@ -126,7 +126,7 @@ export const BreadthFirstSearch = () => {
           </label>
         </div>
         <button
-          className="cursor-pointer rounded-xl bg-emerald-500 px-4 py-2.5 font-semibold text-emerald-950 transition-colors hover:bg-emerald-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:bg-emerald-600"
+          className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full bg-emerald-400 px-6 font-semibold text-emerald-950 transition hover:-translate-y-0.5 hover:bg-emerald-300 hover:shadow-[0_14px_34px_-12px_rgb(52_211_153/0.6)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400 active:translate-y-0 active:bg-emerald-500"
           type="submit"
         >
           Buscar
@@ -165,7 +165,7 @@ export const BreadthFirstSearch = () => {
             <Legend color="bg-emerald-500" text="Caminho" />
           </div>
 
-          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4">
+          <div className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className={`text-sm font-medium ${colorOfType[step.type]}`}>
                 {step.description}
@@ -227,12 +227,12 @@ export const BreadthFirstSearch = () => {
 const List = ({ title, items }: { title: string; items: string[] }) => {
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-xs uppercase tracking-wider text-zinc-500">
+      <div className="font-mono text-xs uppercase tracking-[0.08em] text-zinc-500">
         {title}
       </div>
       <div className="flex min-h-9 flex-wrap gap-1.5">
         {items.length === 0 ? (
-          <span className="text-xs text-zinc-600">vazia</span>
+          <span className="text-xs text-zinc-500">vazia</span>
         ) : (
           items.map((n, i) => (
             <span
